@@ -50,3 +50,19 @@ void AppDelegate::applicationWillEnterForeground() {
     // if you use SimpleAudioEngine, it must resume here
     // SimpleAudioEngine::getInstance()->resumeBackgroundMusic();
 }
+
+/*
+extern "C"
+{
+    size_t fwrite$UNIX2003(const void *a, size_t b, size_t c, FILE *d)
+    {
+        return fwrite(a, b, c, d);
+    }
+    
+    char* strerror$UNIX2003( int errnum )
+    {
+        return strerror(errnum);
+    }
+}
+ 
+*/
