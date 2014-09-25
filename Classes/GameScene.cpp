@@ -125,6 +125,14 @@ void GameScene::onTouchEnded(Touch *touch, Event *unused_event){
     //タップ終了時
     CCLOG("touchEnded");
     
+    
+    
+
+    //プレイヤーの移動
+    Point touchPoint = Vec2(touch->getLocationInView().x, touch->getLocationInView().y);
+    player->setPosition(Vec2(touchPoint.x, selfFrame.height/7));
+
+    
 }
 
 void GameScene::onTouchCancelled(Touch *touch, Event *unused_event){
