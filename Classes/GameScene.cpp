@@ -35,7 +35,11 @@ bool GameScene::init(){
     auto background = LayerColor::create(Color4B::RED, selfFrame.width, selfFrame.height);
     this -> addChild(background,0);
     
-    //プレイヤーの配置
+    
+    
+    
+    
+    /**************　プレイヤー設定  ******************/
     player = Sprite::create();
     
     player->setTextureRect(Rect(0, 0, visibleSize.width/8, visibleSize.width/8));
@@ -45,6 +49,9 @@ bool GameScene::init(){
     player->setPosition(Vec2(selfFrame.width/2, selfFrame.height/7));
     
     this -> addChild(player);
+    /**************　プレイヤー設定　おわり  ******************/
+    
+    
     
     
     /**************　タッチイベント設定  ******************/
