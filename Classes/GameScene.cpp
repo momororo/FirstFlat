@@ -29,11 +29,15 @@ bool GameScene::init(){
         return false;
     }
     
+    
+    //画面サイズの取得
     Size visibleSize = Director::getInstance()->getVisibleSize();
     
-    //メイン画面
+    
+    /**************　メイン画面設定  ******************/
     auto background = LayerColor::create(Color4B::RED, selfFrame.width, selfFrame.height);
     this -> addChild(background,0);
+    /**************　メイン画面設定　おわり  ******************/
     
     
     
@@ -70,11 +74,8 @@ bool GameScene::init(){
     //イベントディスパッチャようにリスナーを追加する
     _eventDispatcher -> addEventListenerWithSceneGraphPriority(listener, this);
     
-    /*************　　タッチイベント設定  終 ****************/
+    /*************　　タッチイベント設定  おわり ****************/
 
-    
-    
-    
     
     
     
@@ -87,18 +88,13 @@ bool GameScene::onTouchBegan(Touch *touch, Event *unused_event){
     //タップ開始時の処理
     CCLOG("touchBegan");
     
-    /*
-     //target : ターゲットのスプライト
-     auto target = (Sprite*)event->getCurrentTarget();
-     //targetBox : タッチされたスプライトの領域
-     Rect targetBox = target->getBoundingBox();
-     
-     */
+
     
     
     //プレイヤーの移動
     Point touchPoint = Vec2(touch->getLocationInView().x, touch->getLocationInView().y);
     player->setPosition(Vec2(touchPoint.x, selfFrame.height/7));
+    
     
     
     return true;
@@ -120,6 +116,7 @@ void GameScene::onTouchMoved(Touch *touch, Event *unused_event){
     Point touchPoint = Vec2(touch->getLocationInView().x, touch->getLocationInView().y);
     player->setPosition(Vec2(touchPoint.x, selfFrame.height/7));
     
+    return;
     
 }
 
