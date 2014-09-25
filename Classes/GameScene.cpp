@@ -29,12 +29,42 @@ bool GameScene::init(){
         return false;
     }
     
+    Size visibleSize = Director::getInstance()->getVisibleSize();
+    
     //メイン画面
     auto background = LayerColor::create(Color4B::RED, selfFrame.width, selfFrame.height);
-    //Sprite::create();
-    //background -> setPosition(Point(WINSIZE.width/2,WINSIZE.height/2));
     this -> addChild(background,0);
     
+    //プレイヤーの配置
+    player = Sprite::create();
+    
+    player->setTextureRect(Rect(0, 0, visibleSize.width/8, visibleSize.width/8));
+    
+    player->setColor(Color3B::GREEN);
+    
+    player->setPosition(Vec2(selfFrame.width/2, selfFrame.height/7));
+    
+    this -> addChild(player);
+    
+    
+    /**************　タッチイベント設定  ******************/
+    
+    //シングルタップ用リスナーを用意する
+    auto listener = EventListenerTouchOneByOne::create();
+    listener -> setSwallowTouches(_swallowsTouches);
+    
+    
+    //各イベントの割り当て
+    listener -> onTouchBegan = CC_CALLBACK_2(GameScene::onTouchBegan,this);
+    listener -> onTouchMoved = CC_CALLBACK_2(GameScene::onTouchMoved,this);
+    listener -> onTouchEnded = CC_CALLBACK_2(GameScene::onTouchEnded,this);
+    listener -> onTouchCancelled = CC_CALLBACK_2(GameScene::onTouchCancelled,this);
+    
+    //イベントディスパッチャようにリスナーを追加する
+    _eventDispatcher -> addEventListenerWithSceneGraphPriority(listener, this);
+    
+    /*************　　タッチイベント設定  終 ****************/
+
     
     
     
@@ -44,4 +74,60 @@ bool GameScene::init(){
     
     return true;
 }
+
+bool GameScene::onTouchBegan(Touch *touch, Event *unused_event){
+    
+    //タップ開始時の処理
+    CCLOG("touchBegan");
+    
+    /*
+     //target : ターゲットのスプライト
+     auto target = (Sprite*)event->getCurrentTarget();
+     //targetBox : タッチされたスプライトの領域
+     Rect targetBox = target->getBoundingBox();
+     
+     */
+    
+    
+    //プレイヤーの移動
+    Point touchPoint = Vec2(touch->getLocationInView().x, touch->getLocationInView().y);
+    player->setPosition(Vec2(touchPoint.x, selfFrame.height/7));
+    
+    
+    return true;
+    
+}
+
+void GameScene::onTouchMoved(Touch *touch, Event *unused_event){
+    
+    //スワイプ中の処理
+    CCLOG("touchMoved");
+    
+    
+    
+    
+    
+    
+    
+    //プレイヤーの移動
+    Point touchPoint = Vec2(touch->getLocationInView().x, touch->getLocationInView().y);
+    player->setPosition(Vec2(touchPoint.x, selfFrame.height/7));
+    
+    
+}
+
+void GameScene::onTouchEnded(Touch *touch, Event *unused_event){
+    
+    //タップ終了時
+    CCLOG("touchEnded");
+    
+}
+
+void GameScene::onTouchCancelled(Touch *touch, Event *unused_event){
+    
+    //タッチキャンセル
+    CCLOG("touchCancelled");
+    
+}
+
 

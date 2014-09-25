@@ -24,6 +24,7 @@ protected:
     //スコア
     cocos2d::Label *scoreLabel;
     
+    cocos2d::Sprite *player;
     
     
     public :
@@ -31,6 +32,13 @@ protected:
     static cocos2d::Scene *createScene();
     virtual bool init();
     CREATE_FUNC(GameScene);
+    
+    //タップイベントの宣言
+    bool onTouchBegan(cocos2d::Touch *touch, cocos2d::Event *event);
+    void onTouchEnded(cocos2d::Touch *touch, cocos2d::Event *event);
+    void onTouchMoved(cocos2d::Touch *touch, cocos2d::Event *event);
+    void onTouchCancelled(cocos2d::Touch *touch, cocos2d::Event *event);
+
     
     
 };

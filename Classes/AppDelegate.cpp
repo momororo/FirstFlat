@@ -67,5 +67,4 @@ extern "C"
         return strerror(errnum);
     }
 }
- 
-*/
+ */

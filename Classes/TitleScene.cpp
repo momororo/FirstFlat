@@ -32,9 +32,6 @@ bool TitleScene::init(){
     }
     
     
-    //背景色の設定
-    //auto bgColor = LayerColor::create(Color4B::RED, selfFrame.width, selfFrame.height);
-    //this -> addChild(bgColor);
     
     //背景色のグラデーション
     auto bgGradient = LayerGradient::create(Color4B(128,229,255,255), Color4B(95,211,188,255));
