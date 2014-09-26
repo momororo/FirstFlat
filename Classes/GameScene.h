@@ -11,6 +11,7 @@
 
 #include "cocos2d.h"
 #include "Player.h"
+#include "Walls.h"
 
 
 class GameScene : public cocos2d::Layer{
@@ -25,6 +26,8 @@ protected:
     cocos2d::Label *scoreLabel;
     
     cocos2d::Sprite *player;
+    
+    bool testFlag = false;
     
     
     public :

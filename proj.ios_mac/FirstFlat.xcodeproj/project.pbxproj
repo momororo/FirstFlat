@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		045599ED19D5579C00D0E60B /* Walls.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 045599EB19D5579C00D0E60B /* Walls.cpp */; };
 		0489754919D5324B001E2AD7 /* Player.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0489754719D5324B001E2AD7 /* Player.cpp */; };
 		1AC6FB1F180E996B004C840B /* libbox2d Mac.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 1AC6FAFF180E9839004C840B /* libbox2d Mac.a */; };
 		1AC6FB20180E996B004C840B /* libchipmunk Mac.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 1AC6FAFD180E9839004C840B /* libchipmunk Mac.a */; };
@@ -216,6 +217,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		045599EB19D5579C00D0E60B /* Walls.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Walls.cpp; path = ../Classes/Walls.cpp; sourceTree = "<group>"; };
+		045599EC19D5579C00D0E60B /* Walls.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Walls.h; path = ../Classes/Walls.h; sourceTree = "<group>"; };
 		0489754719D5324B001E2AD7 /* Player.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Player.cpp; path = ../Classes/Player.cpp; sourceTree = "<group>"; };
 		0489754819D5324B001E2AD7 /* Player.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Player.h; path = ../Classes/Player.h; sourceTree = "<group>"; };
 		1AC6FAE5180E9839004C840B /* cocos2d_libs.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = cocos2d_libs.xcodeproj; path = ../cocos2d/build/cocos2d_libs.xcodeproj; sourceTree = "<group>"; };
@@ -349,6 +352,8 @@
 				A462D00719D2BF6D002E22EC /* GameScene.h */,
 				0489754719D5324B001E2AD7 /* Player.cpp */,
 				0489754819D5324B001E2AD7 /* Player.h */,
+				045599EB19D5579C00D0E60B /* Walls.cpp */,
+				045599EC19D5579C00D0E60B /* Walls.h */,
 			);
 			name = Classes;
 			path = ../classes;
@@ -681,6 +686,7 @@
 				503AE10217EB989F00D1A890 /* RootViewController.mm in Sources */,
 				1AFAF8B716D35DE700DB1158 /* AppDelegate.cpp in Sources */,
 				503AE10117EB989F00D1A890 /* main.m in Sources */,
+				045599ED19D5579C00D0E60B /* Walls.cpp in Sources */,
 				A462D00819D2BF6D002E22EC /* GameScene.cpp in Sources */,
 				A462D00319D2BDAB002E22EC /* TitleScene.cpp in Sources */,
 			);

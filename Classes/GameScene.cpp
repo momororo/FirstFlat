@@ -83,7 +83,43 @@ bool GameScene::onTouchBegan(Touch *touch, Event *unused_event){
     //プレイヤーの移動
     Point touchPoint = Vec2(touch->getLocationInView().x, touch->getLocationInView().y);
     
+    //壁の生成
+    Walls::getInstance()->setWalls();
+
+
+    if(testFlag == false){
     
+    //テスト*配列によるオブジェクトの追加
+    Vector<Sprite*> walls = Walls::getInstance()->getWallsFromZero();
+    for(int cnt = 0 ; cnt < walls.size() ; cnt++ ){
+        this -> addChild(walls.at(cnt));
+    }
+    
+    CCLOG("追加に成功");
+    
+    //オブジェクトの移動
+    Walls::getInstance()->moveToYFromZero(-(selfFrame.height/2));
+    
+        testFlag = true;
+        
+    }else{
+        
+        //テスト*配列によるオブジェクトの追加
+        Vector<Sprite*> walls = Walls::getInstance()->getWallsFromLast();
+        for(int cnt = 0 ; cnt < walls.size() ; cnt++ ){
+            this -> addChild(walls.at(cnt));
+        }
+        
+        CCLOG("追加に成功");
+        
+        //オブジェクトの移動
+        Walls::getInstance()->moveToYFromLast(-(selfFrame.height/2));
+
+        
+        
+        
+        
+    }
     
     return true;
     
