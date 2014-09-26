@@ -10,7 +10,7 @@
 #define __FitstPenguin_android__GameScene__
 
 #include "cocos2d.h"
-//#include "Ground.h"
+#include "Player.h"
 
 
 class GameScene : public cocos2d::Layer{

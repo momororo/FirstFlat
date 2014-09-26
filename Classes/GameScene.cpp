@@ -9,6 +9,8 @@
 #include "GameScene.h"
 
 #define selfFrame Director::getInstance() -> getWinSize()
+#define visibleSize Director::getInstance()->getVisibleSize();
+
 
 USING_NS_CC;
 
@@ -30,8 +32,6 @@ bool GameScene::init(){
     }
     
     
-    //画面サイズの取得
-    Size visibleSize = Director::getInstance()->getVisibleSize();
     
     
     /**************　メイン画面設定  ******************/
@@ -40,19 +40,8 @@ bool GameScene::init(){
     /**************　メイン画面設定　おわり  ******************/
     
     
-    
-    
-    
     /**************　プレイヤー設定  ******************/
-    player = Sprite::create();
-    
-    player->setTextureRect(Rect(0, 0, visibleSize.width/8, visibleSize.width/8));
-    
-    player->setColor(Color3B::GREEN);
-    
-    player->setPosition(Vec2(selfFrame.width/2, selfFrame.height/7));
-    
-    this -> addChild(player);
+    this -> addChild(Player::getInstance()->getPlayer());
     /**************　プレイヤー設定　おわり  ******************/
     
     
@@ -93,7 +82,6 @@ bool GameScene::onTouchBegan(Touch *touch, Event *unused_event){
     
     //プレイヤーの移動
     Point touchPoint = Vec2(touch->getLocationInView().x, touch->getLocationInView().y);
-    player->setPosition(Vec2(touchPoint.x, selfFrame.height/7));
     
     
     
@@ -113,8 +101,7 @@ void GameScene::onTouchMoved(Touch *touch, Event *unused_event){
     
     
     //プレイヤーの移動
-    Point touchPoint = Vec2(touch->getLocationInView().x, touch->getLocationInView().y);
-    player->setPosition(Vec2(touchPoint.x, selfFrame.height/7));
+    Player::getInstance()->moveToX(touch->getLocationInView().x);
     
     return;
     
@@ -129,9 +116,9 @@ void GameScene::onTouchEnded(Touch *touch, Event *unused_event){
     
 
     //プレイヤーの移動
-    Point touchPoint = Vec2(touch->getLocationInView().x, touch->getLocationInView().y);
-    player->setPosition(Vec2(touchPoint.x, selfFrame.height/7));
-
+    Player::getInstance()->moveToX(touch->getLocationInView().x);
+    
+    return;
     
 }
 
