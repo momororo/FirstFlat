@@ -26,22 +26,28 @@ Player* Player::getInstance(){
 Sprite* Player::getPlayer(){
     
     
-    auto selfFrame = Director::getInstance() -> getWinSize();
-    auto visibleSize = Director::getInstance()->getVisibleSize();
 
- 
-    /**************　プレイヤー設定  ******************/
-    playerSprite = Sprite::create();
     
-    playerSprite->setTextureRect(cocos2d::Rect(0, 0, visibleSize.width/8, visibleSize.width/8));
-    
-    playerSprite->setColor(Color3B::GREEN);
-    
-    playerSprite->setPosition(Vec2(selfFrame.width/2, selfFrame.height/7));
+    if(!Player::playerSprite){
+
+        auto selfFrame = Director::getInstance() -> getWinSize();
+        auto visibleSize = Director::getInstance()->getVisibleSize();
+
+        /**************　プレイヤー設定  ******************/
+        playerSprite = Sprite::create();
+        
+        playerSprite->setTextureRect(cocos2d::Rect(0, 0, visibleSize.width/8, visibleSize.width/8));
+        
+        playerSprite->setColor(Color3B::GREEN);
+        
+        playerSprite->setPosition(Vec2(selfFrame.width/2, selfFrame.height/7));
+
+        /**************　プレイヤー設定　おわり  ******************/
+
+    }
     
     return playerSprite;
     
-    /**************　プレイヤー設定　おわり  ******************/
 
 }
 
