@@ -21,7 +21,7 @@ private:
 protected:
     //変数
     static Player *player;
-    cocos2d::Sprite* playerSprite;
+    cocos2d::Sprite* playerSprite = 0;
     
 public:
 

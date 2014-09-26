@@ -39,10 +39,10 @@ bool GameScene::init(){
     this -> addChild(background,0);
     /**************　メイン画面設定　おわり  ******************/
     
-    
     /**************　プレイヤー設定  ******************/
     this -> addChild(Player::getInstance()->getPlayer());
     /**************　プレイヤー設定　おわり  ******************/
+    
     
     
     
