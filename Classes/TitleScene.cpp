@@ -13,6 +13,7 @@
 
 USING_NS_CC;
 
+DrawNode *circle;
 
 Scene *TitleScene::createScene(){
     
@@ -36,10 +37,73 @@ bool TitleScene::init(){
     //背景色のグラデーション
     auto bgGradient = LayerGradient::create(Color4B(128,229,255,255), Color4B(95,211,188,255));
     this -> addChild(bgGradient);
-
     
-    //initTitleBk();
+    
+    //スタートボタン作成
     initStart();
+    
+    /*
+    Size visibleSize = Director::getInstance()->getVisibleSize();
+    auto sprite = Sprite::create();
+    sprite->setTextureRect(Rect(0, 0, 200, 100));
+    sprite->setColor(Color3B::GRAY);
+    sprite->setPosition(Vec2(visibleSize.width/2, visibleSize.height/2));
+    sprite->setOpacity(0);
+    addChild(sprite);
+    
+    //1秒かけてフェードイーン
+    auto action = FadeIn::create(1);
+    sprite->runAction(action);
+    */
+    
+    
+    
+    
+    
+    /*
+    //白いスプライトを作成
+    Size s = Director::getInstance()->getVisibleSize();
+    auto spr = Sprite::create();
+    spr->setPosition(Vec2(s.width*.5, s.height*.5));
+    spr->setTextureRect(Rect(0, 0, 200, 200));
+    spr->setColor(Color3B::WHITE);
+    addChild(spr);
+    
+    //1秒かけて青に変わるアニメーション（秒数：1、R値：51、G値：75、B値：112）
+    spr->runAction(TintTo::create(1, 51, 75, 112));
+    */
+    
+    
+    circle = DrawNode::create();
+    circle -> drawDot(Point(selfFrame.width/2, selfFrame.height/2), 20, Color4F::WHITE);
+    addChild(circle, 0);
+    
+    
+    //auto move = MoveBy::create(2, Vec2(0, -400));
+    
+    auto scaleAction = ScaleBy::create(2, 2);
+    
+    //auto seq = Sequence::create(move, scaleAction,NULL);
+    
+    //circle -> runAction(seq);
+    
+    circle -> runAction(scaleAction);
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
     
     
     
@@ -60,17 +124,15 @@ bool TitleScene::init(){
     _eventDispatcher -> addEventListenerWithSceneGraphPriority(listener, this);
     
     /*************　　タッチイベント設定  終 ****************/
-
-    
-    
-    
-    
     
     return true;
     
     
 }
 
+
+
+// スタートボタン作成
 void TitleScene::initStart(){
     
     start = Sprite::create();
@@ -84,6 +146,7 @@ void TitleScene::initStart(){
     this -> addChild(start,0);
     
 }
+
 
 
 bool TitleScene::onTouchBegan(Touch *touch, Event *unused_event){
@@ -101,7 +164,7 @@ bool TitleScene::onTouchBegan(Touch *touch, Event *unused_event){
     
     
     
-    
+    //スタートボタンタップ時の操作
     Point touchPoint = Vec2(touch->getLocationInView().x, touch->getLocationInView().y);
     
     if (start->getBoundingBox().containsPoint(touchPoint))
@@ -116,18 +179,6 @@ bool TitleScene::onTouchBegan(Touch *touch, Event *unused_event){
         Director::getInstance()->replaceScene(nextScene);
         return true;
     }
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
     
     return true;
     
