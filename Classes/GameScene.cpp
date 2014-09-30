@@ -82,6 +82,8 @@ bool GameScene::onTouchBegan(Touch *touch, Event *unused_event){
     
     //プレイヤーの移動
     Point touchPoint = Vec2(touch->getLocationInView().x, touch->getLocationInView().y);
+    Player::getInstance()->moveToX(touch->getLocationInView().x);
+
     
     //壁の生成
     Walls::getInstance()->setWalls();
