@@ -77,208 +77,12 @@ bool TitleScene::init(){
     addChild(circle, 0);
     */
     
-    //タイトル効果
-    circle = Sprite::create("blue_circle.png");
-    circle -> setPosition(Vec2(selfFrame.width/2,selfFrame.height + 200));
-    circle -> setScale(0.1);
-    addChild(circle);
-    
-    ring = Sprite::create("blue_ring.png");
-    ring -> setPosition(Vec2(selfFrame.width/2,selfFrame.height + 200));
-    ring -> setScale(0.1);
-    addChild(ring);
-    
-    //スタートボタン効果
-    auto circleStart = Sprite::create("aqua_circle.png");
-    circleStart -> setPosition(Vec2(selfFrame.width/2,selfFrame.height+100));
-    circleStart -> setScale(0.1);
-    addChild(circleStart);
-    
-    auto ringStart = Sprite::create("aqua_ring.png");
-    ringStart -> setPosition(Vec2(selfFrame.width/2,selfFrame.height+100));
-    ringStart -> setScale(0.1);
-    addChild(ringStart);
-    
-    //ランキングボタン効果
-    auto circleRanking = Sprite::create("orange_circle.png");
-    circleRanking -> setPosition(Vec2(60,selfFrame.height+100));
-    circleRanking -> setScale(0.1);
-    addChild(circleRanking);
-    
-    auto ringRanking = Sprite::create("orange_ring.png");
-    ringRanking -> setPosition(Vec2(60,selfFrame.height+100));
-    ringRanking -> setScale(0.1);
-    addChild(ringRanking);
-    
-    
-    //チャレンジボタン効果
-    auto circleChallenge = Sprite::create("yellow_circle.png");
-    circleChallenge -> setPosition(Vec2(selfFrame.width-60,selfFrame.height+100));
-    circleChallenge -> setScale(0.1);
-    addChild(circleChallenge);
-    
-    auto ringChallenge = Sprite::create("yellow_ring.png");
-    ringChallenge -> setPosition(Vec2(selfFrame.width-60,selfFrame.height+100));
-    ringChallenge -> setScale(0.1);
-    addChild(ringChallenge);
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    //オブジェクトの移動
-    auto moveCircle = MoveBy::create(2, Vec2(0, -400));
-    auto moveRing = MoveBy::create(2, Vec2(0, -400));
-
-    //オブジェクトの拡大
-    auto scale = ScaleBy::create(2, 12);
-    //オブジェクトの削除
-    auto remove = RemoveSelf::create(true);
-    //オブジェクトのフェードアウト
-    auto fadeOut = FadeOut::create(2);
-    
-    
-    auto funcTitle = CallFunc::create([this](){
-    
-        this -> fadeInTitle();
-        
-    });
-    
-    //拡大・フェードアウト同時アクション
-    auto scaleFadeOut = Spawn::create(scale,fadeOut, NULL);
-    //移動後拡大のアクション
-    auto moveScale = Sequence::create(moveCircle, scaleFadeOut,NULL);
-    //移動後削除のアクション
-    auto moveRemove = Sequence::create(moveRing,remove,funcTitle,NULL);
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    //スタートオブジェクトの移動
-    auto moveCircle2 = MoveTo::create(2, Vec2(selfFrame.width/2, selfFrame.height/6));
-    auto moveRing2 = MoveTo::create(2, Vec2(selfFrame.width/2, selfFrame.height/6));
-    
-    //オブジェクトの拡大
-    auto scale2 = ScaleBy::create(2, 12);
-    //オブジェクトの削除
-    auto remove2 = RemoveSelf::create(true);
-    //オブジェクトのフェードアウト
-    auto fadeOut2 = FadeOut::create(2);
-    
-    
-    auto funcStart = CallFunc::create([this](){
-        
-        this -> fadeInStart();
-        
-    });
-    
-    //拡大・フェードアウト同時アクション
-    auto scaleFadeOut2 = Spawn::create(scale2,fadeOut2, NULL);
-    //移動後拡大のアクション
-    auto moveScale2 = Sequence::create(moveRing2, scaleFadeOut2,NULL);
-    //移動後削除のアクション
-    auto moveRemove2 = Sequence::create(moveCircle2,remove2,funcStart,NULL);
+    setTitle();
+    setStart();
+    setRanking();
+    setChallenge();
 
     
-    
-    
-    
-    
-    
-    
-    
-    //オブジェクトの移動
-    auto moveCircle3 = MoveTo::create(2, Vec2(60,selfFrame.height/4));
-    auto moveRing3 = MoveTo::create(2, Vec2(60,selfFrame.height/4));
-    
-    //オブジェクトの拡大
-    auto scale3 = ScaleBy::create(2, 12);
-    //オブジェクトの削除
-    auto remove3 = RemoveSelf::create(true);
-    //オブジェクトのフェードアウト
-    auto fadeOut3 = FadeOut::create(2);
-    
-    
-    auto funcRanking = CallFunc::create([this](){
-        
-        this -> fadeInRanking();
-        
-    });
-    
-    //拡大・フェードアウト同時アクション
-    auto scaleFadeOut3 = Spawn::create(scale3,fadeOut3, NULL);
-    //移動後拡大のアクション
-    auto moveScale3 = Sequence::create(moveRing3, scaleFadeOut3,NULL);
-    //移動後削除のアクション
-    auto moveRemove3 = Sequence::create(moveCircle3,remove3,funcRanking,NULL);
-
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    //オブジェクトの移動
-    auto moveCircle4 = MoveTo::create(2, Vec2(selfFrame.width-60,selfFrame.height/4));
-    auto moveRing4 = MoveTo::create(2, Vec2(selfFrame.width-60,selfFrame.height/4));
-    
-    //オブジェクトの拡大
-    auto scale4 = ScaleBy::create(2, 12);
-    //オブジェクトの削除
-    auto remove4 = RemoveSelf::create(true);
-    //オブジェクトのフェードアウト
-    auto fadeOut4 = FadeOut::create(2);
-    
-    
-    auto funcChallenge = CallFunc::create([this](){
-        
-        this -> fadeInCallenge();
-        
-    });
-    
-    //拡大・フェードアウト同時アクション
-    auto scaleFadeOut4 = Spawn::create(scale4,fadeOut4, NULL);
-    //移動後拡大のアクション
-    auto moveScale4 = Sequence::create(moveRing4, scaleFadeOut4,NULL);
-    //移動後削除のアクション
-    auto moveRemove4 = Sequence::create(moveCircle4,remove4,funcChallenge,NULL);
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    circle -> runAction(moveRemove);
-    ring -> runAction(moveScale);
-    
-    circleStart -> runAction(moveRemove2);
-    ringStart -> runAction(moveScale2);
-    
-    circleRanking -> runAction(moveRemove3);
-    ringRanking -> runAction(moveScale3);
-    
-    circleChallenge -> runAction(moveRemove4);
-    ringChallenge -> runAction(moveScale4);
     
     
     
@@ -313,17 +117,6 @@ bool TitleScene::init(){
     
     
 }
-
-
-
-// スタートボタン作成
-void TitleScene::initStart(){
-    
-    
-    
-}
-
-
 
 bool TitleScene::onTouchBegan(Touch *touch, Event *unused_event){
     
@@ -383,46 +176,198 @@ void TitleScene::onTouchCancelled(Touch *touch, Event *unused_event){
 }
 
 
+/***********************************************************
+                各種オープニングの動作設定
+ **********************************************************/
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-void TitleScene::fadeInTitle(){
+//オープニングのタイトルの動作
+void TitleScene::setTitle(){
     
+    
+    //タイトル効果
+    circle = Sprite::create("blue_circle.png");
+    circle -> setPosition(Vec2(selfFrame.width/2,selfFrame.height + 200));
+    circle -> setScale(0.1);
+    addChild(circle);
+    
+    ring = Sprite::create("blue_ring.png");
+    ring -> setPosition(Vec2(selfFrame.width/2,selfFrame.height + 200));
+    ring -> setScale(0.1);
+    addChild(ring);
+    
+    //オブジェクトの移動
+    auto moveCircle = MoveTo::create(2, Vec2(selfFrame.width/2,selfFrame.height*2/3));
+    auto moveRing = MoveTo::create(2, Vec2(selfFrame.width/2,selfFrame.height*2/3));
+    
+    //オブジェクトの拡大
+    auto scale = ScaleBy::create(2, 12);
+    //オブジェクトの削除
+    auto remove = RemoveSelf::create(true);
+    //オブジェクトのフェードアウト
+    auto fadeOut = FadeOut::create(2);
+    
+    
+    auto func = CallFunc::create([this](){
+        
+        this -> fadeInTitle();
+        
+    });
+    
+    //拡大・フェードアウト同時アクション
+    auto scaleFadeOut = Spawn::create(scale,fadeOut, NULL);
+    //移動後拡大のアクション
+    auto moveScale = Sequence::create(moveRing, scaleFadeOut,NULL);
+    //移動後削除のアクション
+    auto moveRemove = Sequence::create(moveCircle,remove,func,NULL);
+    
+    circle -> runAction(moveRemove);
+    ring -> runAction(moveScale);
+    
+}
+
+
+
+//オープニングのスタート動作
+void TitleScene::setStart(){
+    
+    //スタートボタン効果
+    auto circleStart = Sprite::create("aqua_circle.png");
+    circleStart -> setPosition(Vec2(selfFrame.width/2,selfFrame.height+100));
+    circleStart -> setScale(0.1);
+    addChild(circleStart);
+    
+    auto ringStart = Sprite::create("aqua_ring.png");
+    ringStart -> setPosition(Vec2(selfFrame.width/2,selfFrame.height+100));
+    ringStart -> setScale(0.1);
+    addChild(ringStart);
+    
+    //スタートオブジェクトの移動
+    auto moveCircle2 = MoveTo::create(2, Vec2(selfFrame.width/2, selfFrame.height/6));
+    auto moveRing2 = MoveTo::create(2, Vec2(selfFrame.width/2, selfFrame.height/6));
+    
+    //オブジェクトの拡大
+    auto scale2 = ScaleBy::create(2, 12);
+    //オブジェクトの削除
+    auto remove2 = RemoveSelf::create(true);
+    //オブジェクトのフェードアウト
+    auto fadeOut2 = FadeOut::create(2);
+    
+    
+    auto funcStart = CallFunc::create([this](){
+        
+        this -> fadeInStart();
+        
+    });
+    
+    //拡大・フェードアウト同時アクション
+    auto scaleFadeOut2 = Spawn::create(scale2,fadeOut2, NULL);
+    //移動後拡大のアクション
+    auto moveScale2 = Sequence::create(moveRing2, scaleFadeOut2,NULL);
+    //移動後削除のアクション
+    auto moveRemove2 = Sequence::create(moveCircle2,remove2,funcStart,NULL);
+    
+    circleStart -> runAction(moveRemove2);
+    ringStart -> runAction(moveScale2);
+
+}
+
+
+
+//オープニングのランキング動作
+void TitleScene::setRanking(){
+    
+    //ランキングボタン効果
+    auto circleRanking = Sprite::create("orange_circle.png");
+    circleRanking -> setPosition(Vec2(60,selfFrame.height+100));
+    circleRanking -> setScale(0.1);
+    addChild(circleRanking);
+    
+    auto ringRanking = Sprite::create("orange_ring.png");
+    ringRanking -> setPosition(Vec2(60,selfFrame.height+100));
+    ringRanking -> setScale(0.1);
+    addChild(ringRanking);
+    
+    //オブジェクトの移動
+    auto moveCircle3 = MoveTo::create(2, Vec2(60,selfFrame.height/4));
+    auto moveRing3 = MoveTo::create(2, Vec2(60,selfFrame.height/4));
+    
+    //オブジェクトの拡大
+    auto scale3 = ScaleBy::create(2, 12);
+    //オブジェクトの削除
+    auto remove3 = RemoveSelf::create(true);
+    //オブジェクトのフェードアウト
+    auto fadeOut3 = FadeOut::create(2);
+    
+    
+    auto funcRanking = CallFunc::create([this](){
+        
+        this -> fadeInRanking();
+        
+    });
+    
+    //拡大・フェードアウト同時アクション
+    auto scaleFadeOut3 = Spawn::create(scale3,fadeOut3, NULL);
+    //移動後拡大のアクション
+    auto moveScale3 = Sequence::create(moveRing3, scaleFadeOut3,NULL);
+    //移動後削除のアクション
+    auto moveRemove3 = Sequence::create(moveCircle3,remove3,funcRanking,NULL);
+    
+    circleRanking -> runAction(moveRemove3);
+    ringRanking -> runAction(moveScale3);
+ 
+}
+
+
+//オープニングのチャレンジ動作
+void TitleScene::setChallenge(){
+    
+    //チャレンジボタン効果
+    auto circleChallenge = Sprite::create("yellow_circle.png");
+    circleChallenge -> setPosition(Vec2(selfFrame.width-60,selfFrame.height+100));
+    circleChallenge -> setScale(0.1);
+    addChild(circleChallenge);
+    
+    auto ringChallenge = Sprite::create("yellow_ring.png");
+    ringChallenge -> setPosition(Vec2(selfFrame.width-60,selfFrame.height+100));
+    ringChallenge -> setScale(0.1);
+    addChild(ringChallenge);
+    
+    
+    //オブジェクトの移動
+    auto moveCircle4 = MoveTo::create(2, Vec2(selfFrame.width-60,selfFrame.height/4));
+    auto moveRing4 = MoveTo::create(2, Vec2(selfFrame.width-60,selfFrame.height/4));
+    
+    //オブジェクトの拡大
+    auto scale4 = ScaleBy::create(2, 12);
+    //オブジェクトの削除
+    auto remove4 = RemoveSelf::create(true);
+    //オブジェクトのフェードアウト
+    auto fadeOut4 = FadeOut::create(2);
+    
+    
+    auto funcChallenge = CallFunc::create([this](){
+        
+        this -> fadeInCallenge();
+        
+    });
+    
+    //拡大・フェードアウト同時アクション
+    auto scaleFadeOut4 = Spawn::create(scale4,fadeOut4, NULL);
+    //移動後拡大のアクション
+    auto moveScale4 = Sequence::create(moveRing4, scaleFadeOut4,NULL);
+    //移動後削除のアクション
+    auto moveRemove4 = Sequence::create(moveCircle4,remove4,funcChallenge,NULL);
+    
+    
+    circleChallenge -> runAction(moveRemove4);
+    ringChallenge -> runAction(moveScale4);
+
+
+}
+
+//タイトルのフェードイン表示
+void TitleScene::fadeInTitle(){
     
     //タイトル
     titleLabel = Label::createWithSystemFont(" レイン\nドロップ","DragonQuestFC",120);
@@ -433,6 +378,7 @@ void TitleScene::fadeInTitle(){
     
 }
 
+//スタートのフェードイン表示
 void TitleScene::fadeInStart(){
     
     //スタートボタン
@@ -441,10 +387,17 @@ void TitleScene::fadeInStart(){
     start -> setScale(0.1);
     start -> setOpacity(0);
     addChild(start);
+    
+    auto startLabel = Label::createWithSystemFont("スタート","DragonQuestFC",30);
+    startLabel -> setPosition(Vec2(selfFrame.width/2, selfFrame.height/6));
+    addChild(startLabel);
+    
     start -> runAction(FadeIn::create(2));
+    startLabel ->runAction(FadeIn::create(2));
 
 }
 
+//ランキングのフェードイン表示
 void TitleScene::fadeInRanking(){
     
     //ランキング
@@ -457,6 +410,7 @@ void TitleScene::fadeInRanking(){
 
 }
 
+//チャレンジのフェードイン表示
 void TitleScene::fadeInCallenge(){
     
     //チャレンジモード
@@ -468,5 +422,9 @@ void TitleScene::fadeInCallenge(){
     challenge -> runAction(FadeIn::create(2));
 
 }
+
+/***********************************************************
+                各種オープニングの動作設定　終
+ **********************************************************/
 
 

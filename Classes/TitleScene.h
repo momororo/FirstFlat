@@ -45,6 +45,11 @@ protected:
     void fadeInRanking();
     void fadeInCallenge();
     
+    void setStart();
+    void setRanking();
+    void setChallenge();
+    void setTitle();
+    
     //void startCallback(cocos2d::Ref* sender,cocos2d::ui::TouchEventType type);
     //void startCallback(cocos2d::Ref* sender,cocos2d::EventMouse::MouseEventType type);
     //void starCallback(cocos2d::Ref* pSender);
