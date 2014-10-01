@@ -21,6 +21,8 @@ protected:
     void initStart();
     
     cocos2d::Sprite *start;
+    cocos2d::Sprite *ranking;
+    cocos2d::Sprite *challenge;
     
     
     
@@ -38,11 +40,14 @@ protected:
     void onTouchEnded(cocos2d::Touch *touch, cocos2d::Event *event);
     void onTouchMoved(cocos2d::Touch *touch, cocos2d::Event *event);
     void onTouchCancelled(cocos2d::Touch *touch, cocos2d::Event *event);
+    void fadeInTitle();
+    void fadeInStart();
+    void fadeInRanking();
+    void fadeInCallenge();
     
     //void startCallback(cocos2d::Ref* sender,cocos2d::ui::TouchEventType type);
     //void startCallback(cocos2d::Ref* sender,cocos2d::EventMouse::MouseEventType type);
     //void starCallback(cocos2d::Ref* pSender);
-    
     
     
 };
