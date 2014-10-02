@@ -628,8 +628,8 @@ void TitleScene::setDrops(float time){
         
     }else if (rnd == 4){
         
-        pngCircle = "aqua_circle.png";
-        pngRing = "aqua_ring.png";
+        pngCircle = "orange_circle.png";
+        pngRing = "orange_ring.png";
     
     }
     
