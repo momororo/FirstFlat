@@ -21,7 +21,7 @@ Scene *GameScene::createScene(){
     scene -> addChild(layer);
     
     //物理オブジェクトにを可視的にしてくれるデバックモード
-//    scene->getPhysicsWorld()->setDebugDrawMask(PhysicsWorld::DEBUGDRAW_ALL);
+//    scene->getPhysicsWorld()->setDebugDrawMask(deg);
 
     
     return scene;
