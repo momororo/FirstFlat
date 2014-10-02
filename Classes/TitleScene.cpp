@@ -93,13 +93,11 @@ bool TitleScene::init(){
     
     
     
-    
-    
     /**************　タッチイベント設定  ******************/
     
     //シングルタップ用リスナーを用意する
     auto listener = EventListenerTouchOneByOne::create();
-    listener -> setSwallowTouches(_swallowsTouches);
+    //listener -> setSwallowTouches(_swallowsTouches);
     
     
     //各イベントの割り当て
@@ -113,45 +111,128 @@ bool TitleScene::init(){
     
     /*************　　タッチイベント設定  終 ****************/
     
+    
+    
+    
+    
+    
+    
+    
+    
     return true;
     
     
 }
+
+
+
+#pragma mark-
+#pragma mark touchBegan
 
 bool TitleScene::onTouchBegan(Touch *touch, Event *unused_event){
     
     //タップ開始時の処理
     CCLOG("touchBegan");
     
-    /*
-     //target : ターゲットのスプライト
-     auto target = (Sprite*)event->getCurrentTarget();
-     //targetBox : タッチされたスプライトの領域
-     Rect targetBox = target->getBoundingBox();
-     
-     */
-    
-    
+    Point touchPoint = Vec2(touch->getLocation().x,touch->getLocation().y);
     
     //スタートボタンタップ時の操作
-    Point touchPoint = Vec2(touch->getLocationInView().x, touch->getLocationInView().y);
-    
-    if (start->getBoundingBox().containsPoint(touchPoint))
+    if (!start) {
+        
+        return true;
+        
+    }else if (start->getBoundingBox().containsPoint(touchPoint))
+        
     {
         CCLOG("スタートボタンをタップ");
         
+        auto effectRing = Sprite::create("aqua_ring.png");
+        effectRing -> setPosition(Vec2(start->getPosition().x,start->getPosition().y));
+        effectRing -> setScale(0.1);
+        addChild(effectRing);
         
+        auto ringScale = ScaleBy::create(2, 12);
+        auto ringFadeOut = FadeOut::create(2);
+        auto ringRemove = RemoveSelf::create(true);
+        auto scaleFadeOut = Spawn::create(ringScale,ringFadeOut, NULL);
+        auto ringSequence = Sequence::create(scaleFadeOut,ringRemove, NULL);
         
-        //アニメーション付き
-        float duration = 1.0f;  //開始→終了にかける時間
-        Scene* nextScene = CCTransitionFade::create(duration, GameScene::createScene());
-        Director::getInstance()->replaceScene(nextScene);
+        effectRing -> runAction(ringSequence);
+        
         return true;
     }
+    
+    
+    
+    //ランキングボタンタップ時
+    if (!ranking) {
+        
+        return true;
+        
+    }else if (ranking->getBoundingBox().containsPoint(touchPoint))
+        
+    {
+        CCLOG("スタートボタンをタップ");
+        
+        auto effectRing = Sprite::create("orange_ring.png");
+        effectRing -> setPosition(Vec2(ranking->getPosition().x,ranking->getPosition().y));
+        effectRing -> setScale(0.1);
+        addChild(effectRing);
+        
+        auto ringScale = ScaleBy::create(2, 12);
+        auto ringFadeOut = FadeOut::create(2);
+        auto ringRemove = RemoveSelf::create(true);
+        auto scaleFadeOut = Spawn::create(ringScale,ringFadeOut, NULL);
+        auto ringSequence = Sequence::create(scaleFadeOut,ringRemove, NULL);
+        
+        effectRing -> runAction(ringSequence);
+        
+        return true;
+    }
+    
+    
+    
+    //チャレンジボタンタップ時
+    if (!challenge) {
+        
+        return true;
+        
+    }else if (challenge->getBoundingBox().containsPoint(touchPoint))
+        
+    {
+        CCLOG("スタートボタンをタップ");
+        
+        auto effectRing = Sprite::create("yellow_ring.png");
+        effectRing -> setPosition(Vec2(challenge->getPosition().x,challenge->getPosition().y));
+        effectRing -> setScale(0.1);
+        addChild(effectRing);
+        
+        auto ringScale = ScaleBy::create(2, 12);
+        auto ringFadeOut = FadeOut::create(2);
+        auto ringRemove = RemoveSelf::create(true);
+        auto scaleFadeOut = Spawn::create(ringScale,ringFadeOut, NULL);
+        auto ringSequence = Sequence::create(scaleFadeOut,ringRemove, NULL);
+        
+        effectRing -> runAction(ringSequence);
+        
+        return true;
+    }
+
+    
+    
+    
+    
+    
+    
+    
     
     return true;
     
 }
+
+
+#pragma mark-
+#pragma mark touchMoved
 
 void TitleScene::onTouchMoved(Touch *touch, Event *unused_event){
     
@@ -161,12 +242,42 @@ void TitleScene::onTouchMoved(Touch *touch, Event *unused_event){
     
 }
 
+
+#pragma mark-
+#pragma mark touchEnded
+
 void TitleScene::onTouchEnded(Touch *touch, Event *unused_event){
     
     //タップ終了時
     CCLOG("touchEnded");
     
+    Point touchPoint = Vec2(touch->getLocation().x,touch->getLocation().y);
+
+    
+    
+    if (!start) {
+        
+        return;
+        
+    }else if (start->getBoundingBox().containsPoint(touchPoint))
+        
+    {
+        CCLOG("スタートボタンをタップ");
+        
+        //アニメーション付き
+        float duration = 1.0f;  //開始→終了にかける時間
+        Scene* nextScene = CCTransitionFade::create(duration, GameScene::createScene());
+        Director::getInstance()->replaceScene(nextScene);
+        return;
+    }
+    
+
+    
 }
+
+
+#pragma mark-
+#pragma mark touchCancelled
 
 void TitleScene::onTouchCancelled(Touch *touch, Event *unused_event){
     
@@ -175,6 +286,9 @@ void TitleScene::onTouchCancelled(Touch *touch, Event *unused_event){
     
 }
 
+
+#pragma mark-
+#pragma mark オープニング動作
 
 /***********************************************************
                 各種オープニングの動作設定
@@ -366,6 +480,20 @@ void TitleScene::setChallenge(){
 
 }
 
+/***********************************************************
+                各種オープニングの動作設定　終
+ **********************************************************/
+
+
+
+#pragma mark-
+#pragma mark タイトル等ボタン設定
+
+
+/***********************************************************
+                タイトル,各種ボタン設定
+ **********************************************************/
+
 //タイトルのフェードイン表示
 void TitleScene::fadeInTitle(){
     
@@ -373,7 +501,7 @@ void TitleScene::fadeInTitle(){
     titleLabel = Label::createWithSystemFont(" レイン\nドロップ","DragonQuestFC",120);
     titleLabel -> setPosition(Vec2(selfFrame.width/2, selfFrame.height*2/3));
     titleLabel->setOpacity(0);
-    addChild(titleLabel);
+    addChild(titleLabel,10);
     titleLabel -> runAction(FadeIn::create(2));
     
 }
@@ -386,11 +514,11 @@ void TitleScene::fadeInStart(){
     start -> setPosition(Vec2(selfFrame.width/2, selfFrame.height/6));
     start -> setScale(0.1);
     start -> setOpacity(0);
-    addChild(start);
+    addChild(start,10);
     
     auto startLabel = Label::createWithSystemFont("スタート","DragonQuestFC",30);
-    startLabel -> setPosition(Vec2(selfFrame.width/2, selfFrame.height/6));
-    addChild(startLabel);
+    startLabel -> setPosition(Vec2(start->getPosition().x, start->getPosition().y));
+    addChild(startLabel,10);
     
     start -> runAction(FadeIn::create(2));
     startLabel ->runAction(FadeIn::create(2));
@@ -405,8 +533,15 @@ void TitleScene::fadeInRanking(){
     ranking -> setPosition(Vec2(60,selfFrame.height/4));
     ranking -> setScale(0.1);
     ranking -> setOpacity(0);
-    addChild(ranking);
+    addChild(ranking,10);
+    
+    auto rankingLabel = Label::createWithSystemFont("ランキング","DragonQuestFC",30);
+    rankingLabel -> setPosition(Vec2(ranking->getPosition().x, ranking->getPosition().y));
+    addChild(rankingLabel,10);
+    
     ranking -> runAction(FadeIn::create(2));
+    rankingLabel -> runAction(FadeIn::create(2));
+    
 
 }
 
@@ -418,13 +553,20 @@ void TitleScene::fadeInCallenge(){
     challenge -> setPosition(Vec2(selfFrame.width-60,selfFrame.height/4));
     challenge -> setScale(0.1);
     challenge -> setOpacity(0);
-    addChild(challenge);
+    addChild(challenge,10);
+    
+    auto challengeLabel = Label::createWithSystemFont("チャレンジ","DragonQuestFC",30);
+    challengeLabel -> setPosition(Vec2(challenge->getPosition().x, challenge->getPosition().y));
+    addChild(challengeLabel,10);
+    
     challenge -> runAction(FadeIn::create(2));
+    challengeLabel -> runAction(FadeIn::create(2));
 
 }
-
 /***********************************************************
-                各種オープニングの動作設定　終
+                タイトル,各種ボタン設定　終
  **********************************************************/
+
+
 
 
