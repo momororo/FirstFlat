@@ -54,6 +54,7 @@ protected:
     void fadeInStart();
     void fadeInRanking();
     void fadeInCallenge();
+    void fadeInUmbrella();
     /****************** オープニング動作　終 ***********************/
     
     
