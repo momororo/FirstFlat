@@ -35,20 +35,38 @@ protected:
     
     CREATE_FUNC(TitleScene);
     
+    
+    
     //タップイベントの宣言
     bool onTouchBegan(cocos2d::Touch *touch, cocos2d::Event *event);
     void onTouchEnded(cocos2d::Touch *touch, cocos2d::Event *event);
     void onTouchMoved(cocos2d::Touch *touch, cocos2d::Event *event);
     void onTouchCancelled(cocos2d::Touch *touch, cocos2d::Event *event);
-    void fadeInTitle();
-    void fadeInStart();
-    void fadeInRanking();
-    void fadeInCallenge();
     
+    
+    /***************** オープニング動作 ***********************/
     void setStart();
     void setRanking();
     void setChallenge();
     void setTitle();
+    
+    void fadeInTitle();
+    void fadeInStart();
+    void fadeInRanking();
+    void fadeInCallenge();
+    /****************** オープニング動作　終 ***********************/
+    
+    
+    
+    virtual void setDrops(float time);
+    
+    
+    
+    
+    
+    
+    
+    
     
     //void startCallback(cocos2d::Ref* sender,cocos2d::ui::TouchEventType type);
     //void startCallback(cocos2d::Ref* sender,cocos2d::EventMouse::MouseEventType type);

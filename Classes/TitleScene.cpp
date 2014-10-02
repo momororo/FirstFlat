@@ -77,14 +77,13 @@ bool TitleScene::init(){
     addChild(circle, 0);
     */
     
+    this -> schedule(schedule_selector(TitleScene::setDrops), 1);
+
+    
     setTitle();
     setStart();
     setRanking();
     setChallenge();
-
-    
-    
-    
     
     
     
@@ -566,6 +565,99 @@ void TitleScene::fadeInCallenge(){
 /***********************************************************
                 タイトル,各種ボタン設定　終
  **********************************************************/
+
+
+
+
+#pragma mark-
+#pragma mark タイトルに雨を降らせる動作
+
+
+void TitleScene::setDrops(float time){
+    
+    auto rnd = arc4random_uniform(5);
+    
+    std::string pngCircle;
+    std::string pngRing;
+    
+    if (rnd == 0) {
+        
+        pngCircle = "aqua_circle.png";
+        pngRing = "aqua_ring.png";
+        
+    }else if(rnd == 1){
+        
+        pngCircle = "green_circle.png";
+        pngRing = "green_ring.png";
+    
+    }else if(rnd == 2){
+    
+        pngCircle = "yellow_circle.png";
+        pngRing = "yellow_ring.png";
+        
+    }else if(rnd == 3){
+    
+        pngCircle = "blue_circle.png";
+        pngRing = "blue_ring.png";
+        
+    }else if (rnd == 4){
+        
+        pngCircle = "aqua_circle.png";
+        pngRing = "aqua_ring.png";
+    
+    }
+    
+    
+    auto moveY = (arc4random_uniform(selfFrame.height*2/5)+selfFrame.height/2);
+    
+    
+    //輪の設定
+    auto dropRing = Sprite::create(pngRing);
+    dropRing -> setScale(0.01);
+    dropRing -> setPosition(Vec2( arc4random_uniform(selfFrame.width*3/5)+selfFrame.width/5, selfFrame.height+ dropRing->getContentSize().height/2));
+    addChild(dropRing);
+    
+    
+    //円の設定
+    auto dropCircle = Sprite::create(pngCircle);
+    dropCircle -> setScale(0.01);
+    dropCircle -> setPosition(Vec2(dropRing->getPosition().x,dropRing->getPosition().y));
+    addChild(dropCircle);
+    
+    
+    
+//オブジェクトの移動
+    auto moveCircle = MoveTo::create(2, Vec2(dropRing->getPosition().x,moveY));
+    
+    auto moveRing = MoveTo::create(2, Vec2(dropRing->getPosition().x,moveY));
+    
+    
+    //オブジェクトの拡大
+    auto scale = ScaleBy::create(2, 12);
+    //オブジェクトの削除
+    auto remove = RemoveSelf::create(true);
+    //オブジェクトのフェードアウト
+    auto fadeOut = FadeOut::create(2);
+    
+    //拡大・フェードアウト同時アクション
+    auto scaleFadeOut = Spawn::create(scale,fadeOut, NULL);
+    //移動後拡大のアクション
+    auto moveScale = Sequence::create(moveRing, scaleFadeOut,NULL);
+    //移動後削除のアクション
+    auto moveRemove = Sequence::create(moveCircle,remove,NULL);
+    
+    dropCircle -> runAction(moveRemove);
+    dropRing -> runAction(moveScale);
+    
+    
+    dropCircle -> runAction(moveCircle);
+    
+    
+    
+    
+    
+    
+}
 
 
 

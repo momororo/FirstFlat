@@ -494,16 +494,16 @@
 			isa = PBXGroup;
 			children = (
 				A4FF863D19DAA0C800ABE909 /* aqua_ring.png */,
+				A4FF864119DAA0C800ABE909 /* aqua_circle.png */,
+				A4FF864619DAA0C800ABE909 /* blue_ring.png */,
 				A4FF863E19DAA0C800ABE909 /* blue_circle.png */,
-				A4FF865B19DAA8EB00ABE909 /* DragonQuestFC.ttf */,
 				A4FF863F19DAA0C800ABE909 /* green_circle.png */,
 				A4FF864019DAA0C800ABE909 /* green_ring.png */,
-				A4FF864119DAA0C800ABE909 /* aqua_circle.png */,
 				A4FF864219DAA0C800ABE909 /* orange_circle.png */,
 				A4FF864319DAA0C800ABE909 /* orange_ring.png */,
 				A4FF864419DAA0C800ABE909 /* yellow_circle.png */,
 				A4FF864519DAA0C800ABE909 /* yellow_ring.png */,
-				A4FF864619DAA0C800ABE909 /* blue_ring.png */,
+				A4FF865B19DAA8EB00ABE909 /* DragonQuestFC.ttf */,
 			);
 			name = Resources;
 			path = ../Resources;
