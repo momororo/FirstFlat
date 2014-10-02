@@ -569,6 +569,9 @@ void TitleScene::fadeInCallenge(){
 
 
 
+#pragma mark-
+#pragma mark タイトルに雨を降らせる動作
+
 
 void TitleScene::setDrops(float time){
     
