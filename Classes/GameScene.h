@@ -37,7 +37,9 @@ protected:
 //    cocos2d::Sprite *orangeRing;
     cocos2d::Sprite *yellowCircle;
 //    cocos2d::Sprite *yellowRing;
-    
+  
+    //衝突イベント
+    bool onContactBegin(cocos2d::PhysicsContact& contact);
     
     
     public :

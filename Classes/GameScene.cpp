@@ -21,7 +21,7 @@ Scene *GameScene::createScene(){
     scene -> addChild(layer);
     
     //物理オブジェクトにを可視的にしてくれるデバックモード
-    scene->getPhysicsWorld()->setDebugDrawMask(PhysicsWorld::DEBUGDRAW_ALL);
+//    scene->getPhysicsWorld()->setDebugDrawMask(PhysicsWorld::DEBUGDRAW_ALL);
 
     
     return scene;
@@ -78,6 +78,15 @@ bool GameScene::init(){
     
     /*************　　タッチイベント設定  終 ****************/
     
+
+    /*************　  衝突イベント設定   ****************/
+    
+    auto contactListener = EventListenerPhysicsContact::create();
+    contactListener -> onContactBegin = CC_CALLBACK_1(GameScene::onContactBegin, this);
+    _eventDispatcher -> addEventListenerWithSceneGraphPriority(contactListener, this);
+    
+    /*************　  衝突イベント設定  終 ****************/
+    
     
     
     
@@ -115,6 +124,8 @@ bool GameScene::onTouchBegan(Touch *touch, Event *unused_event){
             auto aquaMaterial = PHYSICSBODY_MATERIAL_DEFAULT;
             auto aquaRingBody = PhysicsBody::createBox(aquaCircle->getContentSize(), aquaMaterial);
             aquaRingBody->setDynamic(false); // 重力の影響を受けない
+            aquaRingBody->setCategoryBitmask(0x01);
+            aquaRingBody->setContactTestBitmask(0x02);
             effectRing->setPhysicsBody(aquaRingBody);
         
         addChild(effectRing);
@@ -143,6 +154,9 @@ bool GameScene::onTouchBegan(Touch *touch, Event *unused_event){
             auto orangeMaterial = PHYSICSBODY_MATERIAL_DEFAULT;
             auto orangeRingBody = PhysicsBody::createBox(orangeCircle->getContentSize(), orangeMaterial);
             orangeRingBody->setDynamic(false); // 重力の影響を受けない
+            orangeRingBody->setCategoryBitmask(0x01);
+            orangeRingBody->setContactTestBitmask(0x02);
+
             effectRing->setPhysicsBody(orangeRingBody);
             
         addChild(effectRing);
@@ -174,6 +188,9 @@ bool GameScene::onTouchBegan(Touch *touch, Event *unused_event){
             auto yellowMaterial = PHYSICSBODY_MATERIAL_DEFAULT;
             auto yellowRingBody = PhysicsBody::createBox(yellowCircle->getContentSize(), yellowMaterial);
             yellowRingBody->setDynamic(false); // 重力の影響を受けない
+            yellowRingBody->setCategoryBitmask(0x01);
+            yellowRingBody->setContactTestBitmask(0x02);
+
             effectRing->setPhysicsBody(yellowRingBody);
         
         addChild(effectRing);
@@ -243,6 +260,9 @@ void GameScene::setButton(){
         auto aquaMaterial = PHYSICSBODY_MATERIAL_DEFAULT;
         auto aquaCircleBody = PhysicsBody::createBox(aquaCircle->getContentSize(), aquaMaterial);
         aquaCircleBody->setDynamic(false); // 重力の影響を受けない
+        aquaCircleBody->setCategoryBitmask(0x01);
+        aquaCircleBody->setContactTestBitmask(0x02);
+
     aquaCircle->setPhysicsBody(aquaCircleBody);
     addChild(aquaCircle);
 /*
@@ -260,6 +280,8 @@ void GameScene::setButton(){
     auto orangeMaterial = PHYSICSBODY_MATERIAL_DEFAULT;
     auto orangeCircleBody = PhysicsBody::createBox(aquaCircle->getContentSize(), orangeMaterial);
     orangeCircleBody->setDynamic(false); // 重力の影響を受けない
+    orangeCircleBody->setCategoryBitmask(0x01);
+    orangeCircleBody->setContactTestBitmask(0x02);
     orangeCircle->setPhysicsBody(orangeCircleBody);
     addChild(orangeCircle);
 /*
@@ -277,6 +299,9 @@ void GameScene::setButton(){
         auto yellowMaterial = PHYSICSBODY_MATERIAL_DEFAULT;
         auto yellowCircleBody = PhysicsBody::createBox(aquaCircle->getContentSize(), yellowMaterial);
         yellowCircleBody->setDynamic(false); // 重力の影響を受けない
+        yellowCircleBody->setCategoryBitmask(0x01);
+        yellowCircleBody->setContactTestBitmask(0x02);
+
         yellowCircle->setPhysicsBody(yellowCircleBody);
     addChild(yellowCircle);
 
