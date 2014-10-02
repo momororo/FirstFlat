@@ -38,8 +38,6 @@ protected:
     cocos2d::Sprite *yellowCircle;
 //    cocos2d::Sprite *yellowRing;
   
-    //衝突イベント
-    bool onContactBegin(cocos2d::PhysicsContact& contact);
     
     
     public :
@@ -55,6 +53,12 @@ protected:
     void onTouchEnded(cocos2d::Touch *touch, cocos2d::Event *event);
     void onTouchMoved(cocos2d::Touch *touch, cocos2d::Event *event);
     void onTouchCancelled(cocos2d::Touch *touch, cocos2d::Event *event);
+    //衝突イベント
+    bool onContactBegin(cocos2d::PhysicsContact& contact);
+
+    
+    virtual void setDrops(float time);
+
 
     
     

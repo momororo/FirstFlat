@@ -88,14 +88,11 @@ bool GameScene::init(){
     /*************　  衝突イベント設定  終 ****************/
     
     
+
+    //テスト用
+    this -> schedule(schedule_selector(GameScene::setDrops), 1);
+
     
-    
-    
-    
-    
-    
-    
-    return true;
     
     
     
@@ -119,7 +116,9 @@ bool GameScene::onTouchBegan(Touch *touch, Event *unused_event){
         auto effectRing = Sprite::create("aqua_ring.png");
         effectRing -> setPosition(Vec2(aquaCircle->getPosition().x,aquaCircle->getPosition().y));
         effectRing -> setScale(0.1);
-        effectRing -> setName("aquaRing");
+        effectRing -> setName("aqua");
+        effectRing -> setTag(2);
+
             //物理体の生成
             auto aquaMaterial = PHYSICSBODY_MATERIAL_DEFAULT;
             auto aquaRingBody = PhysicsBody::createBox(aquaCircle->getContentSize(), aquaMaterial);
@@ -149,7 +148,9 @@ bool GameScene::onTouchBegan(Touch *touch, Event *unused_event){
         auto effectRing = Sprite::create("orange_ring.png");
         effectRing -> setPosition(Vec2(orangeCircle->getPosition().x,orangeCircle->getPosition().y));
         effectRing -> setScale(0.1);
-        effectRing -> setName("orangeRing");
+        effectRing -> setName("orange");
+        effectRing -> setTag(2);
+
             //物理体の生成
             auto orangeMaterial = PHYSICSBODY_MATERIAL_DEFAULT;
             auto orangeRingBody = PhysicsBody::createBox(orangeCircle->getContentSize(), orangeMaterial);
@@ -183,7 +184,9 @@ bool GameScene::onTouchBegan(Touch *touch, Event *unused_event){
         auto effectRing = Sprite::create("yellow_ring.png");
         effectRing -> setPosition(Vec2(yellowCircle->getPosition().x,yellowCircle->getPosition().y));
         effectRing -> setScale(0.1);
-        effectRing -> setName("aquaRing");
+        effectRing -> setName("yellow");
+        effectRing -> setTag(2);
+
             //物理体の生成
             auto yellowMaterial = PHYSICSBODY_MATERIAL_DEFAULT;
             auto yellowRingBody = PhysicsBody::createBox(yellowCircle->getContentSize(), yellowMaterial);
@@ -251,6 +254,8 @@ void GameScene::onTouchCancelled(Touch *touch, Event *unused_event){
 
 bool GameScene::onContactBegin(cocos2d::PhysicsContact& contact){
     
+    CCLOG("衝突");
+    
     return true;
 }
 
@@ -261,7 +266,8 @@ void GameScene::setButton(){
     aquaCircle = Sprite::create("aqua_circle.png");
     aquaCircle -> setPosition(Vec2(selfFrame.width/2, selfFrame.height/6));
     aquaCircle -> setScale(0.1);
-    aquaCircle -> setName("aquaCircle");
+    aquaCircle -> setName("Circle");
+    aquaCircle -> setTag(1);
     //物理体の生成
         auto aquaMaterial = PHYSICSBODY_MATERIAL_DEFAULT;
         auto aquaCircleBody = PhysicsBody::createBox(aquaCircle->getContentSize(), aquaMaterial);
@@ -281,7 +287,9 @@ void GameScene::setButton(){
     orangeCircle = Sprite::create("orange_circle.png");
     orangeCircle -> setPosition(Vec2(60,selfFrame.height/4));
     orangeCircle -> setScale(0.1);
-    orangeCircle -> setName("orangeCircle");
+    orangeCircle -> setName("Circle");
+    orangeCircle -> setTag(1);
+
     //物理体の生成
     auto orangeMaterial = PHYSICSBODY_MATERIAL_DEFAULT;
     auto orangeCircleBody = PhysicsBody::createBox(aquaCircle->getContentSize(), orangeMaterial);
@@ -300,7 +308,9 @@ void GameScene::setButton(){
     yellowCircle = Sprite::create("yellow_circle.png");
     yellowCircle -> setPosition(Vec2(selfFrame.width-60,selfFrame.height/4));
     yellowCircle -> setScale(0.1);
-    yellowCircle -> setName("yellowCircle");
+    yellowCircle -> setName("Circle");
+    yellowCircle -> setTag(1);
+
     //物理体の生成
         auto yellowMaterial = PHYSICSBODY_MATERIAL_DEFAULT;
         auto yellowCircleBody = PhysicsBody::createBox(aquaCircle->getContentSize(), yellowMaterial);
@@ -317,6 +327,99 @@ void GameScene::setButton(){
     yellowRing -> setScale(0.1);
     addChild(yellowRing);
  */
+    
+}
+
+#pragma mark-
+#pragma mark タイトルに雨を降らせる動作
+
+
+void GameScene::setDrops(float time){
+    
+    auto rnd = arc4random_uniform(5);
+    
+    std::string pngCircle;
+    std::string pngRing;
+    std::string dropName;
+    
+    if (rnd == 0) {
+        
+        pngCircle = "aqua_circle.png";
+        pngRing = "aqua_ring.png";
+        dropName = "aqua";
+        
+    }else if(rnd == 1){
+        
+        pngCircle = "green_circle.png";
+        pngRing = "green_ring.png";
+        dropName = "green";
+        
+    }else if(rnd == 2){
+        
+        pngCircle = "yellow_circle.png";
+        pngRing = "yellow_ring.png";
+        dropName = "yellow";
+
+        
+    }else if(rnd == 3){
+        
+        pngCircle = "blue_circle.png";
+        pngRing = "blue_ring.png";
+        dropName = "blue";
+        
+    }else if (rnd == 4){
+        
+        pngCircle = "orange_circle.png";
+        pngRing = "orange_ring.png";
+        dropName = "orange";
+        
+    }
+    
+    
+    auto moveY = (-selfFrame.height);
+    
+    
+    //輪の設定
+    auto dropRing = Sprite::create(pngRing);
+    dropRing -> setScale(0.01);
+    dropRing -> setPosition(Vec2( arc4random_uniform(selfFrame.width*3/5)+selfFrame.width/5, selfFrame.height+ dropRing->getContentSize().height/2));
+    addChild(dropRing);
+    
+    
+    //円の設定
+    auto dropCircle = Sprite::create(pngCircle);
+    dropCircle -> setScale(0.01);
+    dropCircle -> setPosition(Vec2(dropRing->getPosition().x,dropRing->getPosition().y));
+    
+    //円に名前を設定
+    dropCircle -> setName(dropName);
+    dropCircle -> setTag(3);
+
+    //円に物理体を設定
+    auto dropMaterial = PHYSICSBODY_MATERIAL_DEFAULT;
+    auto dropCircleBody = PhysicsBody::createBox(dropCircle->getContentSize(), dropMaterial);
+    dropCircleBody->setDynamic(false); // 重力の影響を受けない
+    dropCircleBody->setCategoryBitmask(0x02);
+    dropCircleBody->setContactTestBitmask(0x01);
+    dropCircle->setPhysicsBody(dropCircleBody);
+    addChild(dropCircle);
+    
+    
+    
+    //オブジェクトの移動
+    auto moveCircle = MoveTo::create(6, Vec2(dropRing->getPosition().x,moveY));
+    
+    auto moveRing = MoveTo::create(6, Vec2(dropRing->getPosition().x,moveY));
+    
+    
+    
+    dropCircle -> runAction(moveCircle);
+    dropRing -> runAction(moveRing);
+    
+    
+    
+    
+    
     
 }
 
