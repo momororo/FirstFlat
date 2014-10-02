@@ -30,11 +30,23 @@ protected:
     bool testFlag = false;
     
     
+    //ボタン類の変数一覧
+    cocos2d::Sprite *aquaCircle;
+//    cocos2d::Sprite *aquaRing;
+    cocos2d::Sprite *orangeCircle;
+//    cocos2d::Sprite *orangeRing;
+    cocos2d::Sprite *yellowCircle;
+//    cocos2d::Sprite *yellowRing;
+    
+    
+    
     public :
     
     static cocos2d::Scene *createScene();
     virtual bool init();
     CREATE_FUNC(GameScene);
+    
+    void setButton();
     
     //タップイベントの宣言
     bool onTouchBegan(cocos2d::Touch *touch, cocos2d::Event *event);
