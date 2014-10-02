@@ -78,14 +78,18 @@ bool TitleScene::init(){
     */
     
     this -> schedule(schedule_selector(TitleScene::setDrops), 1);
-
     
     setTitle();
     setStart();
     setRanking();
     setChallenge();
     
-    
+    auto umbrella = Sprite::create("umbrella.png");
+    umbrella -> setAnchorPoint(Vec2(1,1));
+    umbrella -> setScale(0.08);
+    umbrella-> setPosition(Vec2(selfFrame.width*14/15,selfFrame.height*4/5));
+    //umbrella -> setOpacity(0);
+    this-> addChild(umbrella,10);
     
     
     
@@ -327,10 +331,11 @@ void TitleScene::setTitle(){
         
     });
     
+    
     //拡大・フェードアウト同時アクション
     auto scaleFadeOut = Spawn::create(scale,fadeOut, NULL);
     //移動後拡大のアクション
-    auto moveScale = Sequence::create(moveRing, scaleFadeOut,NULL);
+    auto moveScale = Sequence::create(moveRing, scaleFadeOut,remove,NULL);
     //移動後削除のアクション
     auto moveRemove = Sequence::create(moveCircle,remove,func,NULL);
     
@@ -376,7 +381,7 @@ void TitleScene::setStart(){
     //拡大・フェードアウト同時アクション
     auto scaleFadeOut2 = Spawn::create(scale2,fadeOut2, NULL);
     //移動後拡大のアクション
-    auto moveScale2 = Sequence::create(moveRing2, scaleFadeOut2,NULL);
+    auto moveScale2 = Sequence::create(moveRing2, scaleFadeOut2,remove2, NULL);
     //移動後削除のアクション
     auto moveRemove2 = Sequence::create(moveCircle2,remove2,funcStart,NULL);
     
@@ -422,7 +427,7 @@ void TitleScene::setRanking(){
     //拡大・フェードアウト同時アクション
     auto scaleFadeOut3 = Spawn::create(scale3,fadeOut3, NULL);
     //移動後拡大のアクション
-    auto moveScale3 = Sequence::create(moveRing3, scaleFadeOut3,NULL);
+    auto moveScale3 = Sequence::create(moveRing3, scaleFadeOut3,remove3,NULL);
     //移動後削除のアクション
     auto moveRemove3 = Sequence::create(moveCircle3,remove3,funcRanking,NULL);
     
@@ -468,7 +473,7 @@ void TitleScene::setChallenge(){
     //拡大・フェードアウト同時アクション
     auto scaleFadeOut4 = Spawn::create(scale4,fadeOut4, NULL);
     //移動後拡大のアクション
-    auto moveScale4 = Sequence::create(moveRing4, scaleFadeOut4,NULL);
+    auto moveScale4 = Sequence::create(moveRing4, scaleFadeOut4,remove4,NULL);
     //移動後削除のアクション
     auto moveRemove4 = Sequence::create(moveCircle4,remove4,funcChallenge,NULL);
     
@@ -497,12 +502,33 @@ void TitleScene::setChallenge(){
 void TitleScene::fadeInTitle(){
     
     //タイトル
-    titleLabel = Label::createWithSystemFont(" レイン\nドロップ","DragonQuestFC",120);
+    titleLabel = Label::createWithSystemFont("レイン\nドロップ","DragonQuestFC",120);
     titleLabel -> setPosition(Vec2(selfFrame.width/2, selfFrame.height*2/3));
     titleLabel->setOpacity(0);
     addChild(titleLabel,10);
     titleLabel -> runAction(FadeIn::create(2));
     
+    /*
+    auto umbrella = Sprite::create("umbrella.png");
+    umbrella -> setAnchorPoint(Vec2(1,1));
+    umbrella -> setScale(0.08);
+    umbrella-> setPosition(Vec2(selfFrame.width/2+titleLabel->getContentSize().width*2/3,selfFrame.height*2/3+titleLabel->getContentSize().height*2/5));
+    umbrella -> setOpacity(0);
+    addChild(umbrella);
+    umbrella -> runAction(FadeIn::create(2));
+    */
+}
+
+void TitleScene::fadeInUmbrella(){
+    
+    auto umbrella = Sprite::create("umbrella.png");
+    umbrella -> setAnchorPoint(Vec2(1,1));
+    umbrella -> setScale(0.08);
+    umbrella-> setPosition(Vec2(selfFrame.width/2,selfFrame.height*2/3));
+    umbrella -> setOpacity(0);
+    addChild(umbrella);
+    umbrella -> runAction(FadeIn::create(2));
+
 }
 
 //スタートのフェードイン表示
@@ -602,8 +628,8 @@ void TitleScene::setDrops(float time){
         
     }else if (rnd == 4){
         
-        pngCircle = "aqua_circle.png";
-        pngRing = "aqua_ring.png";
+        pngCircle = "orange_circle.png";
+        pngRing = "orange_ring.png";
     
     }
     
@@ -613,14 +639,14 @@ void TitleScene::setDrops(float time){
     
     //輪の設定
     auto dropRing = Sprite::create(pngRing);
-    dropRing -> setScale(0.01);
+    dropRing -> setScale(0.03);
     dropRing -> setPosition(Vec2( arc4random_uniform(selfFrame.width*3/5)+selfFrame.width/5, selfFrame.height+ dropRing->getContentSize().height/2));
     addChild(dropRing);
     
     
     //円の設定
     auto dropCircle = Sprite::create(pngCircle);
-    dropCircle -> setScale(0.01);
+    dropCircle -> setScale(0.03);
     dropCircle -> setPosition(Vec2(dropRing->getPosition().x,dropRing->getPosition().y));
     addChild(dropCircle);
     
@@ -642,19 +668,12 @@ void TitleScene::setDrops(float time){
     //拡大・フェードアウト同時アクション
     auto scaleFadeOut = Spawn::create(scale,fadeOut, NULL);
     //移動後拡大のアクション
-    auto moveScale = Sequence::create(moveRing, scaleFadeOut,NULL);
+    auto moveScale = Sequence::create(moveRing, scaleFadeOut,remove,NULL);
     //移動後削除のアクション
     auto moveRemove = Sequence::create(moveCircle,remove,NULL);
     
     dropCircle -> runAction(moveRemove);
     dropRing -> runAction(moveScale);
-    
-    
-    dropCircle -> runAction(moveCircle);
-    
-    
-    
-    
     
     
 }
