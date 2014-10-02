@@ -82,8 +82,8 @@ bool GameScene::init(){
     /*************　  衝突イベント設定   ****************/
     
     auto contactListener = EventListenerPhysicsContact::create();
-    contactListener -> onContactBegin = CC_CALLBACK_1(GameScene::onContactBegin, this);
-    _eventDispatcher -> addEventListenerWithSceneGraphPriority(contactListener, this);
+    contactListener -> onContactBegin = CC_CALLBACK_1(GameScene::onContactBegin,this);
+    _eventDispatcher -> addEventListenerWithSceneGraphPriority(contactListener,this);
     
     /*************　  衝突イベント設定  終 ****************/
     
@@ -248,6 +248,12 @@ void GameScene::onTouchCancelled(Touch *touch, Event *unused_event){
     CCLOG("touchCancelled");
     
 }
+
+bool GameScene::onContactBegin(cocos2d::PhysicsContact& contact){
+    
+    return true;
+}
+
 
 void GameScene::setButton(){
     
