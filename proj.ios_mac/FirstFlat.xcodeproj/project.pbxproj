@@ -56,30 +56,30 @@
 		50EF629917ECD46A001EB2F8 /* Icon-100.png in Resources */ = {isa = PBXBuildFile; fileRef = 50EF629517ECD46A001EB2F8 /* Icon-100.png */; };
 		50EF62A217ECD613001EB2F8 /* Icon-29.png in Resources */ = {isa = PBXBuildFile; fileRef = 50EF62A017ECD613001EB2F8 /* Icon-29.png */; };
 		50EF62A317ECD613001EB2F8 /* Icon-50.png in Resources */ = {isa = PBXBuildFile; fileRef = 50EF62A117ECD613001EB2F8 /* Icon-50.png */; };
+		A43BB0DF19DEC73C00600F60 /* orange_ring.png in Resources */ = {isa = PBXBuildFile; fileRef = A43BB0DA19DEC73C00600F60 /* orange_ring.png */; };
+		A43BB0E019DEC73C00600F60 /* orange_ring.png in Resources */ = {isa = PBXBuildFile; fileRef = A43BB0DA19DEC73C00600F60 /* orange_ring.png */; };
+		A43BB0E119DEC73C00600F60 /* yellow_ring.png in Resources */ = {isa = PBXBuildFile; fileRef = A43BB0DB19DEC73C00600F60 /* yellow_ring.png */; };
+		A43BB0E219DEC73C00600F60 /* yellow_ring.png in Resources */ = {isa = PBXBuildFile; fileRef = A43BB0DB19DEC73C00600F60 /* yellow_ring.png */; };
+		A43BB0E319DEC73C00600F60 /* green_ring.png in Resources */ = {isa = PBXBuildFile; fileRef = A43BB0DC19DEC73C00600F60 /* green_ring.png */; };
+		A43BB0E419DEC73C00600F60 /* green_ring.png in Resources */ = {isa = PBXBuildFile; fileRef = A43BB0DC19DEC73C00600F60 /* green_ring.png */; };
+		A43BB0E519DEC73C00600F60 /* aqua_ring.png in Resources */ = {isa = PBXBuildFile; fileRef = A43BB0DD19DEC73C00600F60 /* aqua_ring.png */; };
+		A43BB0E619DEC73C00600F60 /* aqua_ring.png in Resources */ = {isa = PBXBuildFile; fileRef = A43BB0DD19DEC73C00600F60 /* aqua_ring.png */; };
+		A43BB0E719DEC73C00600F60 /* blue_ring.png in Resources */ = {isa = PBXBuildFile; fileRef = A43BB0DE19DEC73C00600F60 /* blue_ring.png */; };
+		A43BB0E819DEC73C00600F60 /* blue_ring.png in Resources */ = {isa = PBXBuildFile; fileRef = A43BB0DE19DEC73C00600F60 /* blue_ring.png */; };
 		A462D00319D2BDAB002E22EC /* TitleScene.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A462D00119D2BDAB002E22EC /* TitleScene.cpp */; };
 		A462D00819D2BF6D002E22EC /* GameScene.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A462D00619D2BF6D002E22EC /* GameScene.cpp */; };
 		A4F5654719DD790B00AD989D /* umbrella.png in Resources */ = {isa = PBXBuildFile; fileRef = A4F5654619DD790B00AD989D /* umbrella.png */; };
 		A4F5654819DD790B00AD989D /* umbrella.png in Resources */ = {isa = PBXBuildFile; fileRef = A4F5654619DD790B00AD989D /* umbrella.png */; };
-		A4FF864719DAA0C800ABE909 /* aqua_ring.png in Resources */ = {isa = PBXBuildFile; fileRef = A4FF863D19DAA0C800ABE909 /* aqua_ring.png */; };
-		A4FF864819DAA0C800ABE909 /* aqua_ring.png in Resources */ = {isa = PBXBuildFile; fileRef = A4FF863D19DAA0C800ABE909 /* aqua_ring.png */; };
 		A4FF864919DAA0C800ABE909 /* blue_circle.png in Resources */ = {isa = PBXBuildFile; fileRef = A4FF863E19DAA0C800ABE909 /* blue_circle.png */; };
 		A4FF864A19DAA0C800ABE909 /* blue_circle.png in Resources */ = {isa = PBXBuildFile; fileRef = A4FF863E19DAA0C800ABE909 /* blue_circle.png */; };
 		A4FF864B19DAA0C800ABE909 /* green_circle.png in Resources */ = {isa = PBXBuildFile; fileRef = A4FF863F19DAA0C800ABE909 /* green_circle.png */; };
 		A4FF864C19DAA0C800ABE909 /* green_circle.png in Resources */ = {isa = PBXBuildFile; fileRef = A4FF863F19DAA0C800ABE909 /* green_circle.png */; };
-		A4FF864D19DAA0C800ABE909 /* green_ring.png in Resources */ = {isa = PBXBuildFile; fileRef = A4FF864019DAA0C800ABE909 /* green_ring.png */; };
-		A4FF864E19DAA0C800ABE909 /* green_ring.png in Resources */ = {isa = PBXBuildFile; fileRef = A4FF864019DAA0C800ABE909 /* green_ring.png */; };
 		A4FF864F19DAA0C800ABE909 /* aqua_circle.png in Resources */ = {isa = PBXBuildFile; fileRef = A4FF864119DAA0C800ABE909 /* aqua_circle.png */; };
 		A4FF865019DAA0C800ABE909 /* aqua_circle.png in Resources */ = {isa = PBXBuildFile; fileRef = A4FF864119DAA0C800ABE909 /* aqua_circle.png */; };
 		A4FF865119DAA0C800ABE909 /* orange_circle.png in Resources */ = {isa = PBXBuildFile; fileRef = A4FF864219DAA0C800ABE909 /* orange_circle.png */; };
 		A4FF865219DAA0C800ABE909 /* orange_circle.png in Resources */ = {isa = PBXBuildFile; fileRef = A4FF864219DAA0C800ABE909 /* orange_circle.png */; };
-		A4FF865319DAA0C800ABE909 /* orange_ring.png in Resources */ = {isa = PBXBuildFile; fileRef = A4FF864319DAA0C800ABE909 /* orange_ring.png */; };
-		A4FF865419DAA0C800ABE909 /* orange_ring.png in Resources */ = {isa = PBXBuildFile; fileRef = A4FF864319DAA0C800ABE909 /* orange_ring.png */; };
 		A4FF865519DAA0C800ABE909 /* yellow_circle.png in Resources */ = {isa = PBXBuildFile; fileRef = A4FF864419DAA0C800ABE909 /* yellow_circle.png */; };
 		A4FF865619DAA0C800ABE909 /* yellow_circle.png in Resources */ = {isa = PBXBuildFile; fileRef = A4FF864419DAA0C800ABE909 /* yellow_circle.png */; };
-		A4FF865719DAA0C800ABE909 /* yellow_ring.png in Resources */ = {isa = PBXBuildFile; fileRef = A4FF864519DAA0C800ABE909 /* yellow_ring.png */; };
-		A4FF865819DAA0C800ABE909 /* yellow_ring.png in Resources */ = {isa = PBXBuildFile; fileRef = A4FF864519DAA0C800ABE909 /* yellow_ring.png */; };
-		A4FF865919DAA0C800ABE909 /* blue_ring.png in Resources */ = {isa = PBXBuildFile; fileRef = A4FF864619DAA0C800ABE909 /* blue_ring.png */; };
-		A4FF865A19DAA0C800ABE909 /* blue_ring.png in Resources */ = {isa = PBXBuildFile; fileRef = A4FF864619DAA0C800ABE909 /* blue_ring.png */; };
 		A4FF865C19DAA8EB00ABE909 /* DragonQuestFC.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A4FF865B19DAA8EB00ABE909 /* DragonQuestFC.ttf */; };
 		A4FF865D19DAA8EB00ABE909 /* DragonQuestFC.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A4FF865B19DAA8EB00ABE909 /* DragonQuestFC.ttf */; };
 		BF171245129291EC00B8313A /* OpenGLES.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BF170DB012928DE900B8313A /* OpenGLES.framework */; };
@@ -279,21 +279,21 @@
 		50EF629517ECD46A001EB2F8 /* Icon-100.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon-100.png"; sourceTree = "<group>"; };
 		50EF62A017ECD613001EB2F8 /* Icon-29.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon-29.png"; sourceTree = "<group>"; };
 		50EF62A117ECD613001EB2F8 /* Icon-50.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon-50.png"; sourceTree = "<group>"; };
+		A43BB0DA19DEC73C00600F60 /* orange_ring.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = orange_ring.png; sourceTree = "<group>"; };
+		A43BB0DB19DEC73C00600F60 /* yellow_ring.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = yellow_ring.png; sourceTree = "<group>"; };
+		A43BB0DC19DEC73C00600F60 /* green_ring.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = green_ring.png; sourceTree = "<group>"; };
+		A43BB0DD19DEC73C00600F60 /* aqua_ring.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = aqua_ring.png; sourceTree = "<group>"; };
+		A43BB0DE19DEC73C00600F60 /* blue_ring.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = blue_ring.png; sourceTree = "<group>"; };
 		A462D00119D2BDAB002E22EC /* TitleScene.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = TitleScene.cpp; path = ../Classes/TitleScene.cpp; sourceTree = "<group>"; };
 		A462D00219D2BDAB002E22EC /* TitleScene.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TitleScene.h; path = ../Classes/TitleScene.h; sourceTree = "<group>"; };
 		A462D00619D2BF6D002E22EC /* GameScene.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = GameScene.cpp; path = ../Classes/GameScene.cpp; sourceTree = "<group>"; };
 		A462D00719D2BF6D002E22EC /* GameScene.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GameScene.h; path = ../Classes/GameScene.h; sourceTree = "<group>"; };
 		A4F5654619DD790B00AD989D /* umbrella.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = umbrella.png; sourceTree = "<group>"; };
-		A4FF863D19DAA0C800ABE909 /* aqua_ring.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = aqua_ring.png; sourceTree = "<group>"; };
 		A4FF863E19DAA0C800ABE909 /* blue_circle.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = blue_circle.png; sourceTree = "<group>"; };
 		A4FF863F19DAA0C800ABE909 /* green_circle.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = green_circle.png; sourceTree = "<group>"; };
-		A4FF864019DAA0C800ABE909 /* green_ring.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = green_ring.png; sourceTree = "<group>"; };
 		A4FF864119DAA0C800ABE909 /* aqua_circle.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = aqua_circle.png; sourceTree = "<group>"; };
 		A4FF864219DAA0C800ABE909 /* orange_circle.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = orange_circle.png; sourceTree = "<group>"; };
-		A4FF864319DAA0C800ABE909 /* orange_ring.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = orange_ring.png; sourceTree = "<group>"; };
 		A4FF864419DAA0C800ABE909 /* yellow_circle.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = yellow_circle.png; sourceTree = "<group>"; };
-		A4FF864519DAA0C800ABE909 /* yellow_ring.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = yellow_ring.png; sourceTree = "<group>"; };
-		A4FF864619DAA0C800ABE909 /* blue_ring.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = blue_ring.png; sourceTree = "<group>"; };
 		A4FF865B19DAA8EB00ABE909 /* DragonQuestFC.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = DragonQuestFC.ttf; sourceTree = "<group>"; };
 		BF170DB012928DE900B8313A /* OpenGLES.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGLES.framework; path = System/Library/Frameworks/OpenGLES.framework; sourceTree = SDKROOT; };
 		BF170DB412928DE900B8313A /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
@@ -497,17 +497,17 @@
 			isa = PBXGroup;
 			children = (
 				A4F5654619DD790B00AD989D /* umbrella.png */,
-				A4FF863D19DAA0C800ABE909 /* aqua_ring.png */,
 				A4FF864119DAA0C800ABE909 /* aqua_circle.png */,
-				A4FF864619DAA0C800ABE909 /* blue_ring.png */,
 				A4FF863E19DAA0C800ABE909 /* blue_circle.png */,
 				A4FF863F19DAA0C800ABE909 /* green_circle.png */,
-				A4FF864019DAA0C800ABE909 /* green_ring.png */,
 				A4FF864219DAA0C800ABE909 /* orange_circle.png */,
-				A4FF864319DAA0C800ABE909 /* orange_ring.png */,
 				A4FF864419DAA0C800ABE909 /* yellow_circle.png */,
-				A4FF864519DAA0C800ABE909 /* yellow_ring.png */,
 				A4FF865B19DAA8EB00ABE909 /* DragonQuestFC.ttf */,
+				A43BB0DA19DEC73C00600F60 /* orange_ring.png */,
+				A43BB0DB19DEC73C00600F60 /* yellow_ring.png */,
+				A43BB0DC19DEC73C00600F60 /* green_ring.png */,
+				A43BB0DD19DEC73C00600F60 /* aqua_ring.png */,
+				A43BB0DE19DEC73C00600F60 /* blue_ring.png */,
 			);
 			name = Resources;
 			path = ../Resources;
@@ -677,32 +677,32 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A43BB0E519DEC73C00600F60 /* aqua_ring.png in Resources */,
 				5087E78117EB970100C73F5D /* Icon-120.png in Resources */,
-				A4FF864D19DAA0C800ABE909 /* green_ring.png in Resources */,
 				5087E78617EB970100C73F5D /* Icon-76.png in Resources */,
+				A43BB0E719DEC73C00600F60 /* blue_ring.png in Resources */,
 				A4FF865119DAA0C800ABE909 /* orange_circle.png in Resources */,
 				5087E77F17EB970100C73F5D /* Default@2x.png in Resources */,
 				A4FF864B19DAA0C800ABE909 /* green_circle.png in Resources */,
 				50EF629917ECD46A001EB2F8 /* Icon-100.png in Resources */,
 				A4F5654719DD790B00AD989D /* umbrella.png in Resources */,
-				A4FF865919DAA0C800ABE909 /* blue_ring.png in Resources */,
 				5087E78317EB970100C73F5D /* Icon-152.png in Resources */,
 				5087E77D17EB970100C73F5D /* Default-568h@2x.png in Resources */,
-				A4FF865719DAA0C800ABE909 /* yellow_ring.png in Resources */,
+				A43BB0E119DEC73C00600F60 /* yellow_ring.png in Resources */,
 				A4FF865519DAA0C800ABE909 /* yellow_circle.png in Resources */,
 				5087E78517EB970100C73F5D /* Icon-72.png in Resources */,
-				A4FF864719DAA0C800ABE909 /* aqua_ring.png in Resources */,
 				50EF62A317ECD613001EB2F8 /* Icon-50.png in Resources */,
 				A4FF864919DAA0C800ABE909 /* blue_circle.png in Resources */,
 				5087E78017EB970100C73F5D /* Icon-114.png in Resources */,
+				A43BB0E319DEC73C00600F60 /* green_ring.png in Resources */,
 				50EF62A217ECD613001EB2F8 /* Icon-29.png in Resources */,
-				A4FF865319DAA0C800ABE909 /* orange_ring.png in Resources */,
 				A4FF864F19DAA0C800ABE909 /* aqua_circle.png in Resources */,
 				50EF629617ECD46A001EB2F8 /* Icon-40.png in Resources */,
 				5087E78217EB970100C73F5D /* Icon-144.png in Resources */,
 				50EF629817ECD46A001EB2F8 /* Icon-80.png in Resources */,
 				5087E78417EB970100C73F5D /* Icon-57.png in Resources */,
 				5087E77E17EB970100C73F5D /* Default.png in Resources */,
+				A43BB0DF19DEC73C00600F60 /* orange_ring.png in Resources */,
 				50EF629717ECD46A001EB2F8 /* Icon-58.png in Resources */,
 				A4FF865C19DAA8EB00ABE909 /* DragonQuestFC.ttf in Resources */,
 			);
@@ -713,18 +713,18 @@
 			buildActionMask = 2147483647;
 			files = (
 				A4FF864A19DAA0C800ABE909 /* blue_circle.png in Resources */,
-				A4FF864E19DAA0C800ABE909 /* green_ring.png in Resources */,
 				A4F5654819DD790B00AD989D /* umbrella.png in Resources */,
-				A4FF865A19DAA0C800ABE909 /* blue_ring.png in Resources */,
 				A4FF864C19DAA0C800ABE909 /* green_circle.png in Resources */,
+				A43BB0E619DEC73C00600F60 /* aqua_ring.png in Resources */,
+				A43BB0E019DEC73C00600F60 /* orange_ring.png in Resources */,
+				A43BB0E419DEC73C00600F60 /* green_ring.png in Resources */,
 				503AE0F817EB97AB00D1A890 /* Icon.icns in Resources */,
-				A4FF864819DAA0C800ABE909 /* aqua_ring.png in Resources */,
-				A4FF865419DAA0C800ABE909 /* orange_ring.png in Resources */,
+				A43BB0E819DEC73C00600F60 /* blue_ring.png in Resources */,
 				A4FF865619DAA0C800ABE909 /* yellow_circle.png in Resources */,
 				A4FF865219DAA0C800ABE909 /* orange_circle.png in Resources */,
 				A4FF865019DAA0C800ABE909 /* aqua_circle.png in Resources */,
-				A4FF865819DAA0C800ABE909 /* yellow_ring.png in Resources */,
 				A4FF865D19DAA8EB00ABE909 /* DragonQuestFC.ttf in Resources */,
+				A43BB0E219DEC73C00600F60 /* yellow_ring.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
