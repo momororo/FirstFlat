@@ -7,6 +7,7 @@
 //
 
 #include "GameScene.h"
+#include <string.h>
 
 #define selfFrame Director::getInstance() -> getWinSize()
 #define visibleSize Director::getInstance()->getVisibleSize();
@@ -21,7 +22,7 @@ Scene *GameScene::createScene(){
     scene -> addChild(layer);
     
     //物理オブジェクトにを可視的にしてくれるデバックモード
-    scene->getPhysicsWorld()->setDebugDrawMask(PhysicsWorld::DEBUGDRAW_ALL);
+ //   scene->getPhysicsWorld()->setDebugDrawMask(PhysicsWorld::DEBUGDRAW_ALL);
 
     
     return scene;
@@ -127,6 +128,7 @@ bool GameScene::onTouchBegan(Touch *touch, Event *unused_event){
             aquaRingBody->setEnable(true);
 
             aquaRingBody->setCategoryBitmask(0x01);
+            aquaRingBody->setCollisionBitmask(0);
             aquaRingBody->setContactTestBitmask(0x02);
             effectRing->setPhysicsBody(aquaRingBody);
         
@@ -161,6 +163,7 @@ bool GameScene::onTouchBegan(Touch *touch, Event *unused_event){
             orangeRingBody->setEnable(true);
 
             orangeRingBody->setCategoryBitmask(0x01);
+            orangeRingBody->setCollisionBitmask(0);
             orangeRingBody->setContactTestBitmask(0x02);
 
             effectRing->setPhysicsBody(orangeRingBody);
@@ -199,6 +202,7 @@ bool GameScene::onTouchBegan(Touch *touch, Event *unused_event){
             yellowRingBody->setEnable(true);
 
             yellowRingBody->setCategoryBitmask(0x01);
+            yellowRingBody->setCollisionBitmask(0);
             yellowRingBody->setContactTestBitmask(0x02);
 
             effectRing->setPhysicsBody(yellowRingBody);
@@ -261,7 +265,92 @@ void GameScene::onTouchCancelled(Touch *touch, Event *unused_event){
 
 bool GameScene::onContactBegin(cocos2d::PhysicsContact& contact){
     
-    CCLOG("衝突");
+    auto nodeA = contact.getShapeA()->getBody()->getNode();
+    auto nodeB = contact.getShapeB()->getBody()->getNode();
+    
+    
+    //本体に衝突したか判定する
+    if(nodeA->getTag() == 1 || nodeB->getTag() == 1){
+        
+        //ゲームオーバーの処理
+        CCLOG("本体に衝突");
+        
+        return true;
+    }
+    
+    //サークルとドロップの衝突と判断
+    if(nodeA->getName() == nodeB->getName()){
+     
+        //一致(スコアアップ、サークル発生)
+        CCLOG("一致しました");
+        CCLOG("%s",nodeA->getName().c_str());
+        CCLOG("%s",nodeB->getName().c_str());
+        
+        
+        Sprite *dropCircle;
+        Sprite *ring;
+        
+        //タグが3ならドロップはnodeA
+        if(nodeA->getTag() == 3){
+            
+            dropCircle = (Sprite*)nodeA;
+            ring = (Sprite*)nodeB;
+            
+            
+        }else{
+            dropCircle = (Sprite*)nodeB;
+            ring = (Sprite*)nodeA;
+        }
+        
+        
+        //物理体を削除
+        dropCircle->getPhysicsBody()->setEnable(false);
+        ring->getPhysicsBody()->setEnable(false);
+        
+        
+        auto string = dropCircle->getName() + "_ring.png";
+        
+        
+        //輪の設定
+        auto dropRing = Sprite::create(string);
+        dropRing -> setScale(0.01);
+        dropRing -> setPosition(Vec2(dropCircle->getPosition().x , dropCircle->getPosition().y));
+        addChild(dropRing);
+
+        
+        
+        
+        //オブジェクトの拡大
+        auto scale = ScaleBy::create(2, 12);
+        //オブジェクトの削除
+        auto remove = RemoveSelf::create(true);
+        //オブジェクトのフェードアウト
+        auto fadeOut = FadeOut::create(2);
+        
+        //拡大・フェードアウト同時アクション
+        auto scaleFadeOut = Spawn::create(scale,fadeOut, NULL);
+        //移動後拡大のアクション
+        auto moveScale = Sequence::create(scaleFadeOut,remove,NULL);
+        //移動後削除のアクション
+        auto moveRemove = Sequence::create(remove,NULL);
+        
+        dropCircle -> runAction(moveRemove);
+        dropRing -> runAction(moveScale);
+        
+        
+         
+        return true;
+        
+         
+    }else{
+        
+        //不一致(ゲームオーバー)
+        CCLOG("不一致でした。");
+        CCLOG("%s",nodeA->getName().c_str());
+        CCLOG("%s",nodeB->getName().c_str());
+        
+        return true;
+    }
     
     return true;
 }
@@ -284,6 +373,7 @@ void GameScene::setButton(){
         aquaCircleBody->setEnable(true);
 
         aquaCircleBody->setCategoryBitmask(0x01);
+        aquaCircleBody->setCollisionBitmask(0);
         aquaCircleBody->setContactTestBitmask(0x02);
 
     aquaCircle->setPhysicsBody(aquaCircleBody);
@@ -307,6 +397,7 @@ void GameScene::setButton(){
     orangeCircleBody->setDynamic(false); // 重力の影響を受けない
     orangeCircleBody->setEnable(true);
     orangeCircleBody->setCategoryBitmask(0x01);
+    orangeCircleBody->setCollisionBitmask(0);
     orangeCircleBody->setContactTestBitmask(0x02);
     orangeCircle->setPhysicsBody(orangeCircleBody);
     addChild(orangeCircle);
@@ -330,6 +421,7 @@ void GameScene::setButton(){
         yellowCircleBody->setEnable(true);
 
         yellowCircleBody->setCategoryBitmask(0x01);
+        yellowCircleBody->setCollisionBitmask(0);
         yellowCircleBody->setContactTestBitmask(0x02);
 
         yellowCircle->setPhysicsBody(yellowCircleBody);
@@ -350,7 +442,9 @@ void GameScene::setButton(){
 
 void GameScene::setDrops(float time){
     
-    auto rnd = arc4random_uniform(5);
+    //auto rnd = arc4random_uniform(5);
+    
+    auto rnd = 0;
     
     std::string pngCircle;
     std::string pngRing;
@@ -359,32 +453,27 @@ void GameScene::setDrops(float time){
     if (rnd == 0) {
         
         pngCircle = "aqua_circle.png";
-        pngRing = "aqua_ring.png";
         dropName = "aqua";
         
     }else if(rnd == 1){
         
         pngCircle = "green_circle.png";
-        pngRing = "green_ring.png";
         dropName = "green";
         
     }else if(rnd == 2){
         
         pngCircle = "yellow_circle.png";
-        pngRing = "yellow_ring.png";
         dropName = "yellow";
 
         
     }else if(rnd == 3){
         
         pngCircle = "blue_circle.png";
-        pngRing = "blue_ring.png";
         dropName = "blue";
         
     }else if (rnd == 4){
         
         pngCircle = "orange_circle.png";
-        pngRing = "orange_ring.png";
         dropName = "orange";
         
     }
@@ -392,19 +481,10 @@ void GameScene::setDrops(float time){
     
     //auto moveY = (-selfFrame.height);
     
-    
-    //輪の設定
-    auto dropRing = Sprite::create(pngRing);
-    dropRing -> setScale(0.01);
-    dropRing -> setPosition(Vec2( arc4random_uniform(selfFrame.width*3/5)+selfFrame.width/5, selfFrame.height+ dropRing->getContentSize().height/2));
-    addChild(dropRing);
-    
-    
     //円の設定
     auto dropCircle = Sprite::create(pngCircle);
     dropCircle -> setScale(0.01);
-    dropCircle -> setPosition(Vec2(dropRing->getPosition().x,dropRing->getPosition().y));
-    
+    dropCircle -> setPosition(Vec2( arc4random_uniform(selfFrame.width*3/5)+selfFrame.width/5, selfFrame.height+ dropCircle->getContentSize().height/2));
     //円に名前を設定
     dropCircle -> setName(dropName);
     dropCircle -> setTag(3);
@@ -414,6 +494,8 @@ void GameScene::setDrops(float time){
     auto dropCircleBody = PhysicsBody::createCircle((dropCircle->getContentSize().width/2)*dropCircle->getScale(),dropMaterial);
     dropCircleBody->setDynamic(true); // 重力の影響を受けない
     dropCircleBody->setCategoryBitmask(0x02);
+    //0にすることで衝突しない。
+    dropCircleBody->setCollisionBitmask(0);
     dropCircleBody->setContactTestBitmask(0x01);
     dropCircle->setPhysicsBody(dropCircleBody);
     //addChild(dropCircle);
