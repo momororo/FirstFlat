@@ -122,7 +122,7 @@ bool GameScene::onTouchBegan(Touch *touch, Event *unused_event){
 
             //物理体の生成
             auto aquaMaterial = PHYSICSBODY_MATERIAL_DEFAULT;
-            auto aquaRingBody = PhysicsBody::createBox(aquaCircle->getContentSize(), aquaMaterial);
+            auto aquaRingBody = PhysicsBody::createCircle((effectRing->getContentSize().width/2)*effectRing->getScale(),aquaMaterial);
             aquaRingBody->setDynamic(false); // 重力の影響を受けない
             aquaRingBody->setEnable(true);
 
@@ -156,7 +156,7 @@ bool GameScene::onTouchBegan(Touch *touch, Event *unused_event){
 
             //物理体の生成
             auto orangeMaterial = PHYSICSBODY_MATERIAL_DEFAULT;
-            auto orangeRingBody = PhysicsBody::createBox(orangeCircle->getContentSize(), orangeMaterial);
+            auto orangeRingBody = PhysicsBody::createCircle((effectRing->getContentSize().width/2)*effectRing->getScale(),orangeMaterial);
             orangeRingBody->setDynamic(false); // 重力の影響を受けない
             orangeRingBody->setEnable(true);
 
@@ -194,7 +194,7 @@ bool GameScene::onTouchBegan(Touch *touch, Event *unused_event){
 
             //物理体の生成
             auto yellowMaterial = PHYSICSBODY_MATERIAL_DEFAULT;
-            auto yellowRingBody = PhysicsBody::createBox(yellowCircle->getContentSize(), yellowMaterial);
+            auto yellowRingBody = PhysicsBody::createCircle((effectRing->getContentSize().width/2)*effectRing->getScale(),yellowMaterial);
             yellowRingBody->setDynamic(false); // 重力の影響を受けない
             yellowRingBody->setEnable(true);
 
@@ -279,7 +279,7 @@ void GameScene::setButton(){
     PhysicsMaterial aquaMaterial;
 
         //auto aquaMaterial = PHYSICSBODY_MATERIAL_DEFAULT;
-        auto aquaCircleBody = PhysicsBody::createCircle(100, aquaMaterial);
+        auto aquaCircleBody = PhysicsBody::createCircle((aquaCircle->getContentSize().width/2)*aquaCircle->getScale(),aquaMaterial);
         aquaCircleBody->setDynamic(false); // 重力の影響を受けない
         aquaCircleBody->setEnable(true);
 
@@ -303,7 +303,7 @@ void GameScene::setButton(){
 
     //物理体の生成
     auto orangeMaterial = PHYSICSBODY_MATERIAL_DEFAULT;
-    auto orangeCircleBody = PhysicsBody::createBox(orangeCircle->getContentSize(), orangeMaterial);
+    auto orangeCircleBody = PhysicsBody::createCircle((orangeCircle->getContentSize().width/2)*orangeCircle->getScale(),orangeMaterial);
     orangeCircleBody->setDynamic(false); // 重力の影響を受けない
     orangeCircleBody->setEnable(true);
     orangeCircleBody->setCategoryBitmask(0x01);
@@ -325,7 +325,7 @@ void GameScene::setButton(){
 
     //物理体の生成
         auto yellowMaterial = PHYSICSBODY_MATERIAL_DEFAULT;
-        auto yellowCircleBody = PhysicsBody::createBox(yellowCircle->getContentSize(), yellowMaterial);
+        auto yellowCircleBody = PhysicsBody::createCircle((yellowCircle->getContentSize().width/2)*yellowCircle->getScale(),yellowMaterial);
         yellowCircleBody->setDynamic(false); // 重力の影響を受けない
         yellowCircleBody->setEnable(true);
 
@@ -411,10 +411,8 @@ void GameScene::setDrops(float time){
 
     //円に物理体を設定
     auto dropMaterial = PHYSICSBODY_MATERIAL_DEFAULT;
-    auto dropCircleBody = PhysicsBody::createBox(dropCircle->getContentSize(), dropMaterial);
-    dropCircleBody->setDynamic(false); // 重力の影響を受けない
-    dropCircleBody->setEnable(true);
-
+    auto dropCircleBody = PhysicsBody::createCircle((dropCircle->getContentSize().width/2)*dropCircle->getScale(),dropMaterial);
+    dropCircleBody->setDynamic(true); // 重力の影響を受けない
     dropCircleBody->setCategoryBitmask(0x02);
     dropCircleBody->setContactTestBitmask(0x01);
     dropCircle->setPhysicsBody(dropCircleBody);
