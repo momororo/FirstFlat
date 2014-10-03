@@ -21,7 +21,7 @@ Scene *GameScene::createScene(){
     scene -> addChild(layer);
     
     //物理オブジェクトにを可視的にしてくれるデバックモード
-//    scene->getPhysicsWorld()->setDebugDrawMask(PhysicsWorld::DEBUGDRAW_ALL);
+    scene->getPhysicsWorld()->setDebugDrawMask(PhysicsWorld::DEBUGDRAW_ALL);
 
     
     return scene;
@@ -269,8 +269,10 @@ void GameScene::setButton(){
     aquaCircle -> setName("Circle");
     aquaCircle -> setTag(1);
     //物理体の生成
-        auto aquaMaterial = PHYSICSBODY_MATERIAL_DEFAULT;
-        auto aquaCircleBody = PhysicsBody::createBox(aquaCircle->getContentSize(), aquaMaterial);
+    PhysicsMaterial aquaMaterial;
+
+        //auto aquaMaterial = PHYSICSBODY_MATERIAL_DEFAULT;
+        auto aquaCircleBody = PhysicsBody::createCircle(100, aquaMaterial);
         aquaCircleBody->setDynamic(false); // 重力の影響を受けない
         aquaCircleBody->setCategoryBitmask(0x01);
         aquaCircleBody->setContactTestBitmask(0x02);
@@ -292,7 +294,7 @@ void GameScene::setButton(){
 
     //物理体の生成
     auto orangeMaterial = PHYSICSBODY_MATERIAL_DEFAULT;
-    auto orangeCircleBody = PhysicsBody::createBox(aquaCircle->getContentSize(), orangeMaterial);
+    auto orangeCircleBody = PhysicsBody::createCircle(100, orangeMaterial);
     orangeCircleBody->setDynamic(false); // 重力の影響を受けない
     orangeCircleBody->setCategoryBitmask(0x01);
     orangeCircleBody->setContactTestBitmask(0x02);
@@ -313,7 +315,7 @@ void GameScene::setButton(){
 
     //物理体の生成
         auto yellowMaterial = PHYSICSBODY_MATERIAL_DEFAULT;
-        auto yellowCircleBody = PhysicsBody::createBox(aquaCircle->getContentSize(), yellowMaterial);
+        auto yellowCircleBody = PhysicsBody::createCircle(100, yellowMaterial);
         yellowCircleBody->setDynamic(false); // 重力の影響を受けない
         yellowCircleBody->setCategoryBitmask(0x01);
         yellowCircleBody->setContactTestBitmask(0x02);
@@ -376,7 +378,7 @@ void GameScene::setDrops(float time){
     }
     
     
-    auto moveY = (-selfFrame.height);
+    //auto moveY = (-selfFrame.height);
     
     
     //輪の設定
@@ -397,25 +399,24 @@ void GameScene::setDrops(float time){
 
     //円に物理体を設定
     auto dropMaterial = PHYSICSBODY_MATERIAL_DEFAULT;
-    auto dropCircleBody = PhysicsBody::createBox(dropCircle->getContentSize(), dropMaterial);
-    dropCircleBody->setDynamic(false); // 重力の影響を受けない
+    auto dropCircleBody = PhysicsBody::createCircle(10, dropMaterial);
+    dropCircleBody->setDynamic(true); // 重力の影響を受けない
     dropCircleBody->setCategoryBitmask(0x02);
     dropCircleBody->setContactTestBitmask(0x01);
     dropCircle->setPhysicsBody(dropCircleBody);
-    addChild(dropCircle);
-    
+    //addChild(dropCircle);
+    this -> addChild(dropCircle);
     
     
     //オブジェクトの移動
-    auto moveCircle = MoveTo::create(6, Vec2(dropRing->getPosition().x,moveY));
+    //auto moveCircle = MoveTo::create(6, Vec2(dropRing->getPosition().x,moveY));
     
-    auto moveRing = MoveTo::create(6, Vec2(dropRing->getPosition().x,moveY));
+    //auto moveRing = MoveTo::create(6, Vec2(dropRing->getPosition().x,moveY));
     
+
     
-    
-    dropCircle -> runAction(moveCircle);
-    dropRing -> runAction(moveRing);
-    
+    //dropCircle -> runAction(moveCircle);
+    //dropRing -> runAction(moveRing);
     
     
     
