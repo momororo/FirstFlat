@@ -276,8 +276,10 @@ void GameScene::setButton(){
     aquaCircle -> setName("Circle");
     aquaCircle -> setTag(1);
     //物理体の生成
-        auto aquaMaterial = PHYSICSBODY_MATERIAL_DEFAULT;
-        auto aquaCircleBody = PhysicsBody::createBox(aquaCircle->getContentSize(), aquaMaterial);
+    PhysicsMaterial aquaMaterial;
+
+        //auto aquaMaterial = PHYSICSBODY_MATERIAL_DEFAULT;
+        auto aquaCircleBody = PhysicsBody::createCircle(100, aquaMaterial);
         aquaCircleBody->setDynamic(false); // 重力の影響を受けない
         aquaCircleBody->setEnable(true);
 
@@ -388,7 +390,7 @@ void GameScene::setDrops(float time){
     }
     
     
-    auto moveY = (-selfFrame.height);
+    //auto moveY = (-selfFrame.height);
     
     
     //輪の設定
@@ -416,20 +418,19 @@ void GameScene::setDrops(float time){
     dropCircleBody->setCategoryBitmask(0x02);
     dropCircleBody->setContactTestBitmask(0x01);
     dropCircle->setPhysicsBody(dropCircleBody);
-    addChild(dropCircle);
-    
+    //addChild(dropCircle);
+    this -> addChild(dropCircle);
     
     
     //オブジェクトの移動
-    auto moveCircle = MoveTo::create(6, Vec2(dropRing->getPosition().x,moveY));
+    //auto moveCircle = MoveTo::create(6, Vec2(dropRing->getPosition().x,moveY));
     
-    auto moveRing = MoveTo::create(6, Vec2(dropRing->getPosition().x,moveY));
+    //auto moveRing = MoveTo::create(6, Vec2(dropRing->getPosition().x,moveY));
     
+
     
-    
-    dropCircle -> runAction(moveCircle);
-    dropRing -> runAction(moveRing);
-    
+    //dropCircle -> runAction(moveCircle);
+    //dropRing -> runAction(moveRing);
     
     
     
