@@ -442,9 +442,8 @@ void GameScene::setButton(){
 
 void GameScene::setDrops(float time){
     
-    //auto rnd = arc4random_uniform(5);
+    auto rnd = arc4random_uniform(3);
     
-    auto rnd = 0;
     
     std::string pngCircle;
     std::string pngRing;
@@ -456,26 +455,25 @@ void GameScene::setDrops(float time){
         dropName = "aqua";
         
     }else if(rnd == 1){
-        
-        pngCircle = "green_circle.png";
-        dropName = "green";
-        
-    }else if(rnd == 2){
-        
+
         pngCircle = "yellow_circle.png";
         dropName = "yellow";
 
-        
-    }else if(rnd == 3){
-        
-        pngCircle = "blue_circle.png";
-        dropName = "blue";
-        
-    }else if (rnd == 4){
+    }else if(rnd == 2){
         
         pngCircle = "orange_circle.png";
         dropName = "orange";
         
+    }else if(rnd == 3){
+        
+        pngCircle = "green_circle.png";
+        dropName = "green";
+        
+    }else if (rnd == 4){
+        
+        pngCircle = "blue_circle.png";
+        dropName = "blue";
+
     }
     
     
