@@ -15,6 +15,8 @@
 
 USING_NS_CC;
 
+
+
 Scene *GameScene::createScene(){
     
     auto scene = Scene::createWithPhysics();
@@ -46,7 +48,7 @@ bool GameScene::init(){
     
     
     //背景色のグラデーション
-    auto bgGradient = LayerGradient::create(Color4B(128,229,255,255), Color4B(95,211,188,255));
+    auto bgGradient = LayerGradient::create(Color4B(255,255,255,255), Color4B(255,255,255,255));
     this -> addChild(bgGradient);
     
 
@@ -143,6 +145,8 @@ bool GameScene::onTouchBegan(Touch *touch, Event *unused_event){
         
         effectRing -> runAction(ringSequence);
         
+        aquaCircle ->runAction(RotateBy::create(1, 360));
+        
         return true;
     }
 
@@ -178,6 +182,7 @@ bool GameScene::onTouchBegan(Touch *touch, Event *unused_event){
         
         effectRing -> runAction(ringSequence);
         
+        orangeCircle->runAction(RotateBy::create(1, 360));
         return true;
     }
     
@@ -216,6 +221,8 @@ bool GameScene::onTouchBegan(Touch *touch, Event *unused_event){
         auto ringSequence = Sequence::create(scaleFadeOut,ringRemove, NULL);
         
         effectRing -> runAction(ringSequence);
+        
+        yellowCircle->runAction(RotateBy::create(1, 360));
         
         return true;
     }
@@ -359,7 +366,7 @@ bool GameScene::onContactBegin(cocos2d::PhysicsContact& contact){
 void GameScene::setButton(){
     
     //アクアボタン
-    aquaCircle = Sprite::create("aqua_circle.png");
+    aquaCircle = Sprite::create("aqua_umbrella.png");
     aquaCircle -> setPosition(Vec2(selfFrame.width/2, selfFrame.height/6));
     aquaCircle -> setScale(0.1);
     aquaCircle -> setName("Circle");
@@ -385,7 +392,7 @@ void GameScene::setButton(){
     addChild(aquaRing);
   */
     //オレンジボタン
-    orangeCircle = Sprite::create("orange_circle.png");
+    orangeCircle = Sprite::create("orange_umbrella.png");
     orangeCircle -> setPosition(Vec2(60,selfFrame.height/4));
     orangeCircle -> setScale(0.1);
     orangeCircle -> setName("Circle");
@@ -408,7 +415,7 @@ void GameScene::setButton(){
     addChild(orangeRing);
 */
     //イエローボタン
-    yellowCircle = Sprite::create("yellow_circle.png");
+    yellowCircle = Sprite::create("yellow_umbrella.png");
     yellowCircle -> setPosition(Vec2(selfFrame.width-60,selfFrame.height/4));
     yellowCircle -> setScale(0.1);
     yellowCircle -> setName("Circle");
@@ -481,7 +488,7 @@ void GameScene::setDrops(float time){
     
     //円の設定
     auto dropCircle = Sprite::create(pngCircle);
-    dropCircle -> setScale(0.01);
+    dropCircle -> setScale(0.03);
     dropCircle -> setPosition(Vec2( arc4random_uniform(selfFrame.width*3/5)+selfFrame.width/5, selfFrame.height+ dropCircle->getContentSize().height/2));
     //円に名前を設定
     dropCircle -> setName(dropName);

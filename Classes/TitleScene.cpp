@@ -639,7 +639,7 @@ void TitleScene::setDrops(float time){
     
     //輪の設定
     auto dropRing = Sprite::create(pngRing);
-    dropRing -> setScale(0.03);
+    dropRing -> setScale(0.01);
     dropRing -> setPosition(Vec2( arc4random_uniform(selfFrame.width*3/5)+selfFrame.width/5, selfFrame.height+ dropRing->getContentSize().height/2));
     addChild(dropRing);
     
