@@ -21,7 +21,7 @@ Scene *GameScene::createScene(){
     scene -> addChild(layer);
     
     //物理オブジェクトにを可視的にしてくれるデバックモード
-//    scene->getPhysicsWorld()->setDebugDrawMask(deg);
+    scene->getPhysicsWorld()->setDebugDrawMask(PhysicsWorld::DEBUGDRAW_ALL);
 
     
     return scene;
@@ -83,6 +83,7 @@ bool GameScene::init(){
     
     auto contactListener = EventListenerPhysicsContact::create();
     contactListener -> onContactBegin = CC_CALLBACK_1(GameScene::onContactBegin,this);
+
     _eventDispatcher -> addEventListenerWithSceneGraphPriority(contactListener,this);
     
     /*************　  衝突イベント設定  終 ****************/
@@ -123,6 +124,8 @@ bool GameScene::onTouchBegan(Touch *touch, Event *unused_event){
             auto aquaMaterial = PHYSICSBODY_MATERIAL_DEFAULT;
             auto aquaRingBody = PhysicsBody::createBox(aquaCircle->getContentSize(), aquaMaterial);
             aquaRingBody->setDynamic(false); // 重力の影響を受けない
+            aquaRingBody->setEnable(true);
+
             aquaRingBody->setCategoryBitmask(0x01);
             aquaRingBody->setContactTestBitmask(0x02);
             effectRing->setPhysicsBody(aquaRingBody);
@@ -155,6 +158,8 @@ bool GameScene::onTouchBegan(Touch *touch, Event *unused_event){
             auto orangeMaterial = PHYSICSBODY_MATERIAL_DEFAULT;
             auto orangeRingBody = PhysicsBody::createBox(orangeCircle->getContentSize(), orangeMaterial);
             orangeRingBody->setDynamic(false); // 重力の影響を受けない
+            orangeRingBody->setEnable(true);
+
             orangeRingBody->setCategoryBitmask(0x01);
             orangeRingBody->setContactTestBitmask(0x02);
 
@@ -191,6 +196,8 @@ bool GameScene::onTouchBegan(Touch *touch, Event *unused_event){
             auto yellowMaterial = PHYSICSBODY_MATERIAL_DEFAULT;
             auto yellowRingBody = PhysicsBody::createBox(yellowCircle->getContentSize(), yellowMaterial);
             yellowRingBody->setDynamic(false); // 重力の影響を受けない
+            yellowRingBody->setEnable(true);
+
             yellowRingBody->setCategoryBitmask(0x01);
             yellowRingBody->setContactTestBitmask(0x02);
 
@@ -272,6 +279,8 @@ void GameScene::setButton(){
         auto aquaMaterial = PHYSICSBODY_MATERIAL_DEFAULT;
         auto aquaCircleBody = PhysicsBody::createBox(aquaCircle->getContentSize(), aquaMaterial);
         aquaCircleBody->setDynamic(false); // 重力の影響を受けない
+        aquaCircleBody->setEnable(true);
+
         aquaCircleBody->setCategoryBitmask(0x01);
         aquaCircleBody->setContactTestBitmask(0x02);
 
@@ -292,8 +301,9 @@ void GameScene::setButton(){
 
     //物理体の生成
     auto orangeMaterial = PHYSICSBODY_MATERIAL_DEFAULT;
-    auto orangeCircleBody = PhysicsBody::createBox(aquaCircle->getContentSize(), orangeMaterial);
+    auto orangeCircleBody = PhysicsBody::createBox(orangeCircle->getContentSize(), orangeMaterial);
     orangeCircleBody->setDynamic(false); // 重力の影響を受けない
+    orangeCircleBody->setEnable(true);
     orangeCircleBody->setCategoryBitmask(0x01);
     orangeCircleBody->setContactTestBitmask(0x02);
     orangeCircle->setPhysicsBody(orangeCircleBody);
@@ -313,8 +323,10 @@ void GameScene::setButton(){
 
     //物理体の生成
         auto yellowMaterial = PHYSICSBODY_MATERIAL_DEFAULT;
-        auto yellowCircleBody = PhysicsBody::createBox(aquaCircle->getContentSize(), yellowMaterial);
+        auto yellowCircleBody = PhysicsBody::createBox(yellowCircle->getContentSize(), yellowMaterial);
         yellowCircleBody->setDynamic(false); // 重力の影響を受けない
+        yellowCircleBody->setEnable(true);
+
         yellowCircleBody->setCategoryBitmask(0x01);
         yellowCircleBody->setContactTestBitmask(0x02);
 
@@ -399,6 +411,8 @@ void GameScene::setDrops(float time){
     auto dropMaterial = PHYSICSBODY_MATERIAL_DEFAULT;
     auto dropCircleBody = PhysicsBody::createBox(dropCircle->getContentSize(), dropMaterial);
     dropCircleBody->setDynamic(false); // 重力の影響を受けない
+    dropCircleBody->setEnable(true);
+
     dropCircleBody->setCategoryBitmask(0x02);
     dropCircleBody->setContactTestBitmask(0x01);
     dropCircle->setPhysicsBody(dropCircleBody);
