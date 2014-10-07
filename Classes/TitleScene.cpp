@@ -23,6 +23,7 @@ Scene *TitleScene::createScene(){
     auto layer = TitleScene::create();
     scene -> addChild(layer);
     
+    
     return scene;
     
 }
@@ -33,8 +34,6 @@ bool TitleScene::init(){
     if (!Layer::init()) {
         return false;
     }
-    
-    
     
     //背景色のグラデーション
     auto bgGradient = LayerGradient::create(Color4B(128,229,255,255), Color4B(95,211,188,255));
@@ -83,13 +82,15 @@ bool TitleScene::init(){
     setStart();
     setRanking();
     setChallenge();
-    
+
     auto umbrella = Sprite::create("umbrella.png");
     umbrella -> setAnchorPoint(Vec2(1,1));
     umbrella -> setScale(0.08);
     umbrella-> setPosition(Vec2(selfFrame.width*14/15,selfFrame.height*4/5));
     //umbrella -> setOpacity(0);
     this-> addChild(umbrella,10);
+ 
+ 
     
     
     
@@ -266,10 +267,11 @@ void TitleScene::onTouchEnded(Touch *touch, Event *unused_event){
         
     {
         CCLOG("スタートボタンをタップ");
-        
+
         //アニメーション付き
-        float duration = 1.0f;  //開始→終了にかける時間
+        float duration = 2.0f;  //開始→終了にかける時間
         Scene* nextScene = CCTransitionFade::create(duration, GameScene::createScene());
+ 
         Director::getInstance()->replaceScene(nextScene);
         return;
     }

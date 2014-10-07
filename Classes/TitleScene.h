@@ -15,7 +15,6 @@
 class TitleScene : public cocos2d::Layer{
     
 protected:
-
     
     //スタートボタンの生成
     void initStart();
@@ -23,7 +22,6 @@ protected:
     cocos2d::Sprite *start;
     cocos2d::Sprite *ranking;
     cocos2d::Sprite *challenge;
-    
     
     
     

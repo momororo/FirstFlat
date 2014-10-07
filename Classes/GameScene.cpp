@@ -95,6 +95,8 @@ bool GameScene::init(){
 
     //テスト用
     this -> schedule(schedule_selector(GameScene::setDrops), 1);
+    
+    //スコア機能の実装
 
     
     
@@ -455,21 +457,31 @@ void GameScene::setDrops(float time){
     std::string pngCircle;
     std::string pngRing;
     std::string dropName;
+    Vec2 dropPosition;
     
+    //円の設定
+
+    //パターンの割り振り
     if (rnd == 0) {
         
         pngCircle = "aqua_circle.png";
         dropName = "aqua";
+        dropPosition = Vec2(selfFrame.width/3*1+arc4random_uniform(selfFrame.width/3), selfFrame.height*1.5);
+        
         
     }else if(rnd == 1){
 
         pngCircle = "yellow_circle.png";
         dropName = "yellow";
+        dropPosition = Vec2(selfFrame.width/3*2+arc4random_uniform(selfFrame.width/3)/*-(dropCircle->getContentSize().width/2*dropCircle->getScale())*/, selfFrame.height*1.5);
+
 
     }else if(rnd == 2){
         
         pngCircle = "orange_circle.png";
         dropName = "orange";
+        dropPosition = Vec2(selfFrame.width/3*0+arc4random_uniform(selfFrame.width/3)/*+(dropCircle->getContentSize().width/2*dropCircle->getScale())*/, selfFrame.height*1.5);
+
         
     }else if(rnd == 3){
         
@@ -484,12 +496,14 @@ void GameScene::setDrops(float time){
     }
     
     
-    //auto moveY = (-selfFrame.height);
-    
-    //円の設定
     auto dropCircle = Sprite::create(pngCircle);
     dropCircle -> setScale(0.03);
-    dropCircle -> setPosition(Vec2( arc4random_uniform(selfFrame.width*3/5)+selfFrame.width/5, selfFrame.height+ dropCircle->getContentSize().height/2));
+    
+    //auto moveY = (-selfFrame.height);
+    
+//    dropCircle -> setPosition(Vec2( arc4random_uniform(selfFrame.width*3/5)+selfFrame.width/5, selfFrame.height+ dropCircle->getContentSize().height/2));
+    dropCircle -> setPosition(dropPosition);
+    
     //円に名前を設定
     dropCircle -> setName(dropName);
     dropCircle -> setTag(3);
