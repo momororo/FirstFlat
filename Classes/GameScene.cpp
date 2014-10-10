@@ -14,6 +14,7 @@
 
 
 USING_NS_CC;
+using namespace CocosDenshion;
 
 
 
@@ -54,6 +55,21 @@ bool GameScene::init(){
 
     //ボタンの生成
     this->setButton();
+    
+    
+    
+    SimpleAudioEngine::getInstance()->preloadEffect("bFlat.mp3");
+    SimpleAudioEngine::getInstance()->preloadEffect("c.mp3");
+    SimpleAudioEngine::getInstance()->preloadEffect("d.mp3");
+    SimpleAudioEngine::getInstance()->preloadBackgroundMusic("cp03.mp3");
+    
+    //BGM
+    SimpleAudioEngine::getInstance()->playBackgroundMusic("cp03.mp3",true);
+    //音量
+    SimpleAudioEngine::getInstance()->setBackgroundMusicVolume(0.1f);
+
+
+
     
     
     
@@ -312,12 +328,28 @@ bool GameScene::onContactBegin(cocos2d::PhysicsContact& contact){
         }
         
         
+        if (nodeA->getName() == "aqua") {
+        
+            SimpleAudioEngine::getInstance()->playEffect("c.mp3");
+        
+        }else if(nodeA-> getName() == "orange"){
+            
+            SimpleAudioEngine::getInstance()->playEffect("bFlat.mp3");
+        
+        }else if(nodeA->getName() == "yellow"){
+            
+            //再生する
+            SimpleAudioEngine::getInstance()->playEffect("d.mp3");
+        
+        }
+        
         //物理体を削除
         dropCircle->getPhysicsBody()->setEnable(false);
         ring->getPhysicsBody()->setEnable(false);
         
         
         auto string = dropCircle->getName() + "_ring.png";
+        
         
         
         //輪の設定

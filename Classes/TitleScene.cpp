@@ -89,6 +89,11 @@ bool TitleScene::init(){
     umbrella-> setPosition(Vec2(selfFrame.width*14/15,selfFrame.height*4/5));
     //umbrella -> setOpacity(0);
     this-> addChild(umbrella,10);
+    
+    CocosDenshion::SimpleAudioEngine::getInstance()->preloadEffect("low_bFlat.mp3");
+    CocosDenshion::SimpleAudioEngine::getInstance()->preloadEffect("low_c.mp3");
+    CocosDenshion::SimpleAudioEngine::getInstance()->preloadEffect("low_d.mp3");
+
  
  
     
@@ -162,6 +167,8 @@ bool TitleScene::onTouchBegan(Touch *touch, Event *unused_event){
         auto ringSequence = Sequence::create(scaleFadeOut,ringRemove, NULL);
         
         effectRing -> runAction(ringSequence);
+        CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("low_c.mp3");
+
         
         return true;
     }
@@ -191,6 +198,9 @@ bool TitleScene::onTouchBegan(Touch *touch, Event *unused_event){
         
         effectRing -> runAction(ringSequence);
         
+        CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("low_bFlat.mp3");
+
+        
         return true;
     }
     
@@ -218,6 +228,8 @@ bool TitleScene::onTouchBegan(Touch *touch, Event *unused_event){
         auto ringSequence = Sequence::create(scaleFadeOut,ringRemove, NULL);
         
         effectRing -> runAction(ringSequence);
+        CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("low_d.mp3");
+
         
         return true;
     }
