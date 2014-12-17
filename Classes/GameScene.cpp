@@ -473,10 +473,38 @@ void GameScene::setButton(){
     
     for(int idx = 0; idx < colors->size() ; idx++){
         
+        //色を抜き出し
+        auto color = colors->at(idx);
         
+        //スプライト生成
+        auto circle = Sprite::create(StringUtils::format("%s_umbrella.png",color));
         
+        circle -> setPosition(Vec2(selfFrame.width/8*(idx + 1), selfFrame.height/6));
+
+        circle -> setScale(0.05);
+        
+        circle -> setName(StringUtils::format("%s",color));
+        
+        circle -> setTag(1);
+
+        PhysicsMaterial circleMaterial;
+        
+        //auto greenMaterial = PHYSICSBODY_MATERIAL_DEFAULT;
+        auto circleBody = PhysicsBody::createCircle((circle->getContentSize().width/2)*circle->getScale(),circleMaterial);
+        circleBody->setDynamic(false); // 重力の影響を受けない
+        circleBody->setEnable(true);
+        
+        circleBody->setCategoryBitmask(0x01);
+        circleBody->setCollisionBitmask(0);
+        circleBody->setContactTestBitmask(0x02);
+        
+        circle->setPhysicsBody(circleBody);
+        
+        this->addChild(circle);
+
     }
-    
+
+/*
     //グリーンボタン
     greenCircle = Sprite::create("green_umbrella.png");
     greenCircle -> setPosition(Vec2(selfFrame.width/6*1, selfFrame.height/6));
@@ -497,12 +525,14 @@ void GameScene::setButton(){
 
     greenCircle->setPhysicsBody(greenCircleBody);
     addChild(greenCircle);
+*/
 /*
     greenRing = Sprite::create("green_ring.png");
     greenRing -> setPosition(Vec2(selfFrame.width/2, selfFrame.height/6));
     greenRing -> setScale(0.1);
     addChild(greenRing);
   */
+/*
     //ブルーボタン
     blueCircle = Sprite::create("blue_umbrella.png");
     blueCircle -> setPosition(Vec2(selfFrame.width/6*3,selfFrame.height/6));
@@ -520,12 +550,14 @@ void GameScene::setButton(){
     blueCircleBody->setContactTestBitmask(0x02);
     blueCircle->setPhysicsBody(blueCircleBody);
     addChild(blueCircle);
+*/
 /*
     blueRing = Sprite::create("blue_ring.png");
     blueRing -> setPosition(Vec2(60,selfFrame.height/4));
     blueRing -> setScale(0.1);
     addChild(blueRing);
 */
+/*
     //レッドボタン
     redCircle = Sprite::create("red_umbrella.png");
     redCircle -> setPosition(Vec2(selfFrame.width/6*5,selfFrame.height/6));
@@ -545,7 +577,7 @@ void GameScene::setButton(){
 
         redCircle->setPhysicsBody(redCircleBody);
     addChild(redCircle);
-
+*/
 /*
     redRing = Sprite::create("red_ring.png");
     redRing -> setPosition(Vec2(selfFrame.width-60,selfFrame.height/4));
