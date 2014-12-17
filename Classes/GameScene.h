@@ -27,6 +27,11 @@ protected:
     
     cocos2d::Sprite *player;
     
+    //硬直時間
+    int rigidTappedTime = 0;
+    //硬直フラグ
+    bool rigidTappedFlag = false;
+    
     bool testFlag = false;
     
     
@@ -38,6 +43,8 @@ protected:
     cocos2d::Sprite *yellowCircle;
 //    cocos2d::Sprite *yellowRing;
   
+    //1フレーム毎の処理
+    void update(float delta);
     
     
     public :
@@ -49,10 +56,12 @@ protected:
     void setButton();
     
     //タップイベントの宣言
-    bool onTouchBegan(cocos2d::Touch *touch, cocos2d::Event *event);
+    void onTouchesBegan(const std::vector<cocos2d::Touch *> &touches, cocos2d::Event *unused_event);
+/*
     void onTouchEnded(cocos2d::Touch *touch, cocos2d::Event *event);
     void onTouchMoved(cocos2d::Touch *touch, cocos2d::Event *event);
     void onTouchCancelled(cocos2d::Touch *touch, cocos2d::Event *event);
+*/
     //衝突イベント
     bool onContactBegin(cocos2d::PhysicsContact& contact);
 

@@ -34,13 +34,14 @@ protected:
     CREATE_FUNC(TitleScene);
     
     
-    
-    //タップイベントの宣言
+    /***************** タッチイベント用変数 ***********************/
     bool onTouchBegan(cocos2d::Touch *touch, cocos2d::Event *event);
+
     void onTouchEnded(cocos2d::Touch *touch, cocos2d::Event *event);
     void onTouchMoved(cocos2d::Touch *touch, cocos2d::Event *event);
     void onTouchCancelled(cocos2d::Touch *touch, cocos2d::Event *event);
-    
+
+    /***************** タッチイベント用変数 終***********************/
     
     /***************** オープニング動作 ***********************/
     void setStart();

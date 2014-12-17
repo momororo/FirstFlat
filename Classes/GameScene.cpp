@@ -82,15 +82,17 @@ bool GameScene::init(){
     /**************　タッチイベント設定  ******************/
     
     //シングルタップ用リスナーを用意する
-    auto listener = EventListenerTouchOneByOne::create();
+    auto listener = EventListenerTouchAllAtOnce::create();
     //listener -> setSwallowTouches(_swallowsTouches);
     
     
     //各イベントの割り当て
-    listener -> onTouchBegan = CC_CALLBACK_2(GameScene::onTouchBegan,this);
-    listener -> onTouchMoved = CC_CALLBACK_2(GameScene::onTouchMoved,this);
+    listener -> onTouchesBegan = CC_CALLBACK_2(GameScene::onTouchesBegan,this);
+/*
+    listener -> onTouchesMoved = CC_CALLBACK_2(GameScene::onTouchesMoved,this);
     listener -> onTouchEnded = CC_CALLBACK_2(GameScene::onTouchEnded,this);
     listener -> onTouchCancelled = CC_CALLBACK_2(GameScene::onTouchCancelled,this);
+*/
     
     //イベントディスパッチャようにリスナーを追加する
     _eventDispatcher -> addEventListenerWithSceneGraphPriority(listener, this);
@@ -114,7 +116,8 @@ bool GameScene::init(){
     
     //スコア機能の実装
 
-    
+    //1フレーム毎の動き
+    this->scheduleUpdate();
     
     
     
@@ -122,138 +125,197 @@ bool GameScene::init(){
     return true;
 }
 
-bool GameScene::onTouchBegan(Touch *touch, Event *unused_event){
+void GameScene::onTouchesBegan(const std::vector<Touch *> &touches, cocos2d::Event *unused_event){
     
-    //タップ開始時の処理
-    CCLOG("touchBegan");
 
-    //ポイントの取得
-    Point touchPoint = Vec2(touch->getLocation().x,touch->getLocation().y);
-    
-    
-    //アクアリングの処理
-    if (aquaCircle->getBoundingBox().containsPoint(touchPoint))
+//硬直中か判定
+if(rigidTappedFlag == true){
+
+    //硬直時間
+    if(rigidTappedTime >= 0){
         
-    {
-        auto effectRing = Sprite::create("aqua_ring.png");
-        effectRing -> setPosition(Vec2(aquaCircle->getPosition().x,aquaCircle->getPosition().y));
-        effectRing -> setScale(0.1);
-        effectRing -> setName("aqua");
-        effectRing -> setTag(2);
+        //初期化
+        rigidTappedTime = 0;
+        rigidTappedFlag = false;
+        
+    }else{
+        //リターン
+        return;
+    }
+}
+//硬直中か判定終
 
+ 
+    
+    
+    //同じものがタップされないように小細工
+    std::string tappedName = "";
+    
+    //ダブルタップのカウント
+    unsigned long tappedCount = 0;
+    
+    
+    //イテレーター
+    std::vector<cocos2d::Touch*>::const_iterator iterator = touches.begin();
+    //ループ
+    while (tappedCount != 2 && iterator != touches.end()) {
+        
+        Touch* touch = (Touch*)(*iterator);
+        //ポイントの取得
+        Point touchPoint = Vec2(touch->getLocation().x,touch->getLocation().y);
+        
+        //アクアリングの処理
+        if (aquaCircle->getBoundingBox().containsPoint(touchPoint))
+            
+        {
+            //前回タップと同じ色か確認(同じならreturn)
+            if(tappedName == "aqua"){
+                return;
+            }
+            
+            auto effectRing = Sprite::create("aqua_ring.png");
+            effectRing -> setPosition(Vec2(aquaCircle->getPosition().x,aquaCircle->getPosition().y));
+            effectRing -> setScale(0.1);
+            effectRing -> setName("aqua");
+            effectRing -> setTag(2);
+            effectRing -> setOpacity(128);
+            
             //物理体の生成
             auto aquaMaterial = PHYSICSBODY_MATERIAL_DEFAULT;
             auto aquaRingBody = PhysicsBody::createCircle((effectRing->getContentSize().width/2)*effectRing->getScale(),aquaMaterial);
             aquaRingBody->setDynamic(false); // 重力の影響を受けない
             aquaRingBody->setEnable(true);
-
+            
             aquaRingBody->setCategoryBitmask(0x01);
             aquaRingBody->setCollisionBitmask(0);
             aquaRingBody->setContactTestBitmask(0x02);
             effectRing->setPhysicsBody(aquaRingBody);
+            
+            addChild(effectRing);
+            
+            
+            auto ringScale = ScaleBy::create(2, 12);
+            auto ringFadeOut = FadeOut::create(2);
+            auto ringRemove = RemoveSelf::create(true);
+            auto scaleFadeOut = Spawn::create(ringScale,ringFadeOut, NULL);
+            auto ringSequence = Sequence::create(scaleFadeOut,ringRemove, NULL);
+            
+            effectRing -> runAction(ringSequence);
+            
+            aquaCircle ->runAction(RotateBy::create(1, 360));
+            
+            tappedName ="aqua";
+            
+        }
         
-        addChild(effectRing);
-
-        
-        auto ringScale = ScaleBy::create(2, 12);
-        auto ringFadeOut = FadeOut::create(2);
-        auto ringRemove = RemoveSelf::create(true);
-        auto scaleFadeOut = Spawn::create(ringScale,ringFadeOut, NULL);
-        auto ringSequence = Sequence::create(scaleFadeOut,ringRemove, NULL);
-        
-        effectRing -> runAction(ringSequence);
-        
-        aquaCircle ->runAction(RotateBy::create(1, 360));
-        
-        return true;
-    }
-
-    //オレンジリングの処理
-    if (orangeCircle->getBoundingBox().containsPoint(touchPoint))
-        
-    {
-        auto effectRing = Sprite::create("orange_ring.png");
-        effectRing -> setPosition(Vec2(orangeCircle->getPosition().x,orangeCircle->getPosition().y));
-        effectRing -> setScale(0.1);
-        effectRing -> setName("orange");
-        effectRing -> setTag(2);
-
+        //オレンジリングの処理
+        if (orangeCircle->getBoundingBox().containsPoint(touchPoint))
+            
+        {
+            
+            //前回タップと同じ色か確認(同じならreturn)
+            if(tappedName == "orange"){
+                return;
+            }
+            
+            
+            auto effectRing = Sprite::create("orange_ring.png");
+            effectRing -> setPosition(Vec2(orangeCircle->getPosition().x,orangeCircle->getPosition().y));
+            effectRing -> setScale(0.1);
+            effectRing -> setName("orange");
+            effectRing -> setTag(2);
+            effectRing -> setOpacity(128);
+            
+            
             //物理体の生成
             auto orangeMaterial = PHYSICSBODY_MATERIAL_DEFAULT;
             auto orangeRingBody = PhysicsBody::createCircle((effectRing->getContentSize().width/2)*effectRing->getScale(),orangeMaterial);
             orangeRingBody->setDynamic(false); // 重力の影響を受けない
             orangeRingBody->setEnable(true);
-
+            
             orangeRingBody->setCategoryBitmask(0x01);
             orangeRingBody->setCollisionBitmask(0);
             orangeRingBody->setContactTestBitmask(0x02);
-
+            
             effectRing->setPhysicsBody(orangeRingBody);
             
-        addChild(effectRing);
+            addChild(effectRing);
+            
+            auto ringScale = ScaleBy::create(2, 12);
+            auto ringFadeOut = FadeOut::create(2);
+            auto ringRemove = RemoveSelf::create(true);
+            auto scaleFadeOut = Spawn::create(ringScale,ringFadeOut, NULL);
+            auto ringSequence = Sequence::create(scaleFadeOut,ringRemove, NULL);
+            
+            effectRing -> runAction(ringSequence);
+            
+            orangeCircle->runAction(RotateBy::create(1, 360));
+            
+            tappedName = "orange";
+            
+            
+        }
         
-        auto ringScale = ScaleBy::create(2, 12);
-        auto ringFadeOut = FadeOut::create(2);
-        auto ringRemove = RemoveSelf::create(true);
-        auto scaleFadeOut = Spawn::create(ringScale,ringFadeOut, NULL);
-        auto ringSequence = Sequence::create(scaleFadeOut,ringRemove, NULL);
         
-        effectRing -> runAction(ringSequence);
         
-        orangeCircle->runAction(RotateBy::create(1, 360));
-        return true;
-    }
-    
-    
-    
-    //イエローリングの処理
-    if (yellowCircle->getBoundingBox().containsPoint(touchPoint))
-        
-    {
-        CCLOG("スタートボタンをタップ");
-        
-        auto effectRing = Sprite::create("yellow_ring.png");
-        effectRing -> setPosition(Vec2(yellowCircle->getPosition().x,yellowCircle->getPosition().y));
-        effectRing -> setScale(0.1);
-        effectRing -> setName("yellow");
-        effectRing -> setTag(2);
-
+        //イエローリングの処理
+        if (yellowCircle->getBoundingBox().containsPoint(touchPoint))
+            
+        {
+            
+            //前回タップと同じ色か確認(同じならreturn)
+            if(tappedName == "yellow" ){
+                return;
+            }
+            
+            
+            auto effectRing = Sprite::create("yellow_ring.png");
+            effectRing -> setPosition(Vec2(yellowCircle->getPosition().x,yellowCircle->getPosition().y));
+            effectRing -> setScale(0.1);
+            effectRing -> setName("yellow");
+            effectRing -> setTag(2);
+            effectRing -> setOpacity(128);
+            
+            
             //物理体の生成
             auto yellowMaterial = PHYSICSBODY_MATERIAL_DEFAULT;
             auto yellowRingBody = PhysicsBody::createCircle((effectRing->getContentSize().width/2)*effectRing->getScale(),yellowMaterial);
             yellowRingBody->setDynamic(false); // 重力の影響を受けない
             yellowRingBody->setEnable(true);
-
+            
             yellowRingBody->setCategoryBitmask(0x01);
             yellowRingBody->setCollisionBitmask(0);
             yellowRingBody->setContactTestBitmask(0x02);
-
+            
             effectRing->setPhysicsBody(yellowRingBody);
-        
-        addChild(effectRing);
-        
-        auto ringScale = ScaleBy::create(2, 12);
-        auto ringFadeOut = FadeOut::create(2);
-        auto ringRemove = RemoveSelf::create(true);
-        auto scaleFadeOut = Spawn::create(ringScale,ringFadeOut, NULL);
-        auto ringSequence = Sequence::create(scaleFadeOut,ringRemove, NULL);
-        
-        effectRing -> runAction(ringSequence);
-        
-        yellowCircle->runAction(RotateBy::create(1, 360));
-        
-        return true;
+            
+            addChild(effectRing);
+            
+            auto ringScale = ScaleBy::create(2, 12);
+            auto ringFadeOut = FadeOut::create(2);
+            auto ringRemove = RemoveSelf::create(true);
+            auto scaleFadeOut = Spawn::create(ringScale,ringFadeOut, NULL);
+            auto ringSequence = Sequence::create(scaleFadeOut,ringRemove, NULL);
+            
+            effectRing -> runAction(ringSequence);
+            
+            yellowCircle->runAction(RotateBy::create(1, 360));
+            
+            tappedName = "yellow";
+            
+        }
+        tappedCount++;
+        iterator++;
     }
+ 
+    rigidTappedFlag = true;
+    
 
     
-    
-    
-    
-    
-    return true;
+    return;
     
 }
-
+/*
 void GameScene::onTouchMoved(Touch *touch, Event *unused_event){
     
     //スワイプ中の処理
@@ -287,6 +349,7 @@ void GameScene::onTouchCancelled(Touch *touch, Event *unused_event){
     CCLOG("touchCancelled");
     
 }
+*/
 
 bool GameScene::onContactBegin(cocos2d::PhysicsContact& contact){
     
@@ -349,8 +412,6 @@ bool GameScene::onContactBegin(cocos2d::PhysicsContact& contact){
         
         
         auto string = dropCircle->getName() + "_ring.png";
-        
-        
         
         //輪の設定
         auto dropRing = Sprite::create(string);
@@ -565,6 +626,19 @@ void GameScene::setDrops(float time){
     
     
     
+    
+    
+}
+
+
+//1フレーム毎の処理
+void GameScene::update(float delta){
+    
+
+    //フレームをカウントする。
+    if(rigidTappedFlag == true){
+        rigidTappedTime++;
+    }
     
     
 }

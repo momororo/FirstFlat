@@ -59,7 +59,9 @@
 	<true/>
 	<key>UIAppFonts</key>
 	<array>
+		<string>Bizareadventure.ttf</string>
 		<string>DragonQuestFC.ttf</string>
+		<string>KouzanBrushFont.ttf</string>
 	</array>
 	<key>UIPrerenderedIcon</key>
 	<true/>
