@@ -43,6 +43,10 @@ protected:
     
     //カラー格納配列
     std::vector<std::string *> *colors = new std::vector<std::string *>;
+    
+    //傘用の配列
+    cocos2d::Vector<cocos2d::Sprite *> *umbrellas = new cocos2d::Vector<cocos2d::Sprite *>;
+    
 
     
     
@@ -64,7 +68,7 @@ protected:
     virtual bool init();
     CREATE_FUNC(GameScene);
     
-    void setButton();
+    void setUmbrella();
     
     //タップイベントの宣言
     void onTouchesBegan(const std::vector<cocos2d::Touch *> &touches, cocos2d::Event *unused_event);
