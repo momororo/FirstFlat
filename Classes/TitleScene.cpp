@@ -234,13 +234,6 @@ bool TitleScene::onTouchBegan(Touch *touch, Event *unused_event){
         
         return true;
     }
-
-    
-    
-    
-    
-    
-    
     
     
     return true;

@@ -70,6 +70,9 @@ protected:
     
     void setUmbrella();
     
+    //スプライトの除去
+    void removeSprite();
+    
     //タップイベントの宣言
     void onTouchesBegan(const std::vector<cocos2d::Touch *> &touches, cocos2d::Event *unused_event);
 /*

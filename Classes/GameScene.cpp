@@ -362,6 +362,7 @@ bool GameScene::onContactBegin(cocos2d::PhysicsContact& contact){
         auto moveRemove = Sequence::create(remove,NULL);
         
         dropCircle -> runAction(moveRemove);
+        //配列から削除
         dropRing -> runAction(moveScale);
         
         
@@ -472,7 +473,11 @@ void GameScene::setDrops(float time){
 
 //1フレーム毎の処理
 void GameScene::update(float delta){
+  
     
+    //不要なスプライトの除去
+    removeSprite();
+
 /*
     //フレームをカウントする。
     if(rigidTappedFlag == true){
@@ -488,6 +493,37 @@ void GameScene::update(float delta){
         }
     }
 */
+    
+}
+
+void GameScene::removeSprite(){
+    
+    //ドロップの消去
+    if(drops->size() > 0){
+        
+        //途中で消された残骸用
+        if(drops->at(0)->getParent() == NULL){
+
+            //配列から削除
+            drops->erase(0);
+            
+            
+        }
+
+        //デバッグ用
+        if(drops->at(0)->getPositionY() < 0){
+            
+            auto drop = drops->at(0);
+            
+            //配列から削除
+            drops->erase(0);
+
+            //親から削除
+            drop->removeFromParentAndCleanup(true);
+            
+        }
+        
+    }
     
 }
 

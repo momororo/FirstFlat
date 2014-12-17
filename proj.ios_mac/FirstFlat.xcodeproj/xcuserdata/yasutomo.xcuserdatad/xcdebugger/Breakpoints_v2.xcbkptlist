@@ -26,11 +26,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "../Classes/GameScene.cpp"
-            timestampString = "440501677.677362"
+            timestampString = "440513097.803211"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "510"
-            endingLineNumber = "510"
+            startingLineNumber = "546"
+            endingLineNumber = "546"
             landmarkName = "GameScene::setGameover()"
             landmarkType = "5">
          </BreakpointContent>
