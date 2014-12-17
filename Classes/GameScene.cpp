@@ -155,8 +155,6 @@ if(rigidTappedFlag == true){
 //硬直中か判定終
 
  
-    
-    
     //同じものがタップされないように小細工
     std::string tappedName = "";
     
@@ -164,13 +162,14 @@ if(rigidTappedFlag == true){
     unsigned long tappedCount = 0;
     
     
-    //イテレーター
-    std::vector<cocos2d::Touch*>::const_iterator iterator = touches.begin();
     
     //ループ(マルチタップ用)
-    while (tappedCount != 2 && iterator != touches.end()) {
+    for (auto iterator : touches) {
         
-        Touch* touch = (Touch*)(*iterator);
+        CCLOG("ループ");
+        CCLOG("%d",tappedCount);
+        
+        Touch* touch = iterator;
         //ポイントの取得
         Point touchPoint = Vec2(touch->getLocation().x,touch->getLocation().y);
         
@@ -178,6 +177,12 @@ if(rigidTappedFlag == true){
         for (auto umbrella : *umbrellas) {
             
             if(umbrella->getBoundingBox().containsPoint(touchPoint)){
+                
+                //ダブルタップの制限を超えたら処理せず終
+                if(tappedCount >= 2){
+                    tappedCount = 0;
+                    return;
+                }
 
 
                 //リングを広げる処理へ
@@ -219,11 +224,12 @@ if(rigidTappedFlag == true){
                 
                 effectRing -> runAction(ringSequence);
                 
-                effectRing ->runAction(RotateBy::create(1, 360));
+                umbrella ->runAction(RotateBy::create(1, 360));
                 
                 tappedName = effectRing->getName();
 
                 rigidTappedFlag = true;
+                tappedCount++;
                 
             }//if文
             

@@ -26,11 +26,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "../Classes/GameScene.cpp"
-            timestampString = "440485857.855281"
+            timestampString = "440501677.677362"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "502"
-            endingLineNumber = "502"
+            startingLineNumber = "510"
+            endingLineNumber = "510"
             landmarkName = "GameScene::setGameover()"
             landmarkType = "5">
          </BreakpointContent>
@@ -42,11 +42,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "../Classes/GameScene.cpp"
-            timestampString = "440485857.855281"
+            timestampString = "440501677.677362"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "325"
-            endingLineNumber = "325"
+            startingLineNumber = "333"
+            endingLineNumber = "333"
             landmarkName = "GameScene::onContactBegin(cocos2d::PhysicsContact&amp; contact)"
             landmarkType = "5">
          </BreakpointContent>
@@ -58,11 +58,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "../Classes/GameScene.cpp"
-            timestampString = "440485857.855281"
+            timestampString = "440501677.677362"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "341"
-            endingLineNumber = "341"
+            startingLineNumber = "349"
+            endingLineNumber = "349"
             landmarkName = "GameScene::onContactBegin(cocos2d::PhysicsContact&amp; contact)"
             landmarkType = "5">
          </BreakpointContent>
@@ -79,6 +79,22 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "149"
             endingLineNumber = "149"
+            landmarkName = "GameScene::onTouchesBegan(const std::vector&lt;Touch *&gt; &amp;touches, cocos2d::Event *unused_event)"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "../Classes/GameScene.cpp"
+            timestampString = "440501459.001018"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "170"
+            endingLineNumber = "170"
             landmarkName = "GameScene::onTouchesBegan(const std::vector&lt;Touch *&gt; &amp;touches, cocos2d::Event *unused_event)"
             landmarkType = "5">
          </BreakpointContent>
