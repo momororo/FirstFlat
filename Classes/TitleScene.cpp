@@ -46,6 +46,8 @@ bool TitleScene::init(){
     
     this -> schedule(schedule_selector(TitleScene::setDrops), 1);
     
+    presetSprite();
+    
     //各種タイトルの設定
     setTitle();
     setStart();
@@ -208,17 +210,17 @@ bool TitleScene::onTouchBegan(Touch *touch, Event *unused_event){
     
     
     //チャレンジボタンタップ時
-    if (!challenge) {
+    if (!tutorial) {
         
         return true;
         
-    }else if (challenge->getBoundingBox().containsPoint(touchPoint))
+    }else if (tutorial->getBoundingBox().containsPoint(touchPoint))
         
     {
         CCLOG("スタートボタンをタップ");
         
         auto effectRing = Sprite::create("yellow_ring.png");
-        effectRing -> setPosition(Vec2(challenge->getPosition().x,challenge->getPosition().y));
+        effectRing -> setPosition(Vec2(tutorial->getPosition().x,tutorial->getPosition().y));
         effectRing -> setScale(0.1);
         addChild(effectRing);
         
@@ -305,16 +307,159 @@ void TitleScene::onTouchCancelled(Touch *touch, Event *unused_event){
                 各種オープニングの動作設定
  **********************************************************/
 
+//プリセット
+void TitleScene::presetSprite(){
+
+    //タイトル効果
+    auto titleRain = Sprite::create("yellow_rain.png");
+    titleRain -> setPosition(Vec2(selfFrame.width/2,selfFrame.height + 200));
+    titleRain -> setScale(0.1);
+    titleRain -> setVisible(false);
+    titleRain -> setName("titleRain");
+    this->addChild(titleRain);
+    
+    //タイトル
+    titleLabel = Label::createWithSystemFont("レイン\nドロップ","DragonQuestFC",120);
+    titleLabel -> setPosition(Vec2(selfFrame.width/2, selfFrame.height*2/3));
+    titleLabel->setOpacity(0);
+    titleLabel->setVisible(false);
+    titleLabel->setName("titleLabel");
+    this->addChild(titleLabel,10);
+    
+    //タイトルリング
+    auto titleRing = Sprite::create("yellow_ring.png");
+    titleRing -> setPosition(Vec2(selfFrame.width/2,selfFrame.height*2/3));
+    titleRing -> setScale(0.1);
+    titleRing ->setVisible(false);
+    titleRing ->setName("titleRing");
+    this->addChild(titleRing);
+    
+    //スタートボタン効果
+    auto startRain = Sprite::create("blue_rain.png");
+    startRain -> setPosition(Vec2(selfFrame.width/2,selfFrame.height+100));
+    startRain -> setScale(0.1);
+    startRain -> setVisible(false);
+    startRain -> setName("startRain");
+    this -> addChild(startRain);
+    
+    //スタートボタン
+    start = Sprite::create("blue_umbrella.png");
+    start -> setPosition(Vec2(selfFrame.width/2, selfFrame.height/6));
+    start -> setScale(0.1);
+    start -> setOpacity(0);
+    start -> setVisible(false);
+    start -> setName("start");
+    addChild(start,10);
+    
+    auto startLabel = Label::createWithSystemFont("スタート","DragonQuestFC",30);
+    startLabel -> setPosition(Vec2(start->getPosition().x, start->getPosition().y));
+    startLabel -> setVisible(false);
+    startLabel -> setName("startLabel");
+    addChild(startLabel,10);
+    
+    //スタートリング
+    auto startRing = Sprite::create("blue_ring.png");
+    startRing -> setPosition(Vec2(selfFrame.width/2,selfFrame.height/6));
+    startRing -> setScale(0.1);
+    startRing -> setVisible(false);
+    startRing -> setName("startRing");
+    this->addChild(startRing);
+
+    
+
+    //ランキングボタン効果
+    auto rankingRain = Sprite::create("green_rain.png");
+    rankingRain -> setPosition(Vec2(60,selfFrame.height+100));
+    rankingRain -> setScale(0.1);
+    rankingRain -> setVisible(false);
+    rankingRain -> setName("rankingRain");
+    this->addChild(rankingRain);
+    
+    
+    //ランキング
+    ranking = Sprite::create("green_umbrella.png");
+    ranking -> setPosition(Vec2(60,selfFrame.height/4));
+    ranking -> setScale(0.1);
+    ranking -> setOpacity(0);
+    ranking -> setVisible(false);
+    ranking -> setName("ranking");
+    addChild(ranking,10);
+    
+    auto rankingLabel = Label::createWithSystemFont("ランキング","DragonQuestFC",30);
+    rankingLabel -> setPosition(Vec2(ranking->getPosition().x, ranking->getPosition().y));
+    rankingLabel -> setVisible(false);
+    rankingLabel -> setName("rankingLabel");
+    addChild(rankingLabel,10);
+    
+    //ランキングリング
+    auto rankingRing = Sprite::create("green_ring.png");
+    rankingRing -> setPosition(Vec2(60,selfFrame.height/6));
+    rankingRing -> setScale(0.1);
+    rankingRing -> setVisible(false);
+    rankingRing -> setName("rankingRing");
+    addChild(rankingRing);
+
+    
+    // チュートリアル効果
+    auto tutorialRain = Sprite::create("red_rain.png");
+    tutorialRain -> setPosition(Vec2(selfFrame.width-60,selfFrame.height+100));
+    tutorialRain -> setScale(0.1);
+    tutorialRain -> setVisible(false);
+    tutorialRain -> setName("tutorialRain");
+    this->addChild(tutorialRain);
+    
+    //チュートリアル
+    tutorial = Sprite::create("red_umbrella.png");
+    tutorial -> setPosition(Vec2(selfFrame.width-60,selfFrame.height/4));
+    tutorial -> setScale(0.1);
+    tutorial -> setOpacity(0);
+    tutorial -> setVisible(false);
+    tutorial -> setName("tutorial");
+    addChild(tutorial,10);
+    
+    auto tutorialLabel = Label::createWithSystemFont("あそびかた","DragonQuestFC",30);
+    tutorialLabel -> setPosition(Vec2(tutorial->getPosition().x, tutorial->getPosition().y));
+    tutorialLabel ->setVisible(false);
+    tutorialLabel -> setName("tutorialLabel");
+    addChild(tutorialLabel,10);
+
+    //チュートリアルリング
+    auto tutorialRing = Sprite::create("red_ring.png");
+    tutorialRing -> setPosition(Vec2(selfFrame.width-60,selfFrame.height/6));
+    tutorialRing -> setScale(0.1);
+    tutorialRing -> setVisible(false);
+    tutorialRing -> setName("tutorialRing");
+    this->addChild(tutorialRing);
+    
+    //アンブレラ
+    auto umbrella = Sprite::create("umbrella.png");
+    umbrella -> setAnchorPoint(Vec2(1,1));
+    umbrella -> setScale(0.08);
+    umbrella-> setPosition(Vec2(selfFrame.width/2,selfFrame.height*2/3));
+    umbrella -> setOpacity(0);
+    umbrella -> setVisible(false);
+    umbrella -> setName("umbrella");
+    addChild(umbrella);
+
+
+
+
+
+
+
+
+
+    
+
+    
+}
+
+
 
 //オープニングのタイトルの動作
 void TitleScene::setTitle(){
     
     
-    //タイトル効果
-    auto titleRain = Sprite::create("yellow_rain.png");
-    titleRain -> setPosition(Vec2(selfFrame.width/2,selfFrame.height + 200));
-    titleRain -> setScale(0.1);
-    this->addChild(titleRain);
     
     //オブジェクトの移動
     auto move = MoveTo::create(2, Vec2(selfFrame.width/2,selfFrame.height*2/3));
@@ -326,11 +471,6 @@ void TitleScene::setTitle(){
     auto func = CallFunc::create([this](){
         
         this -> fadeInTitle();
-        
-        auto titleRing = Sprite::create("yellow_ring.png");
-        titleRing -> setPosition(Vec2(selfFrame.width/2,selfFrame.height*2/3));
-        titleRing -> setScale(0.1);
-        this->addChild(titleRing);
         
         //オブジェクトの拡大
         auto scale = ScaleBy::create(2, 12);
@@ -345,14 +485,17 @@ void TitleScene::setTitle(){
         //拡大後削除のアクション
         auto moveScale = Sequence::create(scaleFadeOut,remove,NULL);
         
-        titleRing -> runAction(moveScale);
+        this->getChildByName("titleRing") -> setVisible(true);
+        
+        this->getChildByName("titleRing") -> runAction(moveScale);
         
     });
     
     //移動後削除のアクション
     auto moveRemove = Sequence::create(move,remove,func,NULL);
 
-    titleRain -> runAction(moveRemove);
+    this->getChildByName("titleRain") -> setVisible(true);
+    this->getChildByName("titleRain") -> runAction(moveRemove);
     
 }
 
@@ -361,11 +504,6 @@ void TitleScene::setTitle(){
 //オープニングのスタート動作
 void TitleScene::setStart(){
     
-    //スタートボタン効果
-    auto startRain = Sprite::create("blue_rain.png");
-    startRain -> setPosition(Vec2(selfFrame.width/2,selfFrame.height+100));
-    startRain -> setScale(0.1);
-    this -> addChild(startRain);
     
     
     
@@ -381,11 +519,6 @@ void TitleScene::setStart(){
          this -> fadeInStart();
          
          
-         auto startRing = Sprite::create("blue_ring.png");
-         startRing -> setPosition(Vec2(selfFrame.width/2,selfFrame.height/6));
-         startRing -> setScale(0.1);
-         this->addChild(startRing);
-     
          //オブジェクトの拡大
          auto scale = ScaleBy::create(2, 12);
          //オブジェクトのフェードアウト
@@ -399,14 +532,17 @@ void TitleScene::setStart(){
          //拡大後削除のアクション
          auto moveScale = Sequence::create(scaleFadeOut,remove,NULL);
      
-         startRing -> runAction(moveScale);
+         this->getChildByName("startRing") -> setVisible(true);
+         
+         this->getChildByName("startRing") -> runAction(moveScale);
      
      });
      
      //移動後削除のアクション
      auto moveRemove = Sequence::create(move,remove,func,NULL);
      
-     startRain -> runAction(moveRemove);
+    this->getChildByName("startRain") -> setVisible(true);
+    this->getChildByName("startRain") -> runAction(moveRemove);
 
 }
 
@@ -415,11 +551,6 @@ void TitleScene::setStart(){
 //オープニングのランキング動作
 void TitleScene::setRanking(){
     
-    //ランキングボタン効果
-    auto rankingRain = Sprite::create("green_rain.png");
-    rankingRain -> setPosition(Vec2(60,selfFrame.height+100));
-    rankingRain -> setScale(0.1);
-    this->addChild(rankingRain);
     
     
     //オブジェクトの移動
@@ -433,10 +564,6 @@ void TitleScene::setRanking(){
         
         this -> fadeInRanking();
         
-        auto rankingRing = Sprite::create("green_ring.png");
-        rankingRing -> setPosition(Vec2(60,selfFrame.height/6));
-        rankingRing -> setScale(0.1);
-        addChild(rankingRing);
     
         
         //オブジェクトの拡大
@@ -452,26 +579,24 @@ void TitleScene::setRanking(){
         //拡大後削除のアクション
         auto moveScale = Sequence::create(scaleFadeOut,remove,NULL);
         
-        rankingRing -> runAction(moveScale);
+        this->getChildByName("rankingRing") -> setVisible(true);
+        
+        this->getChildByName("rankingRing") -> runAction(moveScale);
         
     });
     
     //移動後削除のアクション
     auto moveRemove = Sequence::create(move,remove,func,NULL);
     
-    rankingRain -> runAction(moveRemove);
+    this->getChildByName("rankingRain") -> setVisible(true);
+    this->getChildByName("rankingRain") -> runAction(moveRemove);
     
 }
 
 
-//オープニングのチャレンジ動作
+//オープニングのチュートリアル動作
 void TitleScene::setTutorial(){
     
-    // チュートリアル効果
-    auto tutorialRain = Sprite::create("red_rain.png");
-    tutorialRain -> setPosition(Vec2(selfFrame.width-60,selfFrame.height+100));
-    tutorialRain -> setScale(0.1);
-    this->addChild(tutorialRain);
     
     //オブジェクトの移動
     auto move = MoveTo::create(2, Vec2(selfFrame.width-60,selfFrame.height/6));
@@ -479,15 +604,11 @@ void TitleScene::setTutorial(){
     //オブジェクトの削除
     auto remove = RemoveSelf::create(true);
     
-    //タイトルフェードイン
+    //チュートリアルフェードイン
     auto func = CallFunc::create([this](){
         
         this -> fadeInTutorial();
         
-        auto tutorialRing = Sprite::create("red_ring.png");
-        tutorialRing -> setPosition(Vec2(selfFrame.width-60,selfFrame.height/6));
-        tutorialRing -> setScale(0.1);
-        this->addChild(tutorialRing);
         
         
         //オブジェクトの拡大
@@ -503,15 +624,18 @@ void TitleScene::setTutorial(){
         //拡大後削除のアクション
         auto moveScale = Sequence::create(scaleFadeOut,remove,NULL);
         
-        tutorialRing -> runAction(moveScale);
+        this->getChildByName("tutorialRing") -> setVisible(true);
         
+        this->getChildByName("tutorialRing") -> runAction(moveScale);
+
     });
     
     //移動後削除のアクション
     auto moveRemove = Sequence::create(move,remove,func,NULL);
     
-    tutorialRain -> runAction(moveRemove);
-
+    this->getChildByName("tutorialRain") -> setVisible(true);
+    this->getChildByName("tutorialRain") -> runAction(moveRemove);
+    
 }
 
 /***********************************************************
@@ -530,13 +654,9 @@ void TitleScene::setTutorial(){
 
 //タイトルのフェードイン表示
 void TitleScene::fadeInTitle(){
-    
-    //タイトル
-    titleLabel = Label::createWithSystemFont("レイン\nドロップ","DragonQuestFC",120);
-    titleLabel -> setPosition(Vec2(selfFrame.width/2, selfFrame.height*2/3));
-    titleLabel->setOpacity(0);
-    addChild(titleLabel,10);
-    titleLabel -> runAction(FadeIn::create(2));
+
+    this -> getChildByName("titleLabel") -> setVisible(true);
+    this -> getChildByName("titleLabel") -> runAction(FadeIn::create(2));
     
     /*
     auto umbrella = Sprite::create("umbrella.png");
@@ -551,72 +671,46 @@ void TitleScene::fadeInTitle(){
 
 void TitleScene::fadeInUmbrella(){
     
-    auto umbrella = Sprite::create("umbrella.png");
-    umbrella -> setAnchorPoint(Vec2(1,1));
-    umbrella -> setScale(0.08);
-    umbrella-> setPosition(Vec2(selfFrame.width/2,selfFrame.height*2/3));
-    umbrella -> setOpacity(0);
-    addChild(umbrella);
-    umbrella -> runAction(FadeIn::create(2));
+
+    this -> getChildByName("umbrella") -> setVisible(true);
+    this -> getChildByName("umbrella") -> runAction(FadeIn::create(2));
 
 }
 
 //スタートのフェードイン表示
 void TitleScene::fadeInStart(){
-    
-    //スタートボタン
-    start = Sprite::create("blue_umbrella.png");
-    start -> setPosition(Vec2(selfFrame.width/2, selfFrame.height/6));
-    start -> setScale(0.1);
-    start -> setOpacity(0);
-    addChild(start,10);
-    
-    auto startLabel = Label::createWithSystemFont("スタート","DragonQuestFC",30);
-    startLabel -> setPosition(Vec2(start->getPosition().x, start->getPosition().y));
-    addChild(startLabel,10);
-    
-    start -> runAction(FadeIn::create(2));
-    startLabel ->runAction(FadeIn::create(2));
+
+    this -> getChildByName("start") -> setVisible(true);
+    this -> getChildByName("start") -> runAction(FadeIn::create(2));
+
+    this -> getChildByName("startLabel") -> setVisible(true);
+    this -> getChildByName("startLabel") -> runAction(FadeIn::create(2));
+
 
 }
 
 //ランキングのフェードイン表示
 void TitleScene::fadeInRanking(){
     
-    //ランキング
-    ranking = Sprite::create("green_umbrella.png");
-    ranking -> setPosition(Vec2(60,selfFrame.height/4));
-    ranking -> setScale(0.1);
-    ranking -> setOpacity(0);
-    addChild(ranking,10);
+
+    this -> getChildByName("ranking") -> setVisible(true);
+    this -> getChildByName("ranking") -> runAction(FadeIn::create(2));
     
-    auto rankingLabel = Label::createWithSystemFont("ランキング","DragonQuestFC",30);
-    rankingLabel -> setPosition(Vec2(ranking->getPosition().x, ranking->getPosition().y));
-    addChild(rankingLabel,10);
-    
-    ranking -> runAction(FadeIn::create(2));
-    rankingLabel -> runAction(FadeIn::create(2));
-    
+    this -> getChildByName("rankingLabel") -> setVisible(true);
+    this -> getChildByName("rankingLabel") -> runAction(FadeIn::create(2));
 
 }
 
 //チャレンジのフェードイン表示
 void TitleScene::fadeInTutorial(){
-    
-    //チャレンジモード
-    challenge = Sprite::create("red_umbrella.png");
-    challenge -> setPosition(Vec2(selfFrame.width-60,selfFrame.height/4));
-    challenge -> setScale(0.1);
-    challenge -> setOpacity(0);
-    addChild(challenge,10);
-    
-    auto challengeLabel = Label::createWithSystemFont("チャレンジ","DragonQuestFC",30);
-    challengeLabel -> setPosition(Vec2(challenge->getPosition().x, challenge->getPosition().y));
-    addChild(challengeLabel,10);
-    
-    challenge -> runAction(FadeIn::create(2));
-    challengeLabel -> runAction(FadeIn::create(2));
 
+    this -> getChildByName("tutorial") -> setVisible(true);
+    this -> getChildByName("tutorial") -> runAction(FadeIn::create(2));
+    
+    this -> getChildByName("tutorialLabel") -> setVisible(true);
+    this -> getChildByName("tutorialLabel") -> runAction(FadeIn::create(2));
+
+    
 }
 /***********************************************************
                 タイトル,各種ボタン設定　終

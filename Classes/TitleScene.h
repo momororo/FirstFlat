@@ -21,7 +21,7 @@ protected:
     
     cocos2d::Sprite *start;
     cocos2d::Sprite *ranking;
-    cocos2d::Sprite *challenge;
+    cocos2d::Sprite *tutorial;
     
     
     
@@ -57,6 +57,10 @@ protected:
     /***************** タッチイベント用変数 終***********************/
     
     /***************** オープニング動作 ***********************/
+    void presetSprite();
+    
+    
+    
     void setStart();
     void setRanking();
     void setTutorial();
