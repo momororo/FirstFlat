@@ -325,6 +325,7 @@ void TitleScene::setTitle(){
     
     //オブジェクトの移動
     auto move = MoveTo::create(2, Vec2(selfFrame.width/2,selfFrame.height*2/3));
+    
     //オブジェクトの削除
     auto remove = RemoveSelf::create(true);
     
@@ -333,6 +334,25 @@ void TitleScene::setTitle(){
         
         this -> fadeInTitle();
         
+        auto titleRing = Sprite::create("yellow_ring.png");
+        titleRing -> setPosition(Vec2(selfFrame.width/2,selfFrame.height*2/3));
+        titleRing -> setScale(0.1);
+        
+        //オブジェクトの拡大
+        auto scale = ScaleBy::create(2, 12);
+        //オブジェクトのフェードアウト
+        auto fadeOut = FadeOut::create(2);
+        
+        auto remove = RemoveSelf::create(true);
+        
+        //拡大・フェードアウト同時アクション
+        auto scaleFadeOut = Spawn::create(scale,fadeOut, NULL);
+        
+        //拡大後削除のアクション
+        auto moveScale = Sequence::create(scaleFadeOut,remove,NULL);
+        
+        titleRing -> runAction(moveScale);
+        
         
         
     });
@@ -340,32 +360,7 @@ void TitleScene::setTitle(){
     //移動後削除のアクション
     auto moveRemove = Sequence::create(move,remove,func,NULL);
 
-
-
-    
-    /*
-    ring = Sprite::create("yellow_ring.png");
-    ring -> setPosition(Vec2(selfFrame.width/2,selfFrame.height + 200));
-    ring -> setScale(0.1);
-    */
-    
-    
-    //オブジェクトの拡大
-    //auto scale = ScaleBy::create(2, 12);
-        //オブジェクトのフェードアウト
-    auto fadeOut = FadeOut::create(2);
-    
-    
-    
-    
-    //拡大・フェードアウト同時アクション
-    //auto scaleFadeOut = Spawn::create(scale,fadeOut, NULL);
-    //移動後拡大のアクション
-    //auto moveScale = Sequence::create(move, scaleFadeOut,remove,NULL);
-
-    
     circle -> runAction(moveRemove);
-    ring -> runAction(moveScale);
     
 }
 
