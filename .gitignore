@@ -1,9 +1,5 @@
 .DS_Store
 
-./proj.ios_mac/FirstFlat.xcodeproj/project.xcworkspace/xcuserdata/araishuuji.xcuserdatad/UserInterfaceState.xcuserstate
-
-./proj.ios_mac/FirstFlat.xcodeproj/project.xcworkspace/xcuserdata/yasutomo.xcuserdatad/UserInterfaceState.xcuserstate
-
 # Xcode
 build/*
 *.pbxuser
