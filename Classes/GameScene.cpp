@@ -362,6 +362,8 @@ bool GameScene::onContactBegin(cocos2d::PhysicsContact& contact){
         
         //ゲームオーバーの処理
         CCLOG("本体に衝突");
+        //ゲームオーバーの処理
+        this->setGameover();
         
         return true;
     }
@@ -447,9 +449,8 @@ bool GameScene::onContactBegin(cocos2d::PhysicsContact& contact){
     }else{
         
         //不一致(ゲームオーバー)
-        CCLOG("不一致でした。");
-        CCLOG("%s",nodeA->getName().c_str());
-        CCLOG("%s",nodeB->getName().c_str());
+
+        this->setGameover();
         
         return true;
     }
@@ -625,6 +626,9 @@ void GameScene::setDrops(float time){
     //dropRing -> runAction(moveRing);
     
     
+    drops->pushBack(dropCircle);
+    
+    
     
     
     
@@ -634,13 +638,52 @@ void GameScene::setDrops(float time){
 //1フレーム毎の処理
 void GameScene::update(float delta){
     
-
+/*
     //フレームをカウントする。
     if(rigidTappedFlag == true){
         rigidTappedTime++;
     }
     
+    if(drops->size() != 0){
+        
+        //画面上から消えたドロップを削除
+        if(drops->at(0)->getParent() == NULL){
+            drops->erase(0);
+            CCLOG("消したよ");
+        }
+    }
+*/
     
 }
+
+#pragma mark-
+#pragma mark:ゲームオーバー設定
+void GameScene::setGameover(){
+/*
+ 
+ 
+    //落下物の動作停止
+    this->unschedule(schedule_selector(GameScene::setDrops));
+    
+    //すべてのアクションの停止
+    this->stopAllActions();
+    
+    //落下物すべて削除
+    for(int idx = 0; idx < drops->size();idx++){
+
+        drops->at(idx)->removeFromParent();
+        
+    }
+    
+*/
+}
+
+
+void GameScene::makeGameOver(){
+}
+
+void GameScene::removeGameOver(){
+}
+
 
 

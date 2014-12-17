@@ -34,6 +34,9 @@ protected:
     
     bool testFlag = false;
     
+    //配列
+    cocos2d::Vector<cocos2d::Sprite *> *drops = new cocos2d::Vector<cocos2d::Sprite *>;
+    
     
     //ボタン類の変数一覧
     cocos2d::Sprite *aquaCircle;
@@ -67,6 +70,11 @@ protected:
 
     
     virtual void setDrops(float time);
+    
+    //ゲームオーバー周り
+    void setGameover();
+    void makeGameOver();
+    void removeGameOver();
 
 
     
