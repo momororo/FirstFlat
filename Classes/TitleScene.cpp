@@ -8,6 +8,10 @@
 
 #include "TitleScene.h"
 #include "GameScene.h"
+//#include "NendModule.h"
+//#include "NendInterstitialModule.h"
+//#include "AppCCloudPlugin.h"
+
 
 #define selfFrame Director::getInstance() -> getWinSize()
 
@@ -38,46 +42,11 @@ bool TitleScene::init(){
     //背景色のグラデーション
     auto bgGradient = LayerGradient::create(Color4B(128,229,255,255), Color4B(95,211,188,255));
     this -> addChild(bgGradient);
-    
-    /*
-    Size visibleSize = Director::getInstance()->getVisibleSize();
-    auto sprite = Sprite::create();
-    sprite->setTextureRect(Rect(0, 0, 200, 100));
-    sprite->setColor(Color3B::GRAY);
-    sprite->setPosition(Vec2(visibleSize.width/2, visibleSize.height/2));
-    sprite->setOpacity(0);
-    addChild(sprite);
-    
-    //1秒かけてフェードイーン
-    auto action = FadeIn::create(1);
-    sprite->runAction(action);
-    */
-    
-    
-    
-    
-    
-    /*
-    //白いスプライトを作成
-    Size s = Director::getInstance()->getVisibleSize();
-    auto spr = Sprite::create();
-    spr->setPosition(Vec2(s.width*.5, s.height*.5));
-    spr->setTextureRect(Rect(0, 0, 200, 200));
-    spr->setColor(Color3B::WHITE);
-    addChild(spr);
-    
-    //1秒かけて青に変わるアニメーション（秒数：1、R値：51、G値：75、B値：112）
-    spr->runAction(TintTo::create(1, 51, 75, 112));
-    */
-    
-    
-    /*circle = DrawNode::create();
-    circle -> drawDot(Point(selfFrame.width/2, selfFrame.height/2), 20, Color4F::WHITE);
-    addChild(circle, 0);
-    */
+   
     
     this -> schedule(schedule_selector(TitleScene::setDrops), 1);
     
+    //各種タイトルの設定
     setTitle();
     setStart();
     setRanking();
@@ -121,7 +90,17 @@ bool TitleScene::init(){
     /*************　　タッチイベント設定  終 ****************/
     
     
-    
+    //MARK::nendの設定
+    //ネンドの呼び出し(ヘッダー)
+    /*char apiKey[] = "5aa579f521da85a055c5076641efc68202d5e8e2";
+     char spotID[] = "262876";
+     NendModule::createNADViewBottom(apiKey, spotID);
+     
+     //ネンドの呼び出し(飛び出す)
+     char interstitialApiKey[] = "6b027f392e0cf11d378908fc4027f1755d6422ad";
+     char interstitialSpotID[] = "266067";
+     NendInterstitialModule::createNADInterstitial(interstitialApiKey, interstitialSpotID);
+     */
     
     
     
@@ -132,6 +111,28 @@ bool TitleScene::init(){
     
     
 }
+
+
+//MARK::AppCCloudの設定と削除
+/*
+ void TitleScene::setAppCCloud(){
+ 
+ appCCloudBt = Sprite::create("other.png");
+ appCCloudBt -> setPosition(Vec2((selfFrame.width)-(appCCloudBt->getContentSize().width*2/3),(selfFrame.height)-(appCCloudBt->getContentSize().height*2/3)));
+ this -> addChild(appCCloudBt);
+ 
+ appFlag = true;
+ 
+ }
+ 
+ void TitleScene::removeAppCCloud(){
+ 
+ appCCloudBt -> removeFromParent();
+ 
+ appFlag = false;
+ 
+ }
+ */
 
 
 
@@ -328,8 +329,7 @@ void TitleScene::setTitle(){
     addChild(ring);
     
     //オブジェクトの移動
-    auto moveCircle = MoveTo::create(2, Vec2(selfFrame.width/2,selfFrame.height*2/3));
-    auto moveRing = MoveTo::create(2, Vec2(selfFrame.width/2,selfFrame.height*2/3));
+    auto move = MoveTo::create(2, Vec2(selfFrame.width/2,selfFrame.height*2/3));
     
     //オブジェクトの拡大
     auto scale = ScaleBy::create(2, 12);
@@ -349,9 +349,9 @@ void TitleScene::setTitle(){
     //拡大・フェードアウト同時アクション
     auto scaleFadeOut = Spawn::create(scale,fadeOut, NULL);
     //移動後拡大のアクション
-    auto moveScale = Sequence::create(moveRing, scaleFadeOut,remove,NULL);
+    auto moveScale = Sequence::create(move, scaleFadeOut,remove,NULL);
     //移動後削除のアクション
-    auto moveRemove = Sequence::create(moveCircle,remove,func,NULL);
+    auto moveRemove = Sequence::create(move->clone(),remove->clone(),func,NULL);
     
     circle -> runAction(moveRemove);
     ring -> runAction(moveScale);

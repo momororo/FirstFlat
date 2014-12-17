@@ -34,6 +34,19 @@ protected:
     CREATE_FUNC(TitleScene);
     
     
+    /*************** コールバック *****************************/
+    //スタートボタン
+    void startBtCallback(cocos2d::Ref* pSender);
+    //ランキングボタン
+    void rankingBtCallback(cocos2d::Ref* pSender);
+    //チュートリアルボタン
+    void tutorialBtCallback(cocos2d::Ref* pSender);
+    /*************** コールバック 終*****************************/
+
+
+
+    
+    
     /***************** タッチイベント用変数 ***********************/
     bool onTouchBegan(cocos2d::Touch *touch, cocos2d::Event *event);
 
@@ -60,17 +73,9 @@ protected:
     
     virtual void setDrops(float time);
     
-    
-    
-    
-    
-    
-    
-    
-    
-    //void startCallback(cocos2d::Ref* sender,cocos2d::ui::TouchEventType type);
-    //void startCallback(cocos2d::Ref* sender,cocos2d::EventMouse::MouseEventType type);
-    //void starCallback(cocos2d::Ref* pSender);
+    //AppCCloudの広告用
+    //void setAppCCloud();
+    //void removeAppCCloud();
     
     
 };
