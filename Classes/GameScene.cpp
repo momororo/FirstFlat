@@ -474,16 +474,21 @@ void GameScene::setButton(){
     for(int idx = 0; idx < colors->size() ; idx++){
         
         //色を抜き出し
-        auto color = colors->at(idx);
+        std::string color = *colors->at(idx);
         
+        
+        //文字列操作
+        std::string pngName = "";
+        pngName.append(color);
+        pngName.append("_umbrella.png");
         //スプライト生成
-        auto circle = Sprite::create(StringUtils::format("%s_umbrella.png",color));
+        auto circle = Sprite::create(pngName);
         
         circle -> setPosition(Vec2(selfFrame.width/8*(idx + 1), selfFrame.height/6));
 
         circle -> setScale(0.05);
         
-        circle -> setName(StringUtils::format("%s",color));
+        circle -> setName(color);
         
         circle -> setTag(1);
 
