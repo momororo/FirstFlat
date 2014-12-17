@@ -31,7 +31,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "502"
             endingLineNumber = "502"
-            landmarkName = "GameScene::setButton()"
+            landmarkName = "GameScene::setGameover()"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -46,7 +46,9 @@
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "325"
-            endingLineNumber = "325">
+            endingLineNumber = "325"
+            landmarkName = "GameScene::onContactBegin(cocos2d::PhysicsContact&amp; contact)"
+            landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -60,7 +62,9 @@
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "341"
-            endingLineNumber = "341">
+            endingLineNumber = "341"
+            landmarkName = "GameScene::onContactBegin(cocos2d::PhysicsContact&amp; contact)"
+            landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy

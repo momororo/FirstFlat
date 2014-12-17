@@ -46,6 +46,15 @@ bool GameScene::init(){
         return false;
     }
     
+    //色の配列への格納
+    colors->push_back(new std::string("green"));
+    colors->push_back(new std::string("aqua"));
+    colors->push_back(new std::string("yellow"));
+    colors->push_back(new std::string("blue"));
+    colors->push_back(new std::string("white"));
+    colors->push_back(new std::string("purple"));
+    colors->push_back(new std::string("red"));
+    
     
     
     //背景色のグラデーション
@@ -54,7 +63,7 @@ bool GameScene::init(){
     
 
     //ボタンの生成
-    this->setButton();
+    this->setUmbrella();
     
     
     
@@ -112,7 +121,7 @@ bool GameScene::init(){
     
 
     //テスト用
-    this -> schedule(schedule_selector(GameScene::setDrops), 1);
+    this -> schedule(schedule_selector(GameScene::setDrops), 0.2);
     
     //スコア機能の実装
 
@@ -157,160 +166,71 @@ if(rigidTappedFlag == true){
     
     //イテレーター
     std::vector<cocos2d::Touch*>::const_iterator iterator = touches.begin();
-    //ループ
+    
+    //ループ(マルチタップ用)
     while (tappedCount != 2 && iterator != touches.end()) {
         
         Touch* touch = (Touch*)(*iterator);
         //ポイントの取得
         Point touchPoint = Vec2(touch->getLocation().x,touch->getLocation().y);
         
-        //アクアリングの処理
-        if (aquaCircle->getBoundingBox().containsPoint(touchPoint))
+        //アンブレラ配列の中から走査
+        for (auto umbrella : *umbrellas) {
             
-        {
-            //前回タップと同じ色か確認(同じならreturn)
-            if(tappedName == "aqua"){
-                return;
-            }
-            
-            auto effectRing = Sprite::create("aqua_ring.png");
-            effectRing -> setPosition(Vec2(aquaCircle->getPosition().x,aquaCircle->getPosition().y));
-            effectRing -> setScale(0.1);
-            effectRing -> setName("aqua");
-            effectRing -> setTag(2);
-            effectRing -> setOpacity(128);
-            
-            //物理体の生成
-            auto aquaMaterial = PHYSICSBODY_MATERIAL_DEFAULT;
-            auto aquaRingBody = PhysicsBody::createCircle((effectRing->getContentSize().width/2)*effectRing->getScale(),aquaMaterial);
-            aquaRingBody->setDynamic(false); // 重力の影響を受けない
-            aquaRingBody->setEnable(true);
-            
-            aquaRingBody->setCategoryBitmask(0x01);
-            aquaRingBody->setCollisionBitmask(0);
-            aquaRingBody->setContactTestBitmask(0x02);
-            effectRing->setPhysicsBody(aquaRingBody);
-            
-            addChild(effectRing);
-            
-            
-            auto ringScale = ScaleBy::create(2, 12);
-            auto ringFadeOut = FadeOut::create(2);
-            auto ringRemove = RemoveSelf::create(true);
-            auto scaleFadeOut = Spawn::create(ringScale,ringFadeOut, NULL);
-            auto ringSequence = Sequence::create(scaleFadeOut,ringRemove, NULL);
-            
-            effectRing -> runAction(ringSequence);
-            
-            aquaCircle ->runAction(RotateBy::create(1, 360));
-            
-            tappedName ="aqua";
-            
-        }
-        
-        //オレンジリングの処理
-        if (orangeCircle->getBoundingBox().containsPoint(touchPoint))
-            
-        {
-            
-            //前回タップと同じ色か確認(同じならreturn)
-            if(tappedName == "orange"){
-                return;
-            }
-            
-            
-            auto effectRing = Sprite::create("orange_ring.png");
-            effectRing -> setPosition(Vec2(orangeCircle->getPosition().x,orangeCircle->getPosition().y));
-            effectRing -> setScale(0.1);
-            effectRing -> setName("orange");
-            effectRing -> setTag(2);
-            effectRing -> setOpacity(128);
-            
-            
-            //物理体の生成
-            auto orangeMaterial = PHYSICSBODY_MATERIAL_DEFAULT;
-            auto orangeRingBody = PhysicsBody::createCircle((effectRing->getContentSize().width/2)*effectRing->getScale(),orangeMaterial);
-            orangeRingBody->setDynamic(false); // 重力の影響を受けない
-            orangeRingBody->setEnable(true);
-            
-            orangeRingBody->setCategoryBitmask(0x01);
-            orangeRingBody->setCollisionBitmask(0);
-            orangeRingBody->setContactTestBitmask(0x02);
-            
-            effectRing->setPhysicsBody(orangeRingBody);
-            
-            addChild(effectRing);
-            
-            auto ringScale = ScaleBy::create(2, 12);
-            auto ringFadeOut = FadeOut::create(2);
-            auto ringRemove = RemoveSelf::create(true);
-            auto scaleFadeOut = Spawn::create(ringScale,ringFadeOut, NULL);
-            auto ringSequence = Sequence::create(scaleFadeOut,ringRemove, NULL);
-            
-            effectRing -> runAction(ringSequence);
-            
-            orangeCircle->runAction(RotateBy::create(1, 360));
-            
-            tappedName = "orange";
-            
-            
-        }
-        
-        
-        
-        //イエローリングの処理
-        if (yellowCircle->getBoundingBox().containsPoint(touchPoint))
-            
-        {
-            
-            //前回タップと同じ色か確認(同じならreturn)
-            if(tappedName == "yellow" ){
-                return;
-            }
-            
-            
-            auto effectRing = Sprite::create("yellow_ring.png");
-            effectRing -> setPosition(Vec2(yellowCircle->getPosition().x,yellowCircle->getPosition().y));
-            effectRing -> setScale(0.1);
-            effectRing -> setName("yellow");
-            effectRing -> setTag(2);
-            effectRing -> setOpacity(128);
-            
-            
-            //物理体の生成
-            auto yellowMaterial = PHYSICSBODY_MATERIAL_DEFAULT;
-            auto yellowRingBody = PhysicsBody::createCircle((effectRing->getContentSize().width/2)*effectRing->getScale(),yellowMaterial);
-            yellowRingBody->setDynamic(false); // 重力の影響を受けない
-            yellowRingBody->setEnable(true);
-            
-            yellowRingBody->setCategoryBitmask(0x01);
-            yellowRingBody->setCollisionBitmask(0);
-            yellowRingBody->setContactTestBitmask(0x02);
-            
-            effectRing->setPhysicsBody(yellowRingBody);
-            
-            addChild(effectRing);
-            
-            auto ringScale = ScaleBy::create(2, 12);
-            auto ringFadeOut = FadeOut::create(2);
-            auto ringRemove = RemoveSelf::create(true);
-            auto scaleFadeOut = Spawn::create(ringScale,ringFadeOut, NULL);
-            auto ringSequence = Sequence::create(scaleFadeOut,ringRemove, NULL);
-            
-            effectRing -> runAction(ringSequence);
-            
-            yellowCircle->runAction(RotateBy::create(1, 360));
-            
-            tappedName = "yellow";
-            
-        }
-        tappedCount++;
-        iterator++;
-    }
- 
-    rigidTappedFlag = true;
-    
+            if(umbrella->getBoundingBox().containsPoint(touchPoint)){
 
+
+                //リングを広げる処理へ
+
+                //前回タップと同じ色か確認(同じならreturn)
+                if(tappedName == umbrella -> getName()){
+                    return;
+                }
+                
+                //文字列の生成
+                std::string pngName = umbrella->getName() + "_ring.png";
+                auto effectRing = Sprite::create(pngName);
+                effectRing -> setPosition(umbrella->getPosition());
+                effectRing -> setScale(0.1);
+                effectRing -> setName(umbrella->getName());
+                effectRing -> setTag(2);
+                effectRing -> setOpacity(240);
+                
+                
+                //物理体の生成
+                auto ringMaterial = PHYSICSBODY_MATERIAL_DEFAULT;
+                auto ringBody = PhysicsBody::createCircle((effectRing->getContentSize().width/2)*effectRing->getScale(),ringMaterial);
+                ringBody->setDynamic(false); // 重力の影響を受けない
+                ringBody->setEnable(true);
+                
+                ringBody->setCategoryBitmask(0x01);
+                ringBody->setCollisionBitmask(0);
+                ringBody->setContactTestBitmask(0x02);
+                effectRing->setPhysicsBody(ringBody);
+                
+                addChild(effectRing);
+                
+                
+                auto ringScale = ScaleBy::create(2, 12);
+                auto ringFadeOut = FadeOut::create(2);
+                auto ringRemove = RemoveSelf::create(true);
+                auto scaleFadeOut = Spawn::create(ringScale,ringFadeOut, NULL);
+                auto ringSequence = Sequence::create(scaleFadeOut,ringRemove, NULL);
+                
+                effectRing -> runAction(ringSequence);
+                
+                effectRing ->runAction(RotateBy::create(1, 360));
+                
+                tappedName = effectRing->getName();
+
+                rigidTappedFlag = true;
+                
+            }//if文
+            
+            
+        }//for文
+        
+    }//while文
     
     return;
     
@@ -362,6 +282,8 @@ bool GameScene::onContactBegin(cocos2d::PhysicsContact& contact){
         
         //ゲームオーバーの処理
         CCLOG("本体に衝突");
+        //ゲームオーバーの処理
+        this->setGameover();
         
         return true;
     }
@@ -391,15 +313,15 @@ bool GameScene::onContactBegin(cocos2d::PhysicsContact& contact){
         }
         
         
-        if (nodeA->getName() == "aqua") {
+        if (nodeA->getName() == "green") {
         
             SimpleAudioEngine::getInstance()->playEffect("c.mp3");
         
-        }else if(nodeA-> getName() == "orange"){
+        }else if(nodeA-> getName() == "blue"){
             
             SimpleAudioEngine::getInstance()->playEffect("bFlat.mp3");
         
-        }else if(nodeA->getName() == "yellow"){
+        }else if(nodeA->getName() == "red"){
             
             //再生する
             SimpleAudioEngine::getInstance()->playEffect("d.mp3");
@@ -447,9 +369,8 @@ bool GameScene::onContactBegin(cocos2d::PhysicsContact& contact){
     }else{
         
         //不一致(ゲームオーバー)
-        CCLOG("不一致でした。");
-        CCLOG("%s",nodeA->getName().c_str());
-        CCLOG("%s",nodeB->getName().c_str());
+
+        this->setGameover();
         
         return true;
     }
@@ -458,83 +379,49 @@ bool GameScene::onContactBegin(cocos2d::PhysicsContact& contact){
 }
 
 
-void GameScene::setButton(){
+void GameScene::setUmbrella(){
     
-    //アクアボタン
-    aquaCircle = Sprite::create("aqua_umbrella.png");
-    aquaCircle -> setPosition(Vec2(selfFrame.width/2, selfFrame.height/6));
-    aquaCircle -> setScale(0.1);
-    aquaCircle -> setName("Circle");
-    aquaCircle -> setTag(1);
-    //物理体の生成
-    PhysicsMaterial aquaMaterial;
+    
+    for(int idx = 0; idx < colors->size() ; idx++){
+        
+        //色を抜き出し
+        std::string color = *colors->at(idx);
+        
+        
+        //文字列操作
+        std::string pngName = color + "_umbrella.png";
+        //スプライト生成
+        auto umbrella = Sprite::create(pngName);
+        
+        umbrella -> setPosition(Vec2(selfFrame.width/8*(idx + 1), selfFrame.height/6));
 
-        //auto aquaMaterial = PHYSICSBODY_MATERIAL_DEFAULT;
-        auto aquaCircleBody = PhysicsBody::createCircle((aquaCircle->getContentSize().width/2)*aquaCircle->getScale(),aquaMaterial);
-        aquaCircleBody->setDynamic(false); // 重力の影響を受けない
-        aquaCircleBody->setEnable(true);
+        umbrella -> setScale(0.05);
+        
+        
+        umbrella -> setName(color);
+        
+        umbrella -> setTag(1);
 
-        aquaCircleBody->setCategoryBitmask(0x01);
-        aquaCircleBody->setCollisionBitmask(0);
-        aquaCircleBody->setContactTestBitmask(0x02);
+        PhysicsMaterial umbrellaMaterial;
+        
+        //auto greenMaterial = PHYSICSBODY_MATERIAL_DEFAULT;
+        auto umbrellaBody = PhysicsBody::createCircle((umbrella->getContentSize().width/2)*umbrella->getScale(),umbrellaMaterial);
+        umbrellaBody->setDynamic(false); // 重力の影響を受けない
+        umbrellaBody->setEnable(true);
+        
+        umbrellaBody->setCategoryBitmask(0x01);
+        umbrellaBody->setCollisionBitmask(0);
+        umbrellaBody->setContactTestBitmask(0x02);
+        
+        umbrella->setPhysicsBody(umbrellaBody);
+        
+        this->addChild(umbrella);
+        
+        //配列に入れとく
+        umbrellas -> pushBack(umbrella);
 
-    aquaCircle->setPhysicsBody(aquaCircleBody);
-    addChild(aquaCircle);
-/*
-    aquaRing = Sprite::create("aqua_ring.png");
-    aquaRing -> setPosition(Vec2(selfFrame.width/2, selfFrame.height/6));
-    aquaRing -> setScale(0.1);
-    addChild(aquaRing);
-  */
-    //オレンジボタン
-    orangeCircle = Sprite::create("orange_umbrella.png");
-    orangeCircle -> setPosition(Vec2(60,selfFrame.height/4));
-    orangeCircle -> setScale(0.1);
-    orangeCircle -> setName("Circle");
-    orangeCircle -> setTag(1);
-
-    //物理体の生成
-    auto orangeMaterial = PHYSICSBODY_MATERIAL_DEFAULT;
-    auto orangeCircleBody = PhysicsBody::createCircle((orangeCircle->getContentSize().width/2)*orangeCircle->getScale(),orangeMaterial);
-    orangeCircleBody->setDynamic(false); // 重力の影響を受けない
-    orangeCircleBody->setEnable(true);
-    orangeCircleBody->setCategoryBitmask(0x01);
-    orangeCircleBody->setCollisionBitmask(0);
-    orangeCircleBody->setContactTestBitmask(0x02);
-    orangeCircle->setPhysicsBody(orangeCircleBody);
-    addChild(orangeCircle);
-/*
-    orangeRing = Sprite::create("orange_ring.png");
-    orangeRing -> setPosition(Vec2(60,selfFrame.height/4));
-    orangeRing -> setScale(0.1);
-    addChild(orangeRing);
-*/
-    //イエローボタン
-    yellowCircle = Sprite::create("yellow_umbrella.png");
-    yellowCircle -> setPosition(Vec2(selfFrame.width-60,selfFrame.height/4));
-    yellowCircle -> setScale(0.1);
-    yellowCircle -> setName("Circle");
-    yellowCircle -> setTag(1);
-
-    //物理体の生成
-        auto yellowMaterial = PHYSICSBODY_MATERIAL_DEFAULT;
-        auto yellowCircleBody = PhysicsBody::createCircle((yellowCircle->getContentSize().width/2)*yellowCircle->getScale(),yellowMaterial);
-        yellowCircleBody->setDynamic(false); // 重力の影響を受けない
-        yellowCircleBody->setEnable(true);
-
-        yellowCircleBody->setCategoryBitmask(0x01);
-        yellowCircleBody->setCollisionBitmask(0);
-        yellowCircleBody->setContactTestBitmask(0x02);
-
-        yellowCircle->setPhysicsBody(yellowCircleBody);
-    addChild(yellowCircle);
-
-/*
-    yellowRing = Sprite::create("yellow_ring.png");
-    yellowRing -> setPosition(Vec2(selfFrame.width-60,selfFrame.height/4));
-    yellowRing -> setScale(0.1);
-    addChild(yellowRing);
- */
+    }
+ 
     
 }
 
@@ -544,61 +431,21 @@ void GameScene::setButton(){
 
 void GameScene::setDrops(float time){
     
-    auto rnd = arc4random_uniform(3);
+    auto rnd = arc4random_uniform(7);
     
+    //配列から色を抜き取り
+    std::string color = *colors->at(rnd);
     
-    std::string pngCircle;
-    std::string pngRing;
-    std::string dropName;
-    Vec2 dropPosition;
-    
-    //円の設定
+    //サークルの画像名を生成
+    std::string pngName = color + "_circle.png";
 
-    //パターンの割り振り
-    if (rnd == 0) {
-        
-        pngCircle = "aqua_circle.png";
-        dropName = "aqua";
-        dropPosition = Vec2(selfFrame.width/3*1+arc4random_uniform(selfFrame.width/3), selfFrame.height*1.5);
-        
-        
-    }else if(rnd == 1){
-
-        pngCircle = "yellow_circle.png";
-        dropName = "yellow";
-        dropPosition = Vec2(selfFrame.width/3*2+arc4random_uniform(selfFrame.width/3)/*-(dropCircle->getContentSize().width/2*dropCircle->getScale())*/, selfFrame.height*1.5);
-
-
-    }else if(rnd == 2){
-        
-        pngCircle = "orange_circle.png";
-        dropName = "orange";
-        dropPosition = Vec2(selfFrame.width/3*0+arc4random_uniform(selfFrame.width/3)/*+(dropCircle->getContentSize().width/2*dropCircle->getScale())*/, selfFrame.height*1.5);
-
-        
-    }else if(rnd == 3){
-        
-        pngCircle = "green_circle.png";
-        dropName = "green";
-        
-    }else if (rnd == 4){
-        
-        pngCircle = "blue_circle.png";
-        dropName = "blue";
-
-    }
-    
-    
-    auto dropCircle = Sprite::create(pngCircle);
+    auto dropCircle = Sprite::create(pngName);
     dropCircle -> setScale(0.03);
-    
-    //auto moveY = (-selfFrame.height);
-    
-//    dropCircle -> setPosition(Vec2( arc4random_uniform(selfFrame.width*3/5)+selfFrame.width/5, selfFrame.height+ dropCircle->getContentSize().height/2));
-    dropCircle -> setPosition(dropPosition);
+    dropCircle -> setPosition(Vec2(selfFrame.width/8 * (rnd + 1 ), selfFrame.height*1.5));
     
     //円に名前を設定
-    dropCircle -> setName(dropName);
+    dropCircle -> setName(color);
+    //タグは3
     dropCircle -> setTag(3);
 
     //円に物理体を設定
@@ -614,18 +461,7 @@ void GameScene::setDrops(float time){
     this -> addChild(dropCircle);
     
     
-    //オブジェクトの移動
-    //auto moveCircle = MoveTo::create(6, Vec2(dropRing->getPosition().x,moveY));
-    
-    //auto moveRing = MoveTo::create(6, Vec2(dropRing->getPosition().x,moveY));
-    
-
-    
-    //dropCircle -> runAction(moveCircle);
-    //dropRing -> runAction(moveRing);
-    
-    
-    
+    drops->pushBack(dropCircle);
     
     
 }
@@ -634,13 +470,52 @@ void GameScene::setDrops(float time){
 //1フレーム毎の処理
 void GameScene::update(float delta){
     
-
+/*
     //フレームをカウントする。
     if(rigidTappedFlag == true){
         rigidTappedTime++;
     }
     
+    if(drops->size() != 0){
+        
+        //画面上から消えたドロップを削除
+        if(drops->at(0)->getParent() == NULL){
+            drops->erase(0);
+            CCLOG("消したよ");
+        }
+    }
+*/
     
 }
+
+#pragma mark-
+#pragma mark:ゲームオーバー設定
+void GameScene::setGameover(){
+/*
+ 
+ 
+    //落下物の動作停止
+    this->unschedule(schedule_selector(GameScene::setDrops));
+    
+    //すべてのアクションの停止
+    this->stopAllActions();
+    
+    //落下物すべて削除
+    for(int idx = 0; idx < drops->size();idx++){
+
+        drops->at(idx)->removeFromParent();
+        
+    }
+    
+*/
+}
+
+
+void GameScene::makeGameOver(){
+}
+
+void GameScene::removeGameOver(){
+}
+
 
 
