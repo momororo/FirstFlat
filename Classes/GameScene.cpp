@@ -166,12 +166,10 @@ if(rigidTappedFlag == true){
     //ループ(マルチタップ用)
     for (auto iterator : touches) {
         
-        CCLOG("ループ");
-        CCLOG("%d",tappedCount);
         
         Touch* touch = iterator;
         //ポイントの取得
-        Point touchPoint = Vec2(touch->getLocation().x,touch->getLocation().y);
+        Point touchPoint = Vec2(touch->getLocation());
         
         //アンブレラ配列の中から走査
         for (auto umbrella : *umbrellas) {
@@ -186,7 +184,6 @@ if(rigidTappedFlag == true){
 
 
                 //リングを広げる処理へ
-
                 //前回タップと同じ色か確認(同じならreturn)
                 if(tappedName == umbrella -> getName()){
                     return;
