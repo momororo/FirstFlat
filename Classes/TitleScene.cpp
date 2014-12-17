@@ -318,40 +318,51 @@ void TitleScene::setTitle(){
     
     
     //タイトル効果
-    circle = Sprite::create("blue_circle.png");
-    circle -> setPosition(Vec2(selfFrame.width/2,selfFrame.height + 200));
-    circle -> setScale(0.1);
-    addChild(circle);
-    
-    ring = Sprite::create("blue_ring.png");
-    ring -> setPosition(Vec2(selfFrame.width/2,selfFrame.height + 200));
-    ring -> setScale(0.1);
-    addChild(ring);
+    auto titleRain = Sprite::create("yellow_rain.png");
+    titleRain -> setPosition(Vec2(selfFrame.width/2,selfFrame.height + 200));
+    titleRain -> setScale(0.1);
+    addChild(titleRain);
     
     //オブジェクトの移動
     auto move = MoveTo::create(2, Vec2(selfFrame.width/2,selfFrame.height*2/3));
-    
-    //オブジェクトの拡大
-    auto scale = ScaleBy::create(2, 12);
     //オブジェクトの削除
     auto remove = RemoveSelf::create(true);
-    //オブジェクトのフェードアウト
-    auto fadeOut = FadeOut::create(2);
     
-    
+    //タイトルフェードイン
     auto func = CallFunc::create([this](){
         
         this -> fadeInTitle();
         
+        
+        
     });
+    
+    //移動後削除のアクション
+    auto moveRemove = Sequence::create(move,remove,func,NULL);
+
+
+
+    
+    /*
+    ring = Sprite::create("yellow_ring.png");
+    ring -> setPosition(Vec2(selfFrame.width/2,selfFrame.height + 200));
+    ring -> setScale(0.1);
+    */
+    
+    
+    //オブジェクトの拡大
+    //auto scale = ScaleBy::create(2, 12);
+        //オブジェクトのフェードアウト
+    auto fadeOut = FadeOut::create(2);
+    
+    
     
     
     //拡大・フェードアウト同時アクション
-    auto scaleFadeOut = Spawn::create(scale,fadeOut, NULL);
+    //auto scaleFadeOut = Spawn::create(scale,fadeOut, NULL);
     //移動後拡大のアクション
-    auto moveScale = Sequence::create(move, scaleFadeOut,remove,NULL);
-    //移動後削除のアクション
-    auto moveRemove = Sequence::create(move->clone(),remove->clone(),func,NULL);
+    //auto moveScale = Sequence::create(move, scaleFadeOut,remove,NULL);
+
     
     circle -> runAction(moveRemove);
     ring -> runAction(moveScale);
@@ -364,12 +375,12 @@ void TitleScene::setTitle(){
 void TitleScene::setStart(){
     
     //スタートボタン効果
-    auto circleStart = Sprite::create("aqua_circle.png");
+    auto circleStart = Sprite::create("blue_rain.png");
     circleStart -> setPosition(Vec2(selfFrame.width/2,selfFrame.height+100));
     circleStart -> setScale(0.1);
     addChild(circleStart);
     
-    auto ringStart = Sprite::create("aqua_ring.png");
+    auto ringStart = Sprite::create("blue_ring.png");
     ringStart -> setPosition(Vec2(selfFrame.width/2,selfFrame.height+100));
     ringStart -> setScale(0.1);
     addChild(ringStart);
