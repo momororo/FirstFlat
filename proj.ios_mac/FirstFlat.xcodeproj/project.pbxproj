@@ -87,6 +87,9 @@
 		A49F21241A41725F008A31D9 /* white_rain.png in Resources */ = {isa = PBXBuildFile; fileRef = A49F21201A41725F008A31D9 /* white_rain.png */; };
 		A49F21251A41725F008A31D9 /* white_ring.png in Resources */ = {isa = PBXBuildFile; fileRef = A49F21211A41725F008A31D9 /* white_ring.png */; };
 		A49F21261A41725F008A31D9 /* white_circle.png in Resources */ = {isa = PBXBuildFile; fileRef = A49F21221A41725F008A31D9 /* white_circle.png */; };
+		A49F212B1A41788C008A31D9 /* purple_umbrella.png in Resources */ = {isa = PBXBuildFile; fileRef = A49F21291A41788C008A31D9 /* purple_umbrella.png */; };
+		A49F212C1A41788C008A31D9 /* yellow_umbrella.png in Resources */ = {isa = PBXBuildFile; fileRef = A49F212A1A41788C008A31D9 /* yellow_umbrella.png */; };
+		A49F21301A4178CF008A31D9 /* aqua_umbrella.png in Resources */ = {isa = PBXBuildFile; fileRef = A49F212F1A4178CF008A31D9 /* aqua_umbrella.png */; };
 		A4E632FA19E6BB950018B91B /* low_bFlat.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = A4E632F919E6BB940018B91B /* low_bFlat.mp3 */; };
 		A4E632FB19E6BB950018B91B /* low_bFlat.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = A4E632F919E6BB940018B91B /* low_bFlat.mp3 */; };
 		A4E632FD19E6BFCA0018B91B /* low_c.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = A4E632FC19E6BFCA0018B91B /* low_c.mp3 */; };
@@ -333,6 +336,9 @@
 		A49F21201A41725F008A31D9 /* white_rain.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = white_rain.png; sourceTree = "<group>"; };
 		A49F21211A41725F008A31D9 /* white_ring.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = white_ring.png; sourceTree = "<group>"; };
 		A49F21221A41725F008A31D9 /* white_circle.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = white_circle.png; sourceTree = "<group>"; };
+		A49F21291A41788C008A31D9 /* purple_umbrella.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = purple_umbrella.png; sourceTree = "<group>"; };
+		A49F212A1A41788C008A31D9 /* yellow_umbrella.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = yellow_umbrella.png; sourceTree = "<group>"; };
+		A49F212F1A4178CF008A31D9 /* aqua_umbrella.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = aqua_umbrella.png; sourceTree = "<group>"; };
 		A4E632F919E6BB940018B91B /* low_bFlat.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = low_bFlat.mp3; sourceTree = "<group>"; };
 		A4E632FC19E6BFCA0018B91B /* low_c.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = low_c.mp3; sourceTree = "<group>"; };
 		A4E632FF19E6BFD20018B91B /* low_d.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = low_d.mp3; sourceTree = "<group>"; };
@@ -543,6 +549,9 @@
 		78C7DDAA14EBA5050085D0C2 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				A49F212F1A4178CF008A31D9 /* aqua_umbrella.png */,
+				A49F21291A41788C008A31D9 /* purple_umbrella.png */,
+				A49F212A1A41788C008A31D9 /* yellow_umbrella.png */,
 				A49F211F1A41725F008A31D9 /* white_umbrella.png */,
 				A49F21201A41725F008A31D9 /* white_rain.png */,
 				A49F21211A41725F008A31D9 /* white_ring.png */,
@@ -763,6 +772,7 @@
 				5087E78317EB970100C73F5D /* Icon-152.png in Resources */,
 				5087E77D17EB970100C73F5D /* Default-568h@2x.png in Resources */,
 				5087E78517EB970100C73F5D /* Icon-72.png in Resources */,
+				A49F212C1A41788C008A31D9 /* yellow_umbrella.png in Resources */,
 				A4318E3C1A415990001C974E /* purple_rain.png in Resources */,
 				A4318E3A1A415990001C974E /* purple_circle.png in Resources */,
 				50EF62A317ECD613001EB2F8 /* Icon-50.png in Resources */,
@@ -775,6 +785,7 @@
 				50EF629617ECD46A001EB2F8 /* Icon-40.png in Resources */,
 				A4318E501A415ACC001C974E /* green_umbrella.png in Resources */,
 				5087E78217EB970100C73F5D /* Icon-144.png in Resources */,
+				A49F212B1A41788C008A31D9 /* purple_umbrella.png in Resources */,
 				A4E6330019E6BFD20018B91B /* low_d.mp3 in Resources */,
 				A4318E351A415990001C974E /* green_circle.png in Resources */,
 				A49F21251A41725F008A31D9 /* white_ring.png in Resources */,
@@ -786,6 +797,7 @@
 				A49F21231A41725F008A31D9 /* white_umbrella.png in Resources */,
 				A49F21241A41725F008A31D9 /* white_rain.png in Resources */,
 				A4318E331A415990001C974E /* red_circle.png in Resources */,
+				A49F21301A4178CF008A31D9 /* aqua_umbrella.png in Resources */,
 				5087E78417EB970100C73F5D /* Icon-57.png in Resources */,
 				5087E77E17EB970100C73F5D /* Default.png in Resources */,
 				A4318E381A415990001C974E /* blue_rain.png in Resources */,
