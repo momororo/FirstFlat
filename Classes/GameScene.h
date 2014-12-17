@@ -32,18 +32,26 @@ protected:
     //硬直フラグ
     bool rigidTappedFlag = false;
     
+    //中間色用の受付フラグと時間
+    int doubleColorTime = 0;
+    bool doubkeColorFlag = 0;
+    
     bool testFlag = false;
     
     //配列
     cocos2d::Vector<cocos2d::Sprite *> *drops = new cocos2d::Vector<cocos2d::Sprite *>;
     
+    //カラー格納配列
+    std::vector<std::string *> *colors = new std::vector<std::string *>;
+
+    
     
     //ボタン類の変数一覧
-    cocos2d::Sprite *aquaCircle;
+    cocos2d::Sprite *greenCircle;
 //    cocos2d::Sprite *aquaRing;
-    cocos2d::Sprite *orangeCircle;
+    cocos2d::Sprite *blueCircle;
 //    cocos2d::Sprite *orangeRing;
-    cocos2d::Sprite *yellowCircle;
+    cocos2d::Sprite *redCircle;
 //    cocos2d::Sprite *yellowRing;
   
     //1フレーム毎の処理
