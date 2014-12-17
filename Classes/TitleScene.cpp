@@ -314,7 +314,7 @@ void TitleScene::setTitle(){
     auto titleRain = Sprite::create("yellow_rain.png");
     titleRain -> setPosition(Vec2(selfFrame.width/2,selfFrame.height + 200));
     titleRain -> setScale(0.1);
-    addChild(titleRain);
+    this->addChild(titleRain);
     
     //オブジェクトの移動
     auto move = MoveTo::create(2, Vec2(selfFrame.width/2,selfFrame.height*2/3));
@@ -330,6 +330,7 @@ void TitleScene::setTitle(){
         auto titleRing = Sprite::create("yellow_ring.png");
         titleRing -> setPosition(Vec2(selfFrame.width/2,selfFrame.height*2/3));
         titleRing -> setScale(0.1);
+        this->addChild(titleRing);
         
         //オブジェクトの拡大
         auto scale = ScaleBy::create(2, 12);
@@ -364,7 +365,7 @@ void TitleScene::setStart(){
     auto startRain = Sprite::create("blue_rain.png");
     startRain -> setPosition(Vec2(selfFrame.width/2,selfFrame.height+100));
     startRain -> setScale(0.1);
-    addChild(startRain);
+    this -> addChild(startRain);
     
     
     
@@ -383,7 +384,7 @@ void TitleScene::setStart(){
          auto startRing = Sprite::create("blue_ring.png");
          startRing -> setPosition(Vec2(selfFrame.width/2,selfFrame.height/6));
          startRing -> setScale(0.1);
-         addChild(startRing);
+         this->addChild(startRing);
      
          //オブジェクトの拡大
          auto scale = ScaleBy::create(2, 12);
@@ -418,7 +419,7 @@ void TitleScene::setRanking(){
     auto rankingRain = Sprite::create("green_rain.png");
     rankingRain -> setPosition(Vec2(60,selfFrame.height+100));
     rankingRain -> setScale(0.1);
-    addChild(rankingRain);
+    this->addChild(rankingRain);
     
     
     //オブジェクトの移動
@@ -470,7 +471,7 @@ void TitleScene::setTutorial(){
     auto tutorialRain = Sprite::create("red_rain.png");
     tutorialRain -> setPosition(Vec2(selfFrame.width-60,selfFrame.height+100));
     tutorialRain -> setScale(0.1);
-    addChild(tutorialRain);
+    this->addChild(tutorialRain);
     
     //オブジェクトの移動
     auto move = MoveTo::create(2, Vec2(selfFrame.width-60,selfFrame.height/6));
@@ -486,7 +487,7 @@ void TitleScene::setTutorial(){
         auto tutorialRing = Sprite::create("red_ring.png");
         tutorialRing -> setPosition(Vec2(selfFrame.width-60,selfFrame.height/6));
         tutorialRing -> setScale(0.1);
-        addChild(tutorialRing);
+        this->addChild(tutorialRing);
         
         
         //オブジェクトの拡大
