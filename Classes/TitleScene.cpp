@@ -50,7 +50,7 @@ bool TitleScene::init(){
     setTitle();
     setStart();
     setRanking();
-    setChallenge();
+    setTutorial();
 
     auto umbrella = Sprite::create("umbrella.png");
     umbrella -> setAnchorPoint(Vec2(1,1));
@@ -353,14 +353,12 @@ void TitleScene::setTitle(){
         
         titleRing -> runAction(moveScale);
         
-        
-        
     });
     
     //移動後削除のアクション
     auto moveRemove = Sequence::create(move,remove,func,NULL);
 
-    circle -> runAction(moveRemove);
+    titleRain -> runAction(moveRemove);
     
 }
 
@@ -370,43 +368,51 @@ void TitleScene::setTitle(){
 void TitleScene::setStart(){
     
     //スタートボタン効果
-    auto circleStart = Sprite::create("blue_rain.png");
-    circleStart -> setPosition(Vec2(selfFrame.width/2,selfFrame.height+100));
-    circleStart -> setScale(0.1);
-    addChild(circleStart);
-    
-    auto ringStart = Sprite::create("blue_ring.png");
-    ringStart -> setPosition(Vec2(selfFrame.width/2,selfFrame.height+100));
-    ringStart -> setScale(0.1);
-    addChild(ringStart);
-    
-    //スタートオブジェクトの移動
-    auto moveCircle2 = MoveTo::create(2, Vec2(selfFrame.width/2, selfFrame.height/6));
-    auto moveRing2 = MoveTo::create(2, Vec2(selfFrame.width/2, selfFrame.height/6));
-    
-    //オブジェクトの拡大
-    auto scale2 = ScaleBy::create(2, 12);
-    //オブジェクトの削除
-    auto remove2 = RemoveSelf::create(true);
-    //オブジェクトのフェードアウト
-    auto fadeOut2 = FadeOut::create(2);
+    auto startRain = Sprite::create("blue_rain.png");
+    startRain -> setPosition(Vec2(selfFrame.width/2,selfFrame.height+100));
+    startRain -> setScale(0.1);
+    addChild(startRain);
     
     
-    auto funcStart = CallFunc::create([this](){
-        
-        this -> fadeInStart();
-        
-    });
     
-    //拡大・フェードアウト同時アクション
-    auto scaleFadeOut2 = Spawn::create(scale2,fadeOut2, NULL);
-    //移動後拡大のアクション
-    auto moveScale2 = Sequence::create(moveRing2, scaleFadeOut2,remove2, NULL);
-    //移動後削除のアクション
-    auto moveRemove2 = Sequence::create(moveCircle2,remove2,funcStart,NULL);
-    
-    circleStart -> runAction(moveRemove2);
-    ringStart -> runAction(moveScale2);
+     //オブジェクトの移動
+     auto move = MoveTo::create(2, Vec2(selfFrame.width/2,selfFrame.height/6));
+     
+     //オブジェクトの削除
+     auto remove = RemoveSelf::create(true);
+     
+     //タイトルフェードイン
+     auto func = CallFunc::create([this](){
+         
+         this -> fadeInStart();
+         
+         
+         auto startRing = Sprite::create("blue_ring.png");
+         startRing -> setPosition(Vec2(selfFrame.width/2,selfFrame.height/6));
+         startRing -> setScale(0.1);
+         addChild(startRing);
+     
+         //オブジェクトの拡大
+         auto scale = ScaleBy::create(2, 12);
+         //オブジェクトのフェードアウト
+         auto fadeOut = FadeOut::create(2);
+     
+         auto remove = RemoveSelf::create(true);
+     
+         //拡大・フェードアウト同時アクション
+         auto scaleFadeOut = Spawn::create(scale,fadeOut, NULL);
+     
+         //拡大後削除のアクション
+         auto moveScale = Sequence::create(scaleFadeOut,remove,NULL);
+     
+         startRing -> runAction(moveScale);
+     
+     });
+     
+     //移動後削除のアクション
+     auto moveRemove = Sequence::create(move,remove,func,NULL);
+     
+     startRain -> runAction(moveRemove);
 
 }
 
@@ -416,91 +422,101 @@ void TitleScene::setStart(){
 void TitleScene::setRanking(){
     
     //ランキングボタン効果
-    auto circleRanking = Sprite::create("orange_circle.png");
-    circleRanking -> setPosition(Vec2(60,selfFrame.height+100));
-    circleRanking -> setScale(0.1);
-    addChild(circleRanking);
+    auto rankingRain = Sprite::create("green_rain.png");
+    rankingRain -> setPosition(Vec2(60,selfFrame.height+100));
+    rankingRain -> setScale(0.1);
+    addChild(rankingRain);
     
-    auto ringRanking = Sprite::create("orange_ring.png");
-    ringRanking -> setPosition(Vec2(60,selfFrame.height+100));
-    ringRanking -> setScale(0.1);
-    addChild(ringRanking);
     
     //オブジェクトの移動
-    auto moveCircle3 = MoveTo::create(2, Vec2(60,selfFrame.height/4));
-    auto moveRing3 = MoveTo::create(2, Vec2(60,selfFrame.height/4));
+    auto move = MoveTo::create(2, Vec2(60,selfFrame.height/6));
     
-    //オブジェクトの拡大
-    auto scale3 = ScaleBy::create(2, 12);
     //オブジェクトの削除
-    auto remove3 = RemoveSelf::create(true);
-    //オブジェクトのフェードアウト
-    auto fadeOut3 = FadeOut::create(2);
+    auto remove = RemoveSelf::create(true);
     
-    
-    auto funcRanking = CallFunc::create([this](){
+    //タイトルフェードイン
+    auto func = CallFunc::create([this](){
         
         this -> fadeInRanking();
         
+        auto rankingRing = Sprite::create("green_ring.png");
+        rankingRing -> setPosition(Vec2(60,selfFrame.height/6));
+        rankingRing -> setScale(0.1);
+        addChild(rankingRing);
+    
+        
+        //オブジェクトの拡大
+        auto scale = ScaleBy::create(2, 12);
+        //オブジェクトのフェードアウト
+        auto fadeOut = FadeOut::create(2);
+        
+        auto remove = RemoveSelf::create(true);
+        
+        //拡大・フェードアウト同時アクション
+        auto scaleFadeOut = Spawn::create(scale,fadeOut, NULL);
+        
+        //拡大後削除のアクション
+        auto moveScale = Sequence::create(scaleFadeOut,remove,NULL);
+        
+        rankingRing -> runAction(moveScale);
+        
     });
     
-    //拡大・フェードアウト同時アクション
-    auto scaleFadeOut3 = Spawn::create(scale3,fadeOut3, NULL);
-    //移動後拡大のアクション
-    auto moveScale3 = Sequence::create(moveRing3, scaleFadeOut3,remove3,NULL);
     //移動後削除のアクション
-    auto moveRemove3 = Sequence::create(moveCircle3,remove3,funcRanking,NULL);
+    auto moveRemove = Sequence::create(move,remove,func,NULL);
     
-    circleRanking -> runAction(moveRemove3);
-    ringRanking -> runAction(moveScale3);
- 
+    rankingRain -> runAction(moveRemove);
+    
 }
 
 
 //オープニングのチャレンジ動作
-void TitleScene::setChallenge(){
+void TitleScene::setTutorial(){
     
-    //チャレンジボタン効果
-    auto circleChallenge = Sprite::create("yellow_circle.png");
-    circleChallenge -> setPosition(Vec2(selfFrame.width-60,selfFrame.height+100));
-    circleChallenge -> setScale(0.1);
-    addChild(circleChallenge);
-    
-    auto ringChallenge = Sprite::create("yellow_ring.png");
-    ringChallenge -> setPosition(Vec2(selfFrame.width-60,selfFrame.height+100));
-    ringChallenge -> setScale(0.1);
-    addChild(ringChallenge);
-    
+    // チュートリアル効果
+    auto tutorialRain = Sprite::create("red_rain.png");
+    tutorialRain -> setPosition(Vec2(selfFrame.width-60,selfFrame.height+100));
+    tutorialRain -> setScale(0.1);
+    addChild(tutorialRain);
     
     //オブジェクトの移動
-    auto moveCircle4 = MoveTo::create(2, Vec2(selfFrame.width-60,selfFrame.height/4));
-    auto moveRing4 = MoveTo::create(2, Vec2(selfFrame.width-60,selfFrame.height/4));
+    auto move = MoveTo::create(2, Vec2(selfFrame.width-60,selfFrame.height/6));
     
-    //オブジェクトの拡大
-    auto scale4 = ScaleBy::create(2, 12);
     //オブジェクトの削除
-    auto remove4 = RemoveSelf::create(true);
-    //オブジェクトのフェードアウト
-    auto fadeOut4 = FadeOut::create(2);
+    auto remove = RemoveSelf::create(true);
     
-    
-    auto funcChallenge = CallFunc::create([this](){
+    //タイトルフェードイン
+    auto func = CallFunc::create([this](){
         
-        this -> fadeInCallenge();
+        this -> fadeInTutorial();
+        
+        auto tutorialRing = Sprite::create("red_ring.png");
+        tutorialRing -> setPosition(Vec2(selfFrame.width-60,selfFrame.height/6));
+        tutorialRing -> setScale(0.1);
+        addChild(tutorialRing);
+        
+        
+        //オブジェクトの拡大
+        auto scale = ScaleBy::create(2, 12);
+        //オブジェクトのフェードアウト
+        auto fadeOut = FadeOut::create(2);
+        
+        auto remove = RemoveSelf::create(true);
+        
+        //拡大・フェードアウト同時アクション
+        auto scaleFadeOut = Spawn::create(scale,fadeOut, NULL);
+        
+        //拡大後削除のアクション
+        auto moveScale = Sequence::create(scaleFadeOut,remove,NULL);
+        
+        tutorialRing -> runAction(moveScale);
         
     });
     
-    //拡大・フェードアウト同時アクション
-    auto scaleFadeOut4 = Spawn::create(scale4,fadeOut4, NULL);
-    //移動後拡大のアクション
-    auto moveScale4 = Sequence::create(moveRing4, scaleFadeOut4,remove4,NULL);
     //移動後削除のアクション
-    auto moveRemove4 = Sequence::create(moveCircle4,remove4,funcChallenge,NULL);
+    auto moveRemove = Sequence::create(move,remove,func,NULL);
     
-    
-    circleChallenge -> runAction(moveRemove4);
-    ringChallenge -> runAction(moveScale4);
-
+    tutorialRain -> runAction(moveRemove);
 
 }
 
@@ -555,7 +571,7 @@ void TitleScene::fadeInUmbrella(){
 void TitleScene::fadeInStart(){
     
     //スタートボタン
-    start = Sprite::create("aqua_circle.png");
+    start = Sprite::create("blue_umbrella.png");
     start -> setPosition(Vec2(selfFrame.width/2, selfFrame.height/6));
     start -> setScale(0.1);
     start -> setOpacity(0);
@@ -574,7 +590,7 @@ void TitleScene::fadeInStart(){
 void TitleScene::fadeInRanking(){
     
     //ランキング
-    ranking = Sprite::create("orange_circle.png");
+    ranking = Sprite::create("green_umbrella.png");
     ranking -> setPosition(Vec2(60,selfFrame.height/4));
     ranking -> setScale(0.1);
     ranking -> setOpacity(0);
@@ -591,10 +607,10 @@ void TitleScene::fadeInRanking(){
 }
 
 //チャレンジのフェードイン表示
-void TitleScene::fadeInCallenge(){
+void TitleScene::fadeInTutorial(){
     
     //チャレンジモード
-    challenge = Sprite::create("yellow_circle.png");
+    challenge = Sprite::create("red_umbrella.png");
     challenge -> setPosition(Vec2(selfFrame.width-60,selfFrame.height/4));
     challenge -> setScale(0.1);
     challenge -> setOpacity(0);
@@ -628,28 +644,28 @@ void TitleScene::setDrops(float time){
     
     if (rnd == 0) {
         
-        pngCircle = "aqua_circle.png";
+        pngCircle = "aqua_rain.png";
         pngRing = "aqua_ring.png";
         
     }else if(rnd == 1){
         
-        pngCircle = "green_circle.png";
+        pngCircle = "green_rain.png";
         pngRing = "green_ring.png";
     
     }else if(rnd == 2){
     
-        pngCircle = "yellow_circle.png";
+        pngCircle = "yellow_rain.png";
         pngRing = "yellow_ring.png";
         
     }else if(rnd == 3){
     
-        pngCircle = "blue_circle.png";
+        pngCircle = "blue_rain.png";
         pngRing = "blue_ring.png";
         
     }else if (rnd == 4){
         
-        pngCircle = "orange_circle.png";
-        pngRing = "orange_ring.png";
+        pngCircle = "red_rain.png";
+        pngRing = "red_ring.png";
     
     }
     

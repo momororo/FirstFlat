@@ -59,13 +59,13 @@ protected:
     /***************** オープニング動作 ***********************/
     void setStart();
     void setRanking();
-    void setChallenge();
+    void setTutorial();
     void setTitle();
     
     void fadeInTitle();
     void fadeInStart();
     void fadeInRanking();
-    void fadeInCallenge();
+    void fadeInTutorial();
     void fadeInUmbrella();
     /****************** オープニング動作　終 ***********************/
     
