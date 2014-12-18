@@ -24,6 +24,17 @@ Scene *GameScene::createScene(){
     auto layer = GameScene::create();
     scene -> addChild(layer);
     
+    auto world = scene -> getPhysicsWorld();
+    cocos2d::Vect gravity;
+    gravity.setPoint(0, -30);
+    world -> setGravity(gravity);
+    
+    
+    
+    
+    
+    
+    
     //物理オブジェクトにを可視的にしてくれるデバックモード
  //   scene->getPhysicsWorld()->setDebugDrawMask(PhysicsWorld::DEBUGDRAW_ALL);
 
@@ -65,6 +76,8 @@ bool GameScene::init(){
 
     //ボタンの生成
     this->setUmbrella();
+    
+    gameOverFlag = false;
     
     
     
@@ -122,7 +135,7 @@ bool GameScene::init(){
     
 
     //テスト用
-    this -> schedule(schedule_selector(GameScene::setDrops), 0.2);
+    this -> schedule(schedule_selector(GameScene::setDrops), 1);
     
     //スコア機能の実装
 
@@ -164,77 +177,80 @@ if(rigidTappedFlag == true){
     
     
     
-    //ループ(マルチタップ用)
-    for (auto iterator : touches) {
+    if (gameOverFlag == false) {
         
-        
-        Touch* touch = iterator;
-        //ポイントの取得
-        Point touchPoint = Vec2(touch->getLocation());
-        
-        //アンブレラ配列の中から走査
-        for (auto umbrella : *umbrellas) {
-            
-            if(umbrella->getBoundingBox().containsPoint(touchPoint)){
-                
-                //ダブルタップの制限を超えたら処理せず終
-                if(tappedCount >= 2){
-                    tappedCount = 0;
-                    return;
-                }
-
-
-                //リングを広げる処理へ
-                //前回タップと同じ色か確認(同じならreturn)
-                if(tappedName == umbrella -> getName()){
-                    return;
-                }
-                
-                //文字列の生成
-                std::string pngName = umbrella->getName() + "_ring.png";
-                auto effectRing = Sprite::create(pngName);
-                effectRing -> setPosition(umbrella->getPosition());
-                effectRing -> setScale(0.1);
-                effectRing -> setName(umbrella->getName());
-                effectRing -> setTag(2);
-                effectRing -> setOpacity(240);
-                
-                
-                //物理体の生成
-                auto ringMaterial = PHYSICSBODY_MATERIAL_DEFAULT;
-                auto ringBody = PhysicsBody::createCircle((effectRing->getContentSize().width/2)*effectRing->getScale(),ringMaterial);
-                ringBody->setDynamic(false); // 重力の影響を受けない
-                ringBody->setEnable(true);
-                
-                ringBody->setCategoryBitmask(0x01);
-                ringBody->setCollisionBitmask(0);
-                ringBody->setContactTestBitmask(0x02);
-                effectRing->setPhysicsBody(ringBody);
-                
-                addChild(effectRing);
-                
-                
-                auto ringScale = ScaleBy::create(2, 12);
-                auto ringFadeOut = FadeOut::create(2);
-                auto ringRemove = RemoveSelf::create(true);
-                auto scaleFadeOut = Spawn::create(ringScale,ringFadeOut, NULL);
-                auto ringSequence = Sequence::create(scaleFadeOut,ringRemove, NULL);
-                
-                effectRing -> runAction(ringSequence);
-                
-                umbrella ->runAction(RotateBy::create(1, 360));
-                
-                tappedName = effectRing->getName();
-
-                rigidTappedFlag = true;
-                tappedCount++;
-                
-            }//if文
+        //ループ(マルチタップ用)
+        for (auto iterator : touches) {
             
             
-        }//for文
-        
-    }//while文
+            Touch* touch = iterator;
+            //ポイントの取得
+            Point touchPoint = Vec2(touch->getLocation());
+            
+            //アンブレラ配列の中から走査
+            for (auto umbrella : *umbrellas) {
+                
+                if(umbrella->getBoundingBox().containsPoint(touchPoint)){
+                    
+                    //ダブルタップの制限を超えたら処理せず終
+                    if(tappedCount >= 2){
+                        tappedCount = 0;
+                        return;
+                    }
+                    
+                    
+                    //リングを広げる処理へ
+                    //前回タップと同じ色か確認(同じならreturn)
+                    if(tappedName == umbrella -> getName()){
+                        return;
+                    }
+                    
+                    //文字列の生成
+                    std::string pngName = umbrella->getName() + "_ring.png";
+                    auto effectRing = Sprite::create(pngName);
+                    effectRing -> setPosition(umbrella->getPosition());
+                    effectRing -> setScale(0.1);
+                    effectRing -> setName(umbrella->getName());
+                    effectRing -> setTag(2);
+                    effectRing -> setOpacity(240);
+                    
+                    
+                    //物理体の生成
+                    auto ringMaterial = PHYSICSBODY_MATERIAL_DEFAULT;
+                    auto ringBody = PhysicsBody::createCircle((effectRing->getContentSize().width/2)*effectRing->getScale(),ringMaterial);
+                    ringBody->setDynamic(false); // 重力の影響を受けない
+                    ringBody->setEnable(true);
+                    
+                    ringBody->setCategoryBitmask(0x01);
+                    ringBody->setCollisionBitmask(0);
+                    ringBody->setContactTestBitmask(0x02);
+                    effectRing->setPhysicsBody(ringBody);
+                    
+                    addChild(effectRing);
+                    
+                    
+                    auto ringScale = ScaleBy::create(2, 12);
+                    auto ringFadeOut = FadeOut::create(2);
+                    auto ringRemove = RemoveSelf::create(true);
+                    auto scaleFadeOut = Spawn::create(ringScale,ringFadeOut, NULL);
+                    auto ringSequence = Sequence::create(scaleFadeOut,ringRemove, NULL);
+                    
+                    effectRing -> runAction(ringSequence);
+                    
+                    umbrella ->runAction(RotateBy::create(1, 360));
+                    
+                    tappedName = effectRing->getName();
+                    
+                    rigidTappedFlag = true;
+                    tappedCount++;
+                    
+                }//if文
+                
+                
+            }//for文
+            
+        }//while文
+    }
     
     return;
     
@@ -287,6 +303,7 @@ bool GameScene::onContactBegin(cocos2d::PhysicsContact& contact){
         //ゲームオーバーの処理
         CCLOG("本体に衝突");
         //ゲームオーバーの処理
+        gameOverFlag = true;
         this->setGameover();
         
         return true;
@@ -372,8 +389,12 @@ bool GameScene::onContactBegin(cocos2d::PhysicsContact& contact){
     }else{
         
         //不一致(ゲームオーバー)
+        CCLOG("ゲームオーバー");
+        
+        gameOverFlag = true;
 
         this->setGameover();
+        
         
         return true;
     }
@@ -398,7 +419,7 @@ void GameScene::setUmbrella(){
         
         umbrella -> setPosition(Vec2(selfFrame.width/((int)colors->size() + 1)*(idx + 1), selfFrame.height/6));
 
-        umbrella -> setScale(0.05);
+        umbrella -> setScale(0.1);
         
         
         umbrella -> setName(color);
@@ -498,7 +519,7 @@ void GameScene::update(float delta){
 void GameScene::removeSprite(){
     
     //ドロップの消去
-    if(drops->size() > 0){
+    if(drops->size() > 0 && gameOverFlag == false){
         
         //途中で消された残骸用
         if(drops->at(0)->getParent() == NULL){
@@ -510,7 +531,7 @@ void GameScene::removeSprite(){
         }
 
         //デバッグ用
-        if(drops->at(0)->getPositionY() < 0){
+        /*if(drops->at(0)->getPositionY() < 0){
             
             auto drop = drops->at(0);
             
@@ -520,7 +541,7 @@ void GameScene::removeSprite(){
             //親から削除
             drop->removeFromParentAndCleanup(true);
             
-        }
+        }*/
         
     }
     
@@ -529,27 +550,174 @@ void GameScene::removeSprite(){
 #pragma mark-
 #pragma mark:ゲームオーバー設定
 void GameScene::setGameover(){
-/*
- 
  
     //落下物の動作停止
     this->unschedule(schedule_selector(GameScene::setDrops));
     
-    //すべてのアクションの停止
-    this->stopAllActions();
+    //最後にぶつかったdropsの輪のエフェクトオブジェクト
+    auto dropRing = Sprite::create("red_ring.png");
+    dropRing -> setPosition(Vec2(drops->at(0)->getPosition().x,drops->at(0)->getPosition().y));
+    dropRing -> setColor(Color3B::BLACK);
+    dropRing -> setScale(0.01);
+    addChild(dropRing);
+    
+    //オブジェクトの拡大
+    auto scale = ScaleBy::create(2, 12);
+    //オブジェクトの削除
+    auto remove = RemoveSelf::create(true);
+    //オブジェクトのフェードアウト
+    auto fadeOut = FadeOut::create(2);
+    
+    //拡大・フェードアウト同時アクション
+    auto scaleFadeOut = Spawn::create(scale,fadeOut, NULL);
+    //拡大→削除のアクション
+    auto moveScale = Sequence::create(scaleFadeOut,remove,NULL);
+    //アクション開始
+    dropRing -> runAction(moveScale);
+    
     
     //落下物すべて削除
     for(int idx = 0; idx < drops->size();idx++){
 
         drops->at(idx)->removeFromParent();
-        
+                
     }
     
-*/
+    int count = 0;
+    //傘の処理(黒に変色後→点滅→削除)
+    for (int idx = 0; idx < umbrellas->size();idx++) {
+
+        umbrellas->at(idx)->setColor(Color3B::BLACK);
+        
+        auto blink = Blink::create(3, 3);
+        
+        auto fadeOut = FadeOut::create(1);
+        
+        auto remove = RemoveSelf::create();
+
+        
+        auto mgo = CallFunc::create([&](){
+            
+            count ++;
+            
+            if (count == 5) {
+            
+                makeGameOver();
+                
+            }
+            
+        });
+        
+        auto seq = Sequence::create(blink,fadeOut,mgo,remove, NULL);
+        
+        umbrellas -> at(idx) -> runAction(seq);
+ 
+    }
+    
+    
+    
+    
+
 }
 
 
 void GameScene::makeGameOver(){
+    
+    /******** ラベル＆リトライ＆ホームボタンの設定 *******/
+    
+    auto gameOverLabel = Label::createWithSystemFont("GAME OVER","DragonQuestFC", 120);
+    gameOverLabel -> setPosition(Vec2(selfFrame.width/2,selfFrame.height/2));
+    gameOverLabel -> setColor(Color3B::BLACK);
+    this -> addChild(gameOverLabel,10);
+    
+    CCLOG("テキストx:%f, y:%f",gameOverLabel->getPosition().x,gameOverLabel->getPosition().y);
+    
+    
+    /*********************************************/
+    /*
+    gameOverRing = Sprite::create("titleRing.png");
+    gameOverRing -> setPosition(Vec2(selfFrame.width/2,selfFrame.height*2/5));
+    gameOverRing -> setColor(blue);
+    gameOverRing -> setScale(1.7);
+    
+    this -> addChild(gameOverRing,0);
+    
+    auto tintpurple = TintTo::create(1,229, 128, 255);
+    auto tintRed = TintTo::create(1,255, 85, 85);
+    auto tintYellow = TintTo::create(1,255, 221, 85);
+    auto tintGreen = TintTo::create(1,85, 255, 85);
+    auto tintAqoa = TintTo::create(1,42, 212, 255);
+    auto tintBlue = TintTo::create(1,42, 127, 255);
+    
+    auto sequence = Sequence::create(tintpurple,tintRed,tintYellow,tintGreen,tintAqoa,tintBlue, NULL);
+    
+    auto repeat = RepeatForever::create(sequence);
+    
+    gameOverRing ->runAction(repeat);
+    */
+    /*******************************************************************/
+    
+    auto retryBt = Sprite::create("yellow_umbrella.png");
+    retryBt -> setPosition(Vec2(selfFrame.width*3/4,selfFrame.height/3));
+    retryBt -> setScale(0.1);
+    this->addChild(retryBt,10);
+    
+    auto homeBt = Sprite::create("purple_umbrella.png");
+    homeBt ->  setPosition(Vec2(selfFrame.width*1/4,selfFrame.height/3));
+    homeBt -> setScale(0.1);
+    this -> addChild(homeBt,10);
+    
+    
+    
+    /******** ラベル＆リトライ＆ホームボタンの設定 終 *******/
+    
+    
+    //MARK::スコア登録
+    /*
+    if(bestScore < score){
+        
+        bestScore = score;
+        
+        //登録
+        userDef->setIntegerForKey("bestScore", bestScore);
+        omedeto = Label::createWithSystemFont("Best Score!!", KODOMO_FONT, 60);
+        omedeto -> setPosition(Vec2(selfFrame.width/2,selfFrame.height*2/3));
+        omedeto ->setColor(red);
+        this->addChild(omedeto);
+        
+        auto blink = Blink::create(1, 1);
+        
+        auto repeat = RepeatForever::create(blink);
+        
+        omedeto -> runAction(repeat);
+        
+        newRecord = true;
+        
+        GameCenterBridge::postHighScore("RGB.BestScore", bestScore);
+    }
+    
+    std::string scoreStr = StringUtils::format("%d",score);
+    result = Label::createWithSystemFont(scoreStr.c_str(), KODOMO_FONT, 100);
+    result ->setPosition(Vec2(selfFrame.width/2,selfFrame.height/2));
+    result -> setColor(Color3B::GRAY);
+    this -> addChild(result);
+    
+    
+    resultLabel = Label::createWithSystemFont("SCORE", KODOMO_FONT, 100);
+    resultLabel ->setPosition(Vec2(selfFrame.width/2,selfFrame.height/2+result->getContentSize().height));
+    resultLabel -> setColor(Color3B::GRAY);
+    this -> addChild(resultLabel);
+    
+    gameOver = true;
+    */
+     
+    /*
+    //MARK::nend飛だし広告の表示
+    NendInterstitialModule::showNADInterstitialView();
+    setAppCCloud();
+    
+    */
+    
 }
 
 void GameScene::removeGameOver(){
