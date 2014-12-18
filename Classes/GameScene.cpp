@@ -48,12 +48,13 @@ bool GameScene::init(){
     
     //色の配列への格納
     colors->push_back(new std::string("green"));
-    colors->push_back(new std::string("aqua"));
     colors->push_back(new std::string("yellow"));
     colors->push_back(new std::string("blue"));
-    colors->push_back(new std::string("white"));
     colors->push_back(new std::string("purple"));
     colors->push_back(new std::string("red"));
+    
+    SpriteFrameCache::getInstance()->addSpriteFramesWithFile("rainAndCircle.plist");
+        
     
     
     
@@ -296,8 +297,6 @@ bool GameScene::onContactBegin(cocos2d::PhysicsContact& contact){
      
         //一致(スコアアップ、サークル発生)
         CCLOG("一致しました");
-        CCLOG("%s",nodeA->getName().c_str());
-        CCLOG("%s",nodeB->getName().c_str());
         
         
         Sprite *dropCircle;
@@ -336,10 +335,10 @@ bool GameScene::onContactBegin(cocos2d::PhysicsContact& contact){
         ring->getPhysicsBody()->setEnable(false);
         
         
-        auto string = dropCircle->getName() + "_ring.png";
+        auto pngName = dropCircle->getName() + "_ring.png";
         
         //輪の設定
-        auto dropRing = Sprite::create(string);
+        auto dropRing = Sprite::createWithSpriteFrameName(pngName);
         dropRing -> setScale(0.01);
         dropRing -> setPosition(Vec2(dropCircle->getPosition().x , dropCircle->getPosition().y));
         addChild(dropRing);
@@ -397,7 +396,7 @@ void GameScene::setUmbrella(){
         //スプライト生成
         auto umbrella = Sprite::create(pngName);
         
-        umbrella -> setPosition(Vec2(selfFrame.width/8*(idx + 1), selfFrame.height/6));
+        umbrella -> setPosition(Vec2(selfFrame.width/((int)colors->size() + 1)*(idx + 1), selfFrame.height/6));
 
         umbrella -> setScale(0.05);
         
@@ -435,17 +434,17 @@ void GameScene::setUmbrella(){
 
 void GameScene::setDrops(float time){
     
-    auto rnd = arc4random_uniform(7);
+    auto rnd = arc4random_uniform((int)colors->size());
     
     //配列から色を抜き取り
     std::string color = *colors->at(rnd);
     
     //サークルの画像名を生成
-    std::string pngName = color + "_circle.png";
+    std::string pngName = color + "_rain.png";
 
-    auto dropCircle = Sprite::create(pngName);
+    auto dropCircle = Sprite::createWithSpriteFrameName(pngName);
     dropCircle -> setScale(0.03);
-    dropCircle -> setPosition(Vec2(selfFrame.width/8 * (rnd + 1 ), selfFrame.height*1.5));
+    dropCircle -> setPosition(Vec2(selfFrame.width/((int)colors->size() + 1) * (rnd + 1 ), selfFrame.height*1.5));
     
     //円に名前を設定
     dropCircle -> setName(color);
