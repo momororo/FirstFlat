@@ -7,7 +7,8 @@
 //
 
 #include "TitleScene.h"
-#include "GameScene.h"
+//#include "GameScene.h"
+#include "LoadScene.h"
 //#include "NendModule.h"
 //#include "NendInterstitialModule.h"
 //#include "AppCCloudPlugin.h"
@@ -38,6 +39,12 @@ bool TitleScene::init(){
     if (!Layer::init()) {
         return false;
     }
+    
+    //面倒なので配列多用
+    menus->push_back(new std::string("start"));
+    menus->push_back(new std::string("ranking"));
+    menus->push_back(new std::string("tutorial"));
+
     
     //背景色のグラデーション
     auto bgGradient = LayerGradient::create(Color4B(128,229,255,255), Color4B(95,211,188,255));
@@ -146,99 +153,33 @@ bool TitleScene::onTouchBegan(Touch *touch, Event *unused_event){
     //タップ開始時の処理
     CCLOG("touchBegan");
     
-    Point touchPoint = Vec2(touch->getLocation().x,touch->getLocation().y);
     
-    //スタートボタンタップ時の操作
-    /*if (!start) {
+    //スタートボタンが存在するかで、ボタンがあるか表示されているか確認
+     if (this->getChildByName(*menus->at(0))->isVisible() == false) {
         
         return true;
         
-    }else if (start->getBoundingBox().containsPoint(touchPoint))
-        
-    {
-        CCLOG("スタートボタンをタップ");
-        
-        auto effectRing = Sprite::create("aqua_ring.png");
-        effectRing -> setPosition(Vec2(start->getPosition().x,start->getPosition().y));
-        effectRing -> setScale(0.1);
-        addChild(effectRing);
-        
-        auto ringScale = ScaleBy::create(2, 12);
-        auto ringFadeOut = FadeOut::create(2);
-        auto ringRemove = RemoveSelf::create(true);
-        auto scaleFadeOut = Spawn::create(ringScale,ringFadeOut, NULL);
-        auto ringSequence = Sequence::create(scaleFadeOut,ringRemove, NULL);
-        
-        effectRing -> runAction(ringSequence);
-        CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("low_c.mp3");
+    }
 
-        
-        return true;
-    }
-    */
-    
-    
-    //ランキングボタンタップ時
-    if (!ranking) {
-        
-        return true;
-        
-    }else if (ranking->getBoundingBox().containsPoint(touchPoint))
-        
-    {
-        CCLOG("スタートボタンをタップ");
-        
-        auto effectRing = Sprite::create("orange_ring.png");
-        effectRing -> setPosition(Vec2(ranking->getPosition().x,ranking->getPosition().y));
-        effectRing -> setScale(0.1);
-        addChild(effectRing);
-        
-        auto ringScale = ScaleBy::create(2, 12);
-        auto ringFadeOut = FadeOut::create(2);
-        auto ringRemove = RemoveSelf::create(true);
-        auto scaleFadeOut = Spawn::create(ringScale,ringFadeOut, NULL);
-        auto ringSequence = Sequence::create(scaleFadeOut,ringRemove, NULL);
-        
-        effectRing -> runAction(ringSequence);
-        
-        CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("low_bFlat.mp3");
+    //ポイント取得
+    Point touchPoint = Vec2(touch->getLocation());
 
+    //メニューの押下処理(かさぐるぐる)
+    for(auto menu : *menus){
         
-        return true;
+        if (this->getChildByName(*menu)->getBoundingBox().containsPoint(touchPoint)){
+ 
+            auto repeatForever = RepeatForever::create(RotateBy::create(1, 360));
+            this ->getChildByName(*menu)->runAction(repeatForever);
+ 
+            return true;
+            
+        }
+        
     }
-    
-    
-    
-    //チャレンジボタンタップ時
-    if (!tutorial) {
-        
-        return true;
-        
-    }else if (tutorial->getBoundingBox().containsPoint(touchPoint))
-        
-    {
-        CCLOG("スタートボタンをタップ");
-        
-        auto effectRing = Sprite::create("yellow_ring.png");
-        effectRing -> setPosition(Vec2(tutorial->getPosition().x,tutorial->getPosition().y));
-        effectRing -> setScale(0.1);
-        addChild(effectRing);
-        
-        auto ringScale = ScaleBy::create(2, 12);
-        auto ringFadeOut = FadeOut::create(2);
-        auto ringRemove = RemoveSelf::create(true);
-        auto scaleFadeOut = Spawn::create(ringScale,ringFadeOut, NULL);
-        auto ringSequence = Sequence::create(scaleFadeOut,ringRemove, NULL);
-        
-        effectRing -> runAction(ringSequence);
-        CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("low_d.mp3");
-        
-        return true;
-    }
-    
     
     return true;
-    
+
 }
 
 
@@ -247,9 +188,36 @@ bool TitleScene::onTouchBegan(Touch *touch, Event *unused_event){
 
 void TitleScene::onTouchMoved(Touch *touch, Event *unused_event){
     
-    //スワイプ中の処理
-    CCLOG("touchMoved");
+    //スタートボタンが存在するかで、ボタンがあるか表示されているか確認
+    if (this->getChildByName(*menus->at(0))->isVisible() == false) {
+        
+        return;
+        
+    }
     
+    //ポイント取得
+    Point touchPoint = Vec2(touch->getLocation());
+    
+    //ボタンが回転している(アクションがある)→ボタンの位置にいない→アクションを止める
+    for(auto menu : *menus){
+
+        if (this->getChildByName(*menu)->getNumberOfRunningActions() != 0){
+
+            
+            if (!this->getChildByName(*menu)->getBoundingBox().containsPoint(touchPoint)){
+                
+                this->getChildByName(*menu)->stopAllActions();
+
+                
+            }
+
+            return;
+            
+        }
+        
+    }
+    
+    return;
     
 }
 
@@ -259,31 +227,40 @@ void TitleScene::onTouchMoved(Touch *touch, Event *unused_event){
 
 void TitleScene::onTouchEnded(Touch *touch, Event *unused_event){
     
-    //タップ終了時
-    CCLOG("touchEnded");
-    
-    Point touchPoint = Vec2(touch->getLocation().x,touch->getLocation().y);
-
-    
-    /*
-    if (!start) {
+    //スタートボタンが存在するかで、ボタンがあるか表示されているか確認
+    if (this->getChildByName(*menus->at(0))->isVisible() == false) {
         
         return;
         
-    }else if (start->getBoundingBox().containsPoint(touchPoint))
-        
-    {
-        CCLOG("スタートボタンをタップ");
-
-        //アニメーション付き
-        float duration = 2.0f;  //開始→終了にかける時間
-        Scene* nextScene = CCTransitionFade::create(duration, GameScene::createScene());
- 
-        Director::getInstance()->replaceScene(nextScene);
-        return;
     }
-    */
+    
+    //ポイント取得
+    Point touchPoint = Vec2(touch->getLocation());
+    
+    //ボタンが回転している(アクションがある)→ボタンの位置にいる→画面遷移
+    for(auto menu : *menus){
+        
+        if (this->getChildByName(*menu)->getNumberOfRunningActions() != 0){
+            
+            
+            if (this->getChildByName(*menu)->getBoundingBox().containsPoint(touchPoint)){
+                
+                
+                auto repeatForever = RepeatForever::create(RotateBy::create(1, 360));
+                this ->getChildByName(*menu)->runAction(repeatForever);
+                
+                //押下後の処理へ
+                tappedBt(*menu);
 
+                
+                
+            }
+            
+            return;
+            
+        }
+        
+    }
     
 }
 
@@ -295,6 +272,66 @@ void TitleScene::onTouchCancelled(Touch *touch, Event *unused_event){
     
     //タッチキャンセル
     CCLOG("touchCancelled");
+    
+}
+
+#pragma mark-
+#pragma mark ボタンタップ後の処理
+
+//ボタンタップ後の処理
+void TitleScene::tappedBt(std::string &menu){
+    
+    //スタートの処理
+    if(menu == "start"){
+        
+
+  
+        auto ringScale = ScaleBy::create(2, 12);
+        auto ringFadeOut = FadeOut::create(2);
+        auto ringRemove = RemoveSelf::create(true);
+        auto scaleFadeOut = Spawn::create(ringScale,ringFadeOut, NULL);
+        auto ringSequence = Sequence::create(scaleFadeOut,ringRemove, NULL);
+        
+        this -> getChildByName("startEffectRing") -> setVisible(true);
+        this -> getChildByName("startEffectRing") -> runAction(ringSequence);
+        CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("low_c.mp3");
+   
+        
+        //アニメーション付き
+        float duration = 1.0f;  //開始→終了にかける時間
+        Scene* nextScene = CCTransitionFade::create(duration, LoadScene::createScene());
+        
+        Director::getInstance()->replaceScene(nextScene);
+      
+        return;
+        
+    }
+
+    //ランキングの処理
+    if(menu == "ranking"){
+        
+        
+        /**
+         *  おそらくリングを再生成して、傘の動きを止める処理の実装が必要かと思われ。
+         */
+        return;
+    }
+
+    //チュートリアルの処理
+    if(menu == "tutorial"){
+        
+        //長くなるなら更に別メソッドを呼ぶほうが良いかも
+        
+        
+        /**
+         *　チュートリアル終了後
+         *  再度タイトルシーンを呼ぶ場合は特に気をつける処理はなし
+         */
+     
+        
+        return;
+    }
+    
     
 }
 
@@ -343,35 +380,15 @@ void TitleScene::presetSprite(){
     
     //スタートボタン
     auto startBt = Sprite::create("blue_umbrella.png");
-    //startBt -> setPosition(Vec2(selfFrame.width/2, selfFrame.height/6));
-    //startBt -> setScale(0.1);
-    //startBt -> setOpacity(0);
-    //startBt -> setVisible(false);
-    //startBt -> setName("start");
-    //addChild(startBt,10);
-    
-    auto startBtTaped = Sprite::create("blue_umbrella.png");
-    startBtTaped -> setOpacity(150);
-    
-    //メニューアイテムの作成
-    auto startBtItem = MenuItemSprite::create(startBt, startBtTaped, CC_CALLBACK_1(TitleScene::startBtCallback, this));
-    
-    //メニューの作成startMenuの中にstartBtItemを入れる
-    auto startMenu = Menu::create(startBtItem, NULL);
-    
-    //startMenuを画面中央に配置
-    startMenu->setPosition(Vec2(selfFrame.width/2,selfFrame.height/6));
-    startMenu->setVisible(false);
-    startMenu->setName("start");
-    startMenu->setScale(0.1);
-    startMenu -> setOpacity(0);
-    addChild(startMenu);
-    CCLOG("ふれむx:%f,y:%f",selfFrame.width,selfFrame.height);
-    CCLOG("めぬx:%f,y:%f",startMenu->getPosition().x,startMenu->getPosition().y);
-    
+    startBt -> setPosition(Vec2(selfFrame.width/2, selfFrame.height/6));
+    startBt -> setScale(0.1);
+    startBt -> setOpacity(0);
+    startBt -> setVisible(false);
+    startBt -> setName("start");
+    addChild(startBt,10);
     
     auto startLabel = Label::createWithSystemFont("スタート","DragonQuestFC",30);
-    startLabel -> setPosition(Vec2(startMenu->getPosition().x, startMenu->getPosition().y));
+    startLabel -> setPosition(Vec2(startBt->getPosition().x, startBt->getPosition().y));
     startLabel -> setVisible(false);
     startLabel -> setName("startLabel");
     addChild(startLabel,10);
@@ -458,6 +475,30 @@ void TitleScene::presetSprite(){
     tutorialRing -> setVisible(false);
     tutorialRing -> setName("tutorialRing");
     this->addChild(tutorialRing);
+    
+    //ボタン押下後の波紋
+    auto startEffectRing = Sprite::create("blue_ring.png");
+    startEffectRing -> setPosition(Vec2(this->getChildByName("start")->getPosition().x,this->getChildByName("start")->getPosition().y));
+    startEffectRing -> setScale(0.1);
+    startEffectRing -> setVisible(false);
+    startEffectRing -> setName("startEffectRing");
+    this -> addChild(startEffectRing);
+
+    auto rankingEffectRing = Sprite::create("green_ring.png");
+    rankingEffectRing -> setPosition(Vec2(this->getChildByName("ranking")->getPosition().x,this->getChildByName("ranking")->getPosition().y));
+    rankingEffectRing -> setScale(0.1);
+    rankingEffectRing -> setVisible(false);
+    rankingEffectRing -> setName("rankingEffectRing");
+    this -> addChild(rankingEffectRing);
+
+    auto tutorialEffectRing = Sprite::create("red_ring.png");
+    tutorialEffectRing -> setPosition(Vec2(this->getChildByName("tutorial")->getPosition().x,this->getChildByName("tutorial")->getPosition().y));
+    tutorialEffectRing -> setScale(0.1);
+    tutorialEffectRing -> setVisible(false);
+    tutorialEffectRing -> setName("tutorialEffectRing");
+
+    this -> addChild(tutorialEffectRing);
+
     
     //アンブレラ
     auto umbrella = Sprite::create("umbrella.png");
@@ -813,24 +854,6 @@ void TitleScene::setDrops(float time){
     
     
 }
-
-void TitleScene::startBtCallback(cocos2d::Ref *pSender){
-    
-    auto scale = ScaleBy::create(2, 12);
-    auto fadeOut = FadeOut::create(2);
-    auto remove = RemoveSelf::create(true);
-    auto scaleFadeOut = Spawn::create(scale,fadeOut, NULL);
-    auto sequence = Sequence::create(scaleFadeOut,remove, NULL);
-    
-    this -> getChildByName("startBtEffect") -> runAction(sequence);
-    
-    CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("low_c.mp3");
-
-    //アニメーション付き
-    Director::getInstance()->replaceScene(TransitionFade::create(1, GameScene::createScene(), Color3B::WHITE));
-    
-}
-
 
 
 

@@ -23,6 +23,12 @@ protected:
     cocos2d::Sprite *ranking;
     cocos2d::Sprite *tutorial;
     
+    //メニューの配列
+    std::vector<std::string *> *menus = new std::vector<std::string *>;
+
+
+
+    
     
     
     public :
@@ -32,17 +38,6 @@ protected:
     virtual bool init();
     
     CREATE_FUNC(TitleScene);
-    
-    
-    /*************** コールバック *****************************/
-    //スタートボタン
-    void startBtCallback(cocos2d::Ref* pSender);
-    //ランキングボタン
-    void rankingBtCallback(cocos2d::Ref* pSender);
-    //チュートリアルボタン
-    void tutorialBtCallback(cocos2d::Ref* pSender);
-    /*************** コールバック 終*****************************/
-
 
 
     
@@ -72,6 +67,9 @@ protected:
     void fadeInTutorial();
     void fadeInUmbrella();
     /****************** オープニング動作　終 ***********************/
+    
+    //ボタンタップ後の処理メソッド
+    void tappedBt(std::string &menu);
     
     
     
