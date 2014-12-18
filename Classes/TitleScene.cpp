@@ -149,7 +149,7 @@ bool TitleScene::onTouchBegan(Touch *touch, Event *unused_event){
     Point touchPoint = Vec2(touch->getLocation().x,touch->getLocation().y);
     
     //スタートボタンタップ時の操作
-    if (!start) {
+    /*if (!start) {
         
         return true;
         
@@ -175,7 +175,7 @@ bool TitleScene::onTouchBegan(Touch *touch, Event *unused_event){
         
         return true;
     }
-    
+    */
     
     
     //ランキングボタンタップ時
@@ -232,7 +232,6 @@ bool TitleScene::onTouchBegan(Touch *touch, Event *unused_event){
         
         effectRing -> runAction(ringSequence);
         CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("low_d.mp3");
-
         
         return true;
     }
@@ -266,7 +265,7 @@ void TitleScene::onTouchEnded(Touch *touch, Event *unused_event){
     Point touchPoint = Vec2(touch->getLocation().x,touch->getLocation().y);
 
     
-    
+    /*
     if (!start) {
         
         return;
@@ -283,7 +282,7 @@ void TitleScene::onTouchEnded(Touch *touch, Event *unused_event){
         Director::getInstance()->replaceScene(nextScene);
         return;
     }
-    
+    */
 
     
 }
@@ -343,16 +342,36 @@ void TitleScene::presetSprite(){
     this -> addChild(startRain);
     
     //スタートボタン
-    start = Sprite::create("blue_umbrella.png");
-    start -> setPosition(Vec2(selfFrame.width/2, selfFrame.height/6));
-    start -> setScale(0.1);
-    start -> setOpacity(0);
-    start -> setVisible(false);
-    start -> setName("start");
-    addChild(start,10);
+    auto startBt = Sprite::create("blue_umbrella.png");
+    //startBt -> setPosition(Vec2(selfFrame.width/2, selfFrame.height/6));
+    //startBt -> setScale(0.1);
+    //startBt -> setOpacity(0);
+    //startBt -> setVisible(false);
+    //startBt -> setName("start");
+    //addChild(startBt,10);
+    
+    auto startBtTaped = Sprite::create("blue_umbrella.png");
+    startBtTaped -> setOpacity(150);
+    
+    //メニューアイテムの作成
+    auto startBtItem = MenuItemSprite::create(startBt, startBtTaped, CC_CALLBACK_1(TitleScene::startBtCallback, this));
+    
+    //メニューの作成startMenuの中にstartBtItemを入れる
+    auto startMenu = Menu::create(startBtItem, NULL);
+    
+    //startMenuを画面中央に配置
+    startMenu->setPosition(Vec2(selfFrame.width/2,selfFrame.height/6));
+    startMenu->setVisible(false);
+    startMenu->setName("start");
+    startMenu->setScale(0.1);
+    startMenu -> setOpacity(0);
+    addChild(startMenu);
+    CCLOG("ふれむx:%f,y:%f",selfFrame.width,selfFrame.height);
+    CCLOG("めぬx:%f,y:%f",startMenu->getPosition().x,startMenu->getPosition().y);
+    
     
     auto startLabel = Label::createWithSystemFont("スタート","DragonQuestFC",30);
-    startLabel -> setPosition(Vec2(start->getPosition().x, start->getPosition().y));
+    startLabel -> setPosition(Vec2(startMenu->getPosition().x, startMenu->getPosition().y));
     startLabel -> setVisible(false);
     startLabel -> setName("startLabel");
     addChild(startLabel,10);
@@ -364,6 +383,15 @@ void TitleScene::presetSprite(){
     startRing -> setVisible(false);
     startRing -> setName("startRing");
     this->addChild(startRing);
+    CCLOG("りんぐx:%f,y:%f",startRing->getPosition().x,startRing->getPosition().y);
+    
+    //スタートボタンをタップした時のエフェクト効果
+    auto startBtEffect = Sprite::create("blue_ring.png");
+    startBtEffect -> setPosition(Vec2(this->getChildByName("start")->getPosition()));
+    startBtEffect -> setScale(0.1);
+    startBtEffect -> setVisible(false);
+    startBtEffect -> setName("startBtEffect");
+    this-> addChild(startBtEffect);
 
     
 
@@ -440,17 +468,6 @@ void TitleScene::presetSprite(){
     umbrella -> setVisible(false);
     umbrella -> setName("umbrella");
     addChild(umbrella);
-
-
-
-
-
-
-
-
-
-    
-
     
 }
 
@@ -458,9 +475,7 @@ void TitleScene::presetSprite(){
 
 //オープニングのタイトルの動作
 void TitleScene::setTitle(){
-    
-    
-    
+ 
     //オブジェクトの移動
     auto move = MoveTo::create(2, Vec2(selfFrame.width/2,selfFrame.height*2/3));
     
@@ -503,10 +518,7 @@ void TitleScene::setTitle(){
 
 //オープニングのスタート動作
 void TitleScene::setStart(){
-    
-    
-    
-    
+        
      //オブジェクトの移動
      auto move = MoveTo::create(2, Vec2(selfFrame.width/2,selfFrame.height/6));
      
@@ -799,6 +811,23 @@ void TitleScene::setDrops(float time){
     dropCircle -> runAction(moveRemove);
     dropRing -> runAction(moveScale);
     
+    
+}
+
+void TitleScene::startBtCallback(cocos2d::Ref *pSender){
+    
+    auto scale = ScaleBy::create(2, 12);
+    auto fadeOut = FadeOut::create(2);
+    auto remove = RemoveSelf::create(true);
+    auto scaleFadeOut = Spawn::create(scale,fadeOut, NULL);
+    auto sequence = Sequence::create(scaleFadeOut,remove, NULL);
+    
+    this -> getChildByName("startBtEffect") -> runAction(sequence);
+    
+    CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("low_c.mp3");
+
+    //アニメーション付き
+    Director::getInstance()->replaceScene(TransitionFade::create(1, GameScene::createScene(), Color3B::WHITE));
     
 }
 

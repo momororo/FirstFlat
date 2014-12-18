@@ -19,7 +19,7 @@ protected:
     //スタートボタンの生成
     void initStart();
     
-    cocos2d::Sprite *start;
+    //cocos2d::Sprite *start;
     cocos2d::Sprite *ranking;
     cocos2d::Sprite *tutorial;
     
