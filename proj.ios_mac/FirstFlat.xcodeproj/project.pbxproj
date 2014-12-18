@@ -17,6 +17,7 @@
 		04D52F391A42CC100047ECC5 /* rainAndCircle.png in Resources */ = {isa = PBXBuildFile; fileRef = 04D52F371A42CC100047ECC5 /* rainAndCircle.png */; };
 		04D52F3C1A42CCCF0047ECC5 /* red_rain.png in Resources */ = {isa = PBXBuildFile; fileRef = 04D52F3A1A42CCCF0047ECC5 /* red_rain.png */; };
 		04D52F3D1A42CCCF0047ECC5 /* red_ring.png in Resources */ = {isa = PBXBuildFile; fileRef = 04D52F3B1A42CCCF0047ECC5 /* red_ring.png */; };
+		04D52F431A42F2870047ECC5 /* LoadScene.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04D52F411A42F2870047ECC5 /* LoadScene.cpp */; };
 		1AC6FB1F180E996B004C840B /* libbox2d Mac.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 1AC6FAFF180E9839004C840B /* libbox2d Mac.a */; };
 		1AC6FB20180E996B004C840B /* libchipmunk Mac.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 1AC6FAFD180E9839004C840B /* libchipmunk Mac.a */; };
 		1AC6FB21180E996B004C840B /* libcocos2dx Mac.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 1AC6FAF9180E9839004C840B /* libcocos2dx Mac.a */; };
@@ -279,6 +280,8 @@
 		04D52F371A42CC100047ECC5 /* rainAndCircle.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = rainAndCircle.png; sourceTree = "<group>"; };
 		04D52F3A1A42CCCF0047ECC5 /* red_rain.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = red_rain.png; sourceTree = "<group>"; };
 		04D52F3B1A42CCCF0047ECC5 /* red_ring.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = red_ring.png; sourceTree = "<group>"; };
+		04D52F411A42F2870047ECC5 /* LoadScene.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = LoadScene.cpp; path = ../Classes/LoadScene.cpp; sourceTree = "<group>"; };
+		04D52F421A42F2870047ECC5 /* LoadScene.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LoadScene.h; path = ../Classes/LoadScene.h; sourceTree = "<group>"; };
 		1AC6FAE5180E9839004C840B /* cocos2d_libs.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = cocos2d_libs.xcodeproj; path = ../cocos2d/build/cocos2d_libs.xcodeproj; sourceTree = "<group>"; };
 		1ACB3243164770DE00914215 /* libcurl.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libcurl.a; path = ../../cocos2dx/platform/third_party/ios/libraries/libcurl.a; sourceTree = "<group>"; };
 		1AFAF8B316D35DE700DB1158 /* AppDelegate.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = AppDelegate.cpp; path = ../Classes/AppDelegate.cpp; sourceTree = "<group>"; };
@@ -450,6 +453,8 @@
 				0489754819D5324B001E2AD7 /* Player.h */,
 				045599EB19D5579C00D0E60B /* Walls.cpp */,
 				045599EC19D5579C00D0E60B /* Walls.h */,
+				04D52F411A42F2870047ECC5 /* LoadScene.cpp */,
+				04D52F421A42F2870047ECC5 /* LoadScene.h */,
 			);
 			name = Classes;
 			path = ../classes;
@@ -877,6 +882,7 @@
 				0489754919D5324B001E2AD7 /* Player.cpp in Sources */,
 				503AE10217EB989F00D1A890 /* RootViewController.mm in Sources */,
 				1AFAF8B716D35DE700DB1158 /* AppDelegate.cpp in Sources */,
+				04D52F431A42F2870047ECC5 /* LoadScene.cpp in Sources */,
 				503AE10117EB989F00D1A890 /* main.m in Sources */,
 				045599ED19D5579C00D0E60B /* Walls.cpp in Sources */,
 				A462D00819D2BF6D002E22EC /* GameScene.cpp in Sources */,

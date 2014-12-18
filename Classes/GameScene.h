@@ -84,7 +84,7 @@ protected:
     bool onContactBegin(cocos2d::PhysicsContact& contact);
 
     
-    virtual void setDrops(float time);
+    void setDrops(float time);
     
     //ゲームオーバー周り
     void setGameover();
