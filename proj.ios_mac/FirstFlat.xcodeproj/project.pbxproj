@@ -13,6 +13,9 @@
 		04116C081A024374002FC615 /* Bizareadventure.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 04116C061A024374002FC615 /* Bizareadventure.ttf */; };
 		045599ED19D5579C00D0E60B /* Walls.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 045599EB19D5579C00D0E60B /* Walls.cpp */; };
 		0489754919D5324B001E2AD7 /* Player.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0489754719D5324B001E2AD7 /* Player.cpp */; };
+		048E2CA41A4302BD00499404 /* NativeCodeLauncher.mm in Sources */ = {isa = PBXBuildFile; fileRef = 048E2CA01A4302BD00499404 /* NativeCodeLauncher.mm */; };
+		048E2CA51A4302BD00499404 /* NativeCodeLauncher_objc.m in Sources */ = {isa = PBXBuildFile; fileRef = 048E2CA21A4302BD00499404 /* NativeCodeLauncher_objc.m */; };
+		048E2CAA1A430AB500499404 /* GameKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 048E2CA91A430AB500499404 /* GameKit.framework */; };
 		04D52F381A42CC100047ECC5 /* rainAndCircle.plist in Resources */ = {isa = PBXBuildFile; fileRef = 04D52F361A42CC100047ECC5 /* rainAndCircle.plist */; };
 		04D52F391A42CC100047ECC5 /* rainAndCircle.png in Resources */ = {isa = PBXBuildFile; fileRef = 04D52F371A42CC100047ECC5 /* rainAndCircle.png */; };
 		04D52F3C1A42CCCF0047ECC5 /* red_rain.png in Resources */ = {isa = PBXBuildFile; fileRef = 04D52F3A1A42CCCF0047ECC5 /* red_rain.png */; };
@@ -276,6 +279,11 @@
 		045599EC19D5579C00D0E60B /* Walls.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Walls.h; path = ../Classes/Walls.h; sourceTree = "<group>"; };
 		0489754719D5324B001E2AD7 /* Player.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Player.cpp; path = ../Classes/Player.cpp; sourceTree = "<group>"; };
 		0489754819D5324B001E2AD7 /* Player.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Player.h; path = ../Classes/Player.h; sourceTree = "<group>"; };
+		048E2C9F1A4302BD00499404 /* NativeCodeLauncher_objc.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NativeCodeLauncher_objc.h; sourceTree = "<group>"; };
+		048E2CA01A4302BD00499404 /* NativeCodeLauncher.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = NativeCodeLauncher.mm; sourceTree = "<group>"; };
+		048E2CA11A4302BD00499404 /* NativeCodeLauncher.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NativeCodeLauncher.h; sourceTree = "<group>"; };
+		048E2CA21A4302BD00499404 /* NativeCodeLauncher_objc.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NativeCodeLauncher_objc.m; sourceTree = "<group>"; };
+		048E2CA91A430AB500499404 /* GameKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GameKit.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS8.1.sdk/System/Library/Frameworks/GameKit.framework; sourceTree = DEVELOPER_DIR; };
 		04D52F361A42CC100047ECC5 /* rainAndCircle.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = rainAndCircle.plist; sourceTree = "<group>"; };
 		04D52F371A42CC100047ECC5 /* rainAndCircle.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = rainAndCircle.png; sourceTree = "<group>"; };
 		04D52F3A1A42CCCF0047ECC5 /* red_rain.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = red_rain.png; sourceTree = "<group>"; };
@@ -396,6 +404,7 @@
 				D44C620C132DFF330009C878 /* OpenAL.framework in Frameworks */,
 				D44C620E132DFF430009C878 /* AVFoundation.framework in Frameworks */,
 				D44C6210132DFF4E0009C878 /* AudioToolbox.framework in Frameworks */,
+				048E2CAA1A430AB500499404 /* GameKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -443,6 +452,10 @@
 		15AA9C4015B7EC450033D6C2 /* Classes */ = {
 			isa = PBXGroup;
 			children = (
+				048E2C9F1A4302BD00499404 /* NativeCodeLauncher_objc.h */,
+				048E2CA01A4302BD00499404 /* NativeCodeLauncher.mm */,
+				048E2CA11A4302BD00499404 /* NativeCodeLauncher.h */,
+				048E2CA21A4302BD00499404 /* NativeCodeLauncher_objc.m */,
 				1AFAF8B316D35DE700DB1158 /* AppDelegate.cpp */,
 				1AFAF8B416D35DE700DB1158 /* AppDelegate.h */,
 				A462D00119D2BDAB002E22EC /* TitleScene.cpp */,
@@ -503,6 +516,7 @@
 		29B97323FDCFA39411CA2CEA /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				048E2CA91A430AB500499404 /* GameKit.framework */,
 				D6B0611A1803AB670077942B /* CoreMotion.framework */,
 				503AE11A17EB9C5A00D1A890 /* IOKit.framework */,
 				503AE11117EB99EE00D1A890 /* libcurl.dylib */,
@@ -679,6 +693,11 @@
 				TargetAttributes = {
 					1D6058900D05DD3D006BFB54 = {
 						DevelopmentTeam = DQ67LBWH5G;
+						SystemCapabilities = {
+							com.apple.GameCenter = {
+								enabled = 1;
+							};
+						};
 					};
 				};
 			};
@@ -880,6 +899,7 @@
 			files = (
 				503AE10017EB989F00D1A890 /* AppController.mm in Sources */,
 				0489754919D5324B001E2AD7 /* Player.cpp in Sources */,
+				048E2CA51A4302BD00499404 /* NativeCodeLauncher_objc.m in Sources */,
 				503AE10217EB989F00D1A890 /* RootViewController.mm in Sources */,
 				1AFAF8B716D35DE700DB1158 /* AppDelegate.cpp in Sources */,
 				04D52F431A42F2870047ECC5 /* LoadScene.cpp in Sources */,
@@ -887,6 +907,7 @@
 				045599ED19D5579C00D0E60B /* Walls.cpp in Sources */,
 				A462D00819D2BF6D002E22EC /* GameScene.cpp in Sources */,
 				A462D00319D2BDAB002E22EC /* TitleScene.cpp in Sources */,
+				048E2CA41A4302BD00499404 /* NativeCodeLauncher.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -960,6 +981,7 @@
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COMPRESS_PNG_FILES = NO;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
@@ -980,6 +1002,7 @@
 				INFOPLIST_FILE = ios/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
 				LIBRARY_SEARCH_PATHS = "";
+				PROVISIONING_PROFILE = "";
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				USER_HEADER_SEARCH_PATHS = "";
@@ -991,6 +1014,7 @@
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COMPRESS_PNG_FILES = NO;
 				GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
@@ -1009,6 +1033,7 @@
 				INFOPLIST_FILE = ios/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
 				LIBRARY_SEARCH_PATHS = "";
+				PROVISIONING_PROFILE = "";
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				USER_HEADER_SEARCH_PATHS = "";
@@ -1098,6 +1123,7 @@
 				MACOSX_DEPLOYMENT_TARGET = 10.7;
 				ONLY_ACTIVE_ARCH = YES;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "0f9643cd-c317-42bd-8862-099a7573a14e";
 				SDKROOT = macosx;
 			};
 			name = Debug;
@@ -1127,6 +1153,7 @@
 				MACOSX_DEPLOYMENT_TARGET = 10.7;
 				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "0f9643cd-c317-42bd-8862-099a7573a14e";
 				SDKROOT = macosx;
 				VALIDATE_PRODUCT = YES;
 			};

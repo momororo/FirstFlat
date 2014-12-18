@@ -9,6 +9,7 @@
 #include "TitleScene.h"
 //#include "GameScene.h"
 #include "LoadScene.h"
+#include "NativeCodeLauncher.h"
 //#include "NendModule.h"
 //#include "NendInterstitialModule.h"
 //#include "AppCCloudPlugin.h"
@@ -112,8 +113,11 @@ bool TitleScene::init(){
      */
     
     
+
     
     
+    //GameCenterのログイン
+    NativeCodeLauncher::loginGameCenter();
     
     
     return true;
