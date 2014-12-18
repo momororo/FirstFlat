@@ -30,9 +30,7 @@
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "545"
-            endingLineNumber = "545"
-            landmarkName = "GameScene::setGameover()"
-            landmarkType = "5">
+            endingLineNumber = "545">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -46,9 +44,7 @@
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "332"
-            endingLineNumber = "332"
-            landmarkName = "GameScene::onContactBegin(cocos2d::PhysicsContact&amp; contact)"
-            landmarkType = "5">
+            endingLineNumber = "332">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -62,9 +58,7 @@
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "348"
-            endingLineNumber = "348"
-            landmarkName = "GameScene::onContactBegin(cocos2d::PhysicsContact&amp; contact)"
-            landmarkType = "5">
+            endingLineNumber = "348">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -78,9 +72,7 @@
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "150"
-            endingLineNumber = "150"
-            landmarkName = "GameScene::onTouchesBegan(const std::vector&lt;Touch *&gt; &amp;touches, cocos2d::Event *unused_event)"
-            landmarkType = "5">
+            endingLineNumber = "150">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
