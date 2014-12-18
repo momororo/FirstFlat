@@ -91,7 +91,7 @@ protected:
     void makeGameOver();
     void removeGameOver();
     bool gameOverFlag;
-    
+    int mgoCount;
     
 
 

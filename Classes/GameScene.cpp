@@ -583,7 +583,8 @@ void GameScene::setGameover(){
                 
     }
     
-    int count = 0;
+    mgoCount = 0;
+    
     //傘の処理(黒に変色後→点滅→削除)
     for (int idx = 0; idx < umbrellas->size();idx++) {
 
@@ -598,9 +599,10 @@ void GameScene::setGameover(){
         
         auto mgo = CallFunc::create([&](){
             
-            count ++;
+            mgoCount ++;
+            CCLOG("%d",mgoCount);
             
-            if (count == 5) {
+            if (mgoCount == 5) {
             
                 makeGameOver();
                 
@@ -623,17 +625,24 @@ void GameScene::setGameover(){
 
 void GameScene::makeGameOver(){
     
-    /******** ラベル＆リトライ＆ホームボタンの設定 *******/
+    //背景色の変更
+    auto bgGradient = LayerGradient::create(Color4B(128,229,255,255), Color4B(95,211,188,255));
+    this -> addChild(bgGradient);
     
-    auto gameOverLabel = Label::createWithSystemFont("GAME OVER","DragonQuestFC", 120);
-    gameOverLabel -> setPosition(Vec2(selfFrame.width/2,selfFrame.height/2));
+    //ゲームオーバーテキスト
+    auto gameOverLabel = Label::createWithSystemFont("ゲーム\nオーバー","jackeyfont", 120);
+    gameOverLabel -> setPosition(Vec2(selfFrame.width/2,selfFrame.height*2/3));
     gameOverLabel -> setColor(Color3B::BLACK);
     this -> addChild(gameOverLabel,10);
+        
+    //テキスト用の傘スプライト
+    auto umbrella = Sprite::create("umbrella.png");
+    //umbrella -> setAnchorPoint(Vec2(1,1));
+    umbrella -> setColor(Color3B::BLACK);
+    umbrella -> setScale(0.08);
+    umbrella-> setPosition(Vec2(selfFrame.width*3/4,selfFrame.height*2/3+(umbrella->getContentSize().height/2)*umbrella->getScale()));
+    addChild(umbrella);
     
-    CCLOG("テキストx:%f, y:%f",gameOverLabel->getPosition().x,gameOverLabel->getPosition().y);
-    
-    
-    /*********************************************/
     /*
     gameOverRing = Sprite::create("titleRing.png");
     gameOverRing -> setPosition(Vec2(selfFrame.width/2,selfFrame.height*2/5));
@@ -657,14 +666,17 @@ void GameScene::makeGameOver(){
     */
     /*******************************************************************/
     
-    auto retryBt = Sprite::create("yellow_umbrella.png");
+    auto retryBt = Sprite::create("retryBt.png");
     retryBt -> setPosition(Vec2(selfFrame.width*3/4,selfFrame.height/3));
-    retryBt -> setScale(0.1);
+    retryBt -> setScale(0.2);
     this->addChild(retryBt,10);
     
-    auto homeBt = Sprite::create("purple_umbrella.png");
+    CCLOG("bt x:%f, y:%f",retryBt->getPosition().x,retryBt->getPosition().y);
+
+    
+    auto homeBt = Sprite::create("homeBt.png");
     homeBt ->  setPosition(Vec2(selfFrame.width*1/4,selfFrame.height/3));
-    homeBt -> setScale(0.1);
+    homeBt -> setScale(0.2);
     this -> addChild(homeBt,10);
     
     

@@ -59,6 +59,7 @@
 	<true/>
 	<key>UIAppFonts</key>
 	<array>
+		<string>jackeyfont.ttf</string>
 		<string>Bizareadventure.ttf</string>
 		<string>DragonQuestFC.ttf</string>
 		<string>KouzanBrushFont.ttf</string>
