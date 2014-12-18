@@ -252,6 +252,7 @@ if(rigidTappedFlag == true){
         }//while文
     }
     
+    
     return;
     
 }
