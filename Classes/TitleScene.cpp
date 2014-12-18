@@ -394,7 +394,7 @@ void TitleScene::presetSprite(){
     this->addChild(titleRain);
     
     //タイトル
-    titleLabel = Label::createWithSystemFont("レイン\nドロップ","DragonQuestFC",120);
+    titleLabel = Label::createWithSystemFont("レイン\nドロップ","jackeyfont",120);
     titleLabel -> setPosition(Vec2(selfFrame.width/2, selfFrame.height*2/3));
     titleLabel->setOpacity(0);
     titleLabel->setVisible(false);
