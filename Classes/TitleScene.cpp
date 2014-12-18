@@ -313,11 +313,46 @@ void TitleScene::tappedBt(std::string &menu){
 
     //ランキングの処理
     if(menu == "ranking"){
+
         
+        auto ringScale = ScaleBy::create(2, 12);
+        auto ringFadeOut = FadeOut::create(2);
+        auto ringRemove = RemoveSelf::create(true);
+        auto scaleFadeOut = Spawn::create(ringScale,ringFadeOut, NULL);
+        auto ringSequence = Sequence::create(scaleFadeOut,ringRemove, NULL);
+        
+        this -> getChildByName("rankingEffectRing") -> setVisible(true);
+        this -> getChildByName("rankingEffectRing") -> runAction(ringSequence);
+        CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("low_c.mp3");
+
         
         /**
          *  おそらくリングを再生成して、傘の動きを止める処理の実装が必要かと思われ。
          */
+        
+        NativeCodeLauncher::openRanking();
+        
+        //傘を入れ替え
+        //ランキング入れ替え
+        this -> removeChildByName("ranking");
+        
+        ranking = Sprite::create("green_umbrella.png");
+        ranking -> setPosition(Vec2(60,selfFrame.height/4));
+        ranking -> setScale(0.1);
+        ranking -> setName("ranking");
+        ranking -> setPositionZ(0);
+        this -> addChild(ranking);
+
+        //ランキングエフェクト
+        auto rankingEffectRing = Sprite::create("green_ring.png");
+        rankingEffectRing -> setPosition(Vec2(this->getChildByName("ranking")->getPosition().x,this->getChildByName("ranking")->getPosition().y));
+        rankingEffectRing -> setScale(0.1);
+        rankingEffectRing -> setVisible(false);
+        rankingEffectRing -> setName("rankingEffectRing");
+        this -> addChild(rankingEffectRing);
+
+
+        
         return;
     }
 
@@ -438,6 +473,7 @@ void TitleScene::presetSprite(){
     rankingLabel -> setPosition(Vec2(ranking->getPosition().x, ranking->getPosition().y));
     rankingLabel -> setVisible(false);
     rankingLabel -> setName("rankingLabel");
+    rankingLabel -> setPositionZ(10);
     addChild(rankingLabel,10);
     
     //ランキングリング
@@ -496,7 +532,8 @@ void TitleScene::presetSprite(){
     this -> addChild(rankingEffectRing);
 
     auto tutorialEffectRing = Sprite::create("red_ring.png");
-    tutorialEffectRing -> setPosition(Vec2(this->getChildByName("tutorial")->getPosition().x,this->getChildByName("tutorial")->getPosition().y));
+    tutorialEffectRing -> setPosition(Vec2(this->getChildByName("tutorial")->getPosition().x,
+                                           this->getChildByName("tutorial")->getPosition().y));
     tutorialEffectRing -> setScale(0.1);
     tutorialEffectRing -> setVisible(false);
     tutorialEffectRing -> setName("tutorialEffectRing");
