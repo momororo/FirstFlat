@@ -47,6 +47,11 @@ protected:
     //傘用の配列
     cocos2d::Vector<cocos2d::Sprite *> *umbrellas = new cocos2d::Vector<cocos2d::Sprite *>;
     
+    //スコア
+    int score = 0;
+    //ドロップ間隔
+    float dropInterval = 1;
+    
     
     //ボタン類の変数一覧
     cocos2d::Sprite *greenCircle;
@@ -74,6 +79,9 @@ protected:
 
     //雨の設置
     void setDrops();
+    
+    //難易度調整
+    void scoreManager();
 
     
     //スプライトの除去
