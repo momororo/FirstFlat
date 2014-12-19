@@ -10,9 +10,11 @@
 //#include "GameScene.h"
 #include "LoadScene.h"
 #include "NativeCodeLauncher.h"
-//#include "NendModule.h"
-//#include "NendInterstitialModule.h"
-//#include "AppCCloudPlugin.h"
+#include "NendModule.h"
+#include "NendInterstitialModule.h"
+#include "AppCCloudPlugin.h"
+#include "NativeLauncher.h"
+
 
 
 #define selfFrame Director::getInstance() -> getWinSize()
@@ -100,19 +102,25 @@ bool TitleScene::init(){
     /*************　　タッチイベント設定  終 ****************/
     
     
+    //テストID使用中、本番IDはコメント化
     //MARK::nendの設定
     //ネンドの呼び出し(ヘッダー)
-    /*char apiKey[] = "5aa579f521da85a055c5076641efc68202d5e8e2";
-     char spotID[] = "262876";
-     NendModule::createNADViewBottom(apiKey, spotID);
+    char apiKey[] = "a6eca9dd074372c898dd1df549301f277c53f2b9";
+    //"ecb83e1d23f7b696fb4bacb8f132b5cec93cd5f5";
+    
+    char spotID[] = "3172";//"285490";
+    NendModule::createNADViewBottom(apiKey, spotID);
      
-     //ネンドの呼び出し(飛び出す)
-     char interstitialApiKey[] = "6b027f392e0cf11d378908fc4027f1755d6422ad";
-     char interstitialSpotID[] = "266067";
-     NendInterstitialModule::createNADInterstitial(interstitialApiKey, interstitialSpotID);
-     */
+    //ネンドの呼び出し(飛び出す)
+    char interstitialApiKey[] = "88d88a288fdea5c01d17ea8e494168e834860fd6";
+    //"8d08c967527310908e9b0d9a1a5c38becc702526";
+    char interstitialSpotID[] = "70356";
+    //"285491";
     
+    NendInterstitialModule::createNADInterstitial(interstitialApiKey, interstitialSpotID);
     
+    //MARK::nend飛だし広告の表示
+    NendInterstitialModule::showNADInterstitialView();
 
     
     
@@ -127,25 +135,53 @@ bool TitleScene::init(){
 
 
 //MARK::AppCCloudの設定と削除
-/*
  void TitleScene::setAppCCloud(){
  
- appCCloudBt = Sprite::create("other.png");
- appCCloudBt -> setPosition(Vec2((selfFrame.width)-(appCCloudBt->getContentSize().width*2/3),(selfFrame.height)-(appCCloudBt->getContentSize().height*2/3)));
- this -> addChild(appCCloudBt);
- 
- appFlag = true;
- 
+     auto appCCloudBt = Sprite::create("other.png");
+     auto appCCloudBtTaped = Sprite::create("other.png");
+     appCCloudBtTaped -> setOpacity(150);
+     
+     auto btItem = MenuItemSprite::create(appCCloudBt, appCCloudBtTaped,[](Ref*sender){
+         
+         AppCCloudPlugin::Ad::openAdListView();
+
+         
+     });
+     
+     auto appCMenu = Menu::create(btItem,NULL);
+     appCMenu -> setName("appCMenu");
+     appCMenu -> setPosition(Vec2((selfFrame.width)-(appCCloudBt->getContentSize().width*2/3),(selfFrame.height)-(appCCloudBt->getContentSize().height*2/3)));
+     this -> addChild(appCMenu);
+  
+     CCLOG("twitter x:%f ,y:%f",appCMenu->getPosition().x,appCMenu->getPosition().y);
+     
  }
- 
- void TitleScene::removeAppCCloud(){
- 
- appCCloudBt -> removeFromParent();
- 
- appFlag = false;
- 
- }
- */
+
+//ツイッターボタンの設定
+void TitleScene::setTwitterBt(){
+    
+    //スタートボタン作成
+    auto twitterBt = Sprite::create("twitterBt.png");
+    auto twitterBtTaped = Sprite::create("twitterBt.png");
+    twitterBtTaped -> setOpacity(150);
+    
+    
+    //メニューアイテムの作成
+    auto tBtnItem = MenuItemSprite::create(twitterBt, twitterBtTaped,[](Ref*sender){
+        
+        NativeLauncher::openTweetDialog("ハイスコア：20030点\n【iPhoneアプリ】レインドロップ\n#レインドロップ");
+        
+    });
+    
+    
+    //メニューの作成　pMenuの中にpBtnItemを入れる
+    auto twitterMenu = Menu::create(tBtnItem, NULL);
+    twitterMenu->setPosition(Vec2(selfFrame.width-(twitterBt->getContentSize().width)*1.8,this->getChildByName("appCMenu")->getPosition().y));
+    this->addChild(twitterMenu);
+    
+    CCLOG("twitter x:%f ,y:%f",twitterMenu->getPosition().x,twitterMenu->getPosition().y);
+    
+}
 
 
 
@@ -169,17 +205,20 @@ bool TitleScene::onTouchBegan(Touch *touch, Event *unused_event){
     Point touchPoint = Vec2(touch->getLocation());
 
     //メニューの押下処理(かさぐるぐる)
-    for(auto menu : *menus){
+    if (playerCanTapBt == true) {
         
-        if (this->getChildByName(*menu)->getBoundingBox().containsPoint(touchPoint)){
- 
-            auto repeatForever = RepeatForever::create(RotateBy::create(1, 360));
-            this ->getChildByName(*menu)->runAction(repeatForever);
- 
-            return true;
+        for(auto menu : *menus){
+            
+            if (this->getChildByName(*menu)->getBoundingBox().containsPoint(touchPoint)){
+                
+                auto repeatForever = RepeatForever::create(RotateBy::create(1, 360));
+                this ->getChildByName(*menu)->runAction(repeatForever);
+                
+                return true;
+                
+            }
             
         }
-        
     }
     
     return true;
@@ -203,22 +242,25 @@ void TitleScene::onTouchMoved(Touch *touch, Event *unused_event){
     Point touchPoint = Vec2(touch->getLocation());
     
     //ボタンが回転している(アクションがある)→ボタンの位置にいない→アクションを止める
-    for(auto menu : *menus){
-
-        if (this->getChildByName(*menu)->getNumberOfRunningActions() != 0){
-
+    if (playerCanTapBt == true) {
+        
+        for(auto menu : *menus){
             
-            if (!this->getChildByName(*menu)->getBoundingBox().containsPoint(touchPoint)){
+            if (this->getChildByName(*menu)->getNumberOfRunningActions() != 0){
                 
-                this->getChildByName(*menu)->stopAllActions();
-
+                
+                if (!this->getChildByName(*menu)->getBoundingBox().containsPoint(touchPoint)){
+                    
+                    this->getChildByName(*menu)->stopAllActions();
+                    
+                    
+                }
+                
+                return;
                 
             }
-
-            return;
             
         }
-        
     }
     
     return;
@@ -238,34 +280,39 @@ void TitleScene::onTouchEnded(Touch *touch, Event *unused_event){
         
     }
     
+
+    
     //ポイント取得
     Point touchPoint = Vec2(touch->getLocation());
     
-    //ボタンが回転している(アクションがある)→ボタンの位置にいる→画面遷移
-    for(auto menu : *menus){
+    if (playerCanTapBt == true) {
         
-        if (this->getChildByName(*menu)->getNumberOfRunningActions() != 0){
+        //ボタンが回転している(アクションがある)→ボタンの位置にいる→画面遷移
+        for(auto menu : *menus){
             
-            
-            if (this->getChildByName(*menu)->getBoundingBox().containsPoint(touchPoint)){
+            if (this->getChildByName(*menu)->getNumberOfRunningActions() != 0){
                 
                 
-                auto repeatForever = RepeatForever::create(RotateBy::create(1, 360));
-                this ->getChildByName(*menu)->runAction(repeatForever);
+                if (this->getChildByName(*menu)->getBoundingBox().containsPoint(touchPoint)){
+                    
+                    
+                    auto repeatForever = RepeatForever::create(RotateBy::create(1, 360));
+                    this ->getChildByName(*menu)->runAction(repeatForever);
+                    
+                    //押下後の処理へ
+                    tappedBt(*menu);
+                    
+                    
+                    
+                }
                 
-                //押下後の処理へ
-                tappedBt(*menu);
-
-                
+                return;
                 
             }
             
-            return;
-            
         }
-        
+
     }
-    
 }
 
 
@@ -331,18 +378,20 @@ void TitleScene::tappedBt(std::string &menu){
          */
         
         NativeCodeLauncher::openRanking();
+        //アクションを一度止める
+        this -> getChildByName("ranking")-> stopAllActions();
         
         //傘を入れ替え
         //ランキング入れ替え
-        this -> removeChildByName("ranking");
+      /*  this -> removeChildByName("ranking");
         
-        ranking = Sprite::create("green_umbrella.png");
-        ranking -> setPosition(Vec2(60,selfFrame.height/4));
-        ranking -> setScale(0.1);
+        ranking = Sprite::create("rankingBt.png");
+        ranking -> setPosition(Vec2(selfFrame.width/5,selfFrame.height/3));
+        ranking -> setScale(0.2);
         ranking -> setName("ranking");
         ranking -> setPositionZ(0);
         this -> addChild(ranking);
-
+       */
         //ランキングエフェクト
         auto rankingEffectRing = Sprite::create("green_ring.png");
         rankingEffectRing -> setPosition(Vec2(this->getChildByName("ranking")->getPosition().x,this->getChildByName("ranking")->getPosition().y));
@@ -727,32 +776,29 @@ void TitleScene::fadeInTitle(){
 
     this -> getChildByName("titleLabel") -> setVisible(true);
     this -> getChildByName("titleLabel") -> runAction(FadeIn::create(2));
-    
-    /*
-    auto umbrella = Sprite::create("umbrella.png");
-    umbrella -> setAnchorPoint(Vec2(1,1));
-    umbrella -> setScale(0.08);
-    umbrella-> setPosition(Vec2(selfFrame.width/2+titleLabel->getContentSize().width*2/3,selfFrame.height*2/3+titleLabel->getContentSize().height*2/5));
-    umbrella -> setOpacity(0);
-    addChild(umbrella);
-    umbrella -> runAction(FadeIn::create(2));
-    */
+   
 }
-/*
-void TitleScene::fadeInUmbrella(){
-    
-
-    this -> getChildByName("umbrella") -> setVisible(true);
-    this -> getChildByName("umbrella") -> runAction(FadeIn::create(2));
-
-}*/
 
 //スタートのフェードイン表示
 void TitleScene::fadeInStart(){
+    
+    auto fadeIn = FadeIn::create(2);
+    auto func = CallFunc::create([this](){
+        
+        playerCanTapBt = true;
+        setAppCCloud();
+        setTwitterBt();
+
+
+
+        
+    });
+    
+    auto seq = Sequence::create(fadeIn,func, NULL);
 
     this -> getChildByName("start") -> setVisible(true);
-    this -> getChildByName("start") -> runAction(FadeIn::create(2));
-
+    this -> getChildByName("start") -> runAction(seq);
+    
 }
 
 //ランキングのフェードイン表示

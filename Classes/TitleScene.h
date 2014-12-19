@@ -70,14 +70,16 @@ protected:
     
     //ボタンタップ後の処理メソッド
     void tappedBt(std::string &menu);
-    
-    
+    //ボタンタップの管理フラグ
+    bool playerCanTapBt;
     
     virtual void setDrops(float time);
     
     //AppCCloudの広告用
-    //void setAppCCloud();
-    //void removeAppCCloud();
+    void setAppCCloud();
+    void removeAppCCloud();
+    //twitter
+    void setTwitterBt();
     
     
 };
