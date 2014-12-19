@@ -10,7 +10,10 @@
 #include <string.h>
 
 #define selfFrame Director::getInstance() -> getWinSize()
-#define visibleSize Director::getInstance()->getVisibleSize();
+//30点まではイージーモード
+#define easyMode 30
+//100点まではノーマルモード
+#define normalMode 100
 
 
 USING_NS_CC;
@@ -203,6 +206,14 @@ if(rigidTappedFlag == true){
                 
                 if(umbrella->getBoundingBox().containsPoint(touchPoint)){
                     
+                    //黄色と紫の時、非表示の場合はそのままreturn;
+                    if(umbrella -> getName() == "yellow" || umbrella -> getName() == "purple"){
+                        if(umbrella -> isVisible() == false){
+                            return;
+                        }
+                    }
+                    
+                    
                     //ダブルタップの制限を超えたら処理せず終
                     if(tappedCount >= 2){
                         tappedCount = 0;
@@ -393,6 +404,12 @@ bool GameScene::onContactBegin(cocos2d::PhysicsContact& contact){
         //配列から削除
         dropRing -> runAction(moveScale);
         
+        //スコア加点
+        score = score + 10;
+        //難易度調整ようのメソッドを呼ぶ
+        this -> scoreManager();
+        
+        
         
          
         return true;
@@ -451,6 +468,13 @@ void GameScene::setUmbrella(){
         
         umbrella->setPhysicsBody(umbrellaBody);
         
+        if(umbrella->getName() == "yellow" || umbrella->getName() == "purple"){
+            
+            umbrella -> setVisible(false);
+            umbrella -> setOpacity(0);
+            
+        }
+        
         this->addChild(umbrella);
         
         //配列に入れとく
@@ -488,6 +512,15 @@ void GameScene::setCloud(){
         cloud -> setName(color + "_cloud");
         
         
+        if(cloud->getName() == "yellow_cloud" || cloud->getName() == "purple_cloud"){
+            
+            cloud -> setVisible(false);
+            cloud -> setOpacity(0);
+            
+        }
+
+        
+        
         this->addChild(cloud);
         
         
@@ -508,10 +541,42 @@ void GameScene::setDrops(){
     if(gameOverFlag == true){
         return;
     }
-    
 
+    
     //対象の雲を決定
-    auto rnd = arc4random_uniform((int)colors->size());
+    int rnd;
+
+
+    //難易度で出るドロップを振り分け
+    //黄色の雲が見えていない場合はイージーと判定
+    if(this -> getChildByName("yellow_cloud") -> isVisible() == false){
+        
+        //0、1、2をランダム
+        auto rnd2 = arc4random_uniform(3);
+        
+        //それぞれの三原色の番号に変換
+        switch (rnd2) {
+            case 0:
+                rnd = 0;
+                break;
+            case 1:
+                rnd = 2;
+                break;
+            case 2:
+                rnd = 4;
+                break;
+            default:
+                break;
+        }
+        
+    }else{
+        
+        rnd = arc4random_uniform((int)colors->size());
+        
+    }
+    
+    
+    
     
     //配列から色を抜き取り
     std::string color = *colors->at(rnd);
@@ -561,7 +626,7 @@ void GameScene::setDrops(){
      }
      
      */
-    auto actionTime = 1;
+    auto actionTime = dropInterval;
     
     auto action1 = ScaleBy::create(actionTime,1.3);
     auto action2 = ScaleBy::create(actionTime,0.76923077);
@@ -590,6 +655,53 @@ void GameScene::setDrops(){
     
     
     return;
+    
+}
+
+//難易度調整
+void GameScene::scoreManager(){
+    
+    CCLOG("%fだよ",dropInterval);
+    auto tmp = 0.05;
+    
+    //イージーモード中
+    if(score < easyMode ){
+    
+        //出現速度をあげる
+        dropInterval = dropInterval - tmp;
+        
+        return;
+    }
+    
+    
+    //イージーモードからノーマルモードへ
+    if(score == easyMode){
+        
+        
+        dropInterval = dropInterval - tmp;
+        
+        
+        return;
+        
+    }
+    //ノーマルモード中
+    if(score < normalMode){
+        
+        
+        dropInterval = dropInterval - tmp;
+        return;
+    }
+    
+    //ノーマルモードからハードモードへ
+    if(score == normalMode){
+        dropInterval = dropInterval - tmp;
+
+        return;
+    }
+    
+    //ハードモードへ
+    dropInterval = dropInterval - 0.005;
+
     
 }
 
