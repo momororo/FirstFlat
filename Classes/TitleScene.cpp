@@ -61,14 +61,14 @@ bool TitleScene::init(){
     setStart();
     setRanking();
     setTutorial();
-
+/*
     auto umbrella = Sprite::create("umbrella.png");
     umbrella -> setAnchorPoint(Vec2(1,1));
     umbrella -> setScale(0.08);
     umbrella-> setPosition(Vec2(selfFrame.width*14/15,selfFrame.height*4/5));
     //umbrella -> setOpacity(0);
     this-> addChild(umbrella,10);
-    
+  */
     CocosDenshion::SimpleAudioEngine::getInstance()->preloadEffect("low_bFlat.mp3");
     CocosDenshion::SimpleAudioEngine::getInstance()->preloadEffect("low_c.mp3");
     CocosDenshion::SimpleAudioEngine::getInstance()->preloadEffect("low_d.mp3");
@@ -418,23 +418,17 @@ void TitleScene::presetSprite(){
     this -> addChild(startRain);
     
     //スタートボタン
-    auto startBt = Sprite::create("blue_umbrella.png");
-    startBt -> setPosition(Vec2(selfFrame.width/2, selfFrame.height/6));
-    startBt -> setScale(0.1);
+    auto startBt = Sprite::create("startBt.png");
+    startBt -> setPosition(Vec2(selfFrame.width/2, selfFrame.height/4));
+    startBt -> setScale(0.2);
     startBt -> setOpacity(0);
     startBt -> setVisible(false);
     startBt -> setName("start");
     addChild(startBt,10);
     
-    auto startLabel = Label::createWithSystemFont("スタート","DragonQuestFC",30);
-    startLabel -> setPosition(Vec2(startBt->getPosition().x, startBt->getPosition().y));
-    startLabel -> setVisible(false);
-    startLabel -> setName("startLabel");
-    addChild(startLabel,10);
-    
     //スタートリング
     auto startRing = Sprite::create("blue_ring.png");
-    startRing -> setPosition(Vec2(selfFrame.width/2,selfFrame.height/6));
+    startRing -> setPosition(Vec2(selfFrame.width/2,selfFrame.height/4));
     startRing -> setScale(0.1);
     startRing -> setVisible(false);
     startRing -> setName("startRing");
@@ -444,73 +438,56 @@ void TitleScene::presetSprite(){
     //スタートボタンをタップした時のエフェクト効果
     auto startBtEffect = Sprite::create("blue_ring.png");
     startBtEffect -> setPosition(Vec2(this->getChildByName("start")->getPosition()));
-    startBtEffect -> setScale(0.1);
+    startBtEffect -> setScale(0.2);
     startBtEffect -> setVisible(false);
     startBtEffect -> setName("startBtEffect");
     this-> addChild(startBtEffect);
 
-    
-
     //ランキングボタン効果
     auto rankingRain = Sprite::create("green_rain.png");
-    rankingRain -> setPosition(Vec2(60,selfFrame.height+100));
+    rankingRain -> setPosition(Vec2(selfFrame.width/5,selfFrame.height+100));
     rankingRain -> setScale(0.1);
     rankingRain -> setVisible(false);
     rankingRain -> setName("rankingRain");
     this->addChild(rankingRain);
     
-    
     //ランキング
-    ranking = Sprite::create("green_umbrella.png");
-    ranking -> setPosition(Vec2(60,selfFrame.height/4));
-    ranking -> setScale(0.1);
+    ranking = Sprite::create("rankingBt.png");
+    ranking -> setPosition(Vec2(selfFrame.width/5,selfFrame.height/3));
+    ranking -> setScale(0.2);
     ranking -> setOpacity(0);
     ranking -> setVisible(false);
     ranking -> setName("ranking");
     addChild(ranking,10);
     
-    auto rankingLabel = Label::createWithSystemFont("ランキング","DragonQuestFC",30);
-    rankingLabel -> setPosition(Vec2(ranking->getPosition().x, ranking->getPosition().y));
-    rankingLabel -> setVisible(false);
-    rankingLabel -> setName("rankingLabel");
-    rankingLabel -> setPositionZ(10);
-    addChild(rankingLabel,10);
-    
     //ランキングリング
     auto rankingRing = Sprite::create("green_ring.png");
-    rankingRing -> setPosition(Vec2(60,selfFrame.height/6));
+    rankingRing -> setPosition(Vec2(selfFrame.width/5,selfFrame.height/3));
     rankingRing -> setScale(0.1);
     rankingRing -> setVisible(false);
     rankingRing -> setName("rankingRing");
     addChild(rankingRing);
-
     
     // チュートリアル効果
     auto tutorialRain = Sprite::create("red_rain.png");
-    tutorialRain -> setPosition(Vec2(selfFrame.width-60,selfFrame.height+100));
+    tutorialRain -> setPosition(Vec2(selfFrame.width*4/5,selfFrame.height+100));
     tutorialRain -> setScale(0.1);
     tutorialRain -> setVisible(false);
     tutorialRain -> setName("tutorialRain");
     this->addChild(tutorialRain);
     
     //チュートリアル
-    tutorial = Sprite::create("red_umbrella.png");
-    tutorial -> setPosition(Vec2(selfFrame.width-60,selfFrame.height/4));
-    tutorial -> setScale(0.1);
+    tutorial = Sprite::create("tutorialBt.png");
+    tutorial -> setPosition(Vec2(selfFrame.width*4/5,selfFrame.height/3));
+    tutorial -> setScale(0.2);
     tutorial -> setOpacity(0);
     tutorial -> setVisible(false);
     tutorial -> setName("tutorial");
     addChild(tutorial,10);
     
-    auto tutorialLabel = Label::createWithSystemFont("あそびかた","DragonQuestFC",30);
-    tutorialLabel -> setPosition(Vec2(tutorial->getPosition().x, tutorial->getPosition().y));
-    tutorialLabel ->setVisible(false);
-    tutorialLabel -> setName("tutorialLabel");
-    addChild(tutorialLabel,10);
-
     //チュートリアルリング
     auto tutorialRing = Sprite::create("red_ring.png");
-    tutorialRing -> setPosition(Vec2(selfFrame.width-60,selfFrame.height/6));
+    tutorialRing -> setPosition(Vec2(selfFrame.width*4/5,selfFrame.height/3));
     tutorialRing -> setScale(0.1);
     tutorialRing -> setVisible(false);
     tutorialRing -> setName("tutorialRing");
@@ -519,22 +496,24 @@ void TitleScene::presetSprite(){
     //ボタン押下後の波紋
     auto startEffectRing = Sprite::create("blue_ring.png");
     startEffectRing -> setPosition(Vec2(this->getChildByName("start")->getPosition().x,this->getChildByName("start")->getPosition().y));
-    startEffectRing -> setScale(0.1);
+    startEffectRing -> setScale(0.2);
     startEffectRing -> setVisible(false);
     startEffectRing -> setName("startEffectRing");
     this -> addChild(startEffectRing);
 
+    //ランキングBtタップ時のエフェクト
     auto rankingEffectRing = Sprite::create("green_ring.png");
     rankingEffectRing -> setPosition(Vec2(this->getChildByName("ranking")->getPosition().x,this->getChildByName("ranking")->getPosition().y));
-    rankingEffectRing -> setScale(0.1);
+    rankingEffectRing -> setScale(0.2);
     rankingEffectRing -> setVisible(false);
     rankingEffectRing -> setName("rankingEffectRing");
     this -> addChild(rankingEffectRing);
-
+    
+    //チュートリアルBtタップ時のエフェクト
     auto tutorialEffectRing = Sprite::create("red_ring.png");
     tutorialEffectRing -> setPosition(Vec2(this->getChildByName("tutorial")->getPosition().x,
                                            this->getChildByName("tutorial")->getPosition().y));
-    tutorialEffectRing -> setScale(0.1);
+    tutorialEffectRing -> setScale(0.2);
     tutorialEffectRing -> setVisible(false);
     tutorialEffectRing -> setName("tutorialEffectRing");
 
@@ -543,11 +522,8 @@ void TitleScene::presetSprite(){
     
     //アンブレラ
     auto umbrella = Sprite::create("umbrella.png");
-    umbrella -> setAnchorPoint(Vec2(1,1));
     umbrella -> setScale(0.08);
-    umbrella-> setPosition(Vec2(selfFrame.width/2,selfFrame.height*2/3));
-    umbrella -> setOpacity(0);
-    umbrella -> setVisible(false);
+    umbrella-> setPosition(Vec2(selfFrame.width*7/10,selfFrame.height*2/3+(umbrella->getContentSize().height*3/4)*umbrella->getScale()));
     umbrella -> setName("umbrella");
     addChild(umbrella);
     
@@ -602,7 +578,7 @@ void TitleScene::setTitle(){
 void TitleScene::setStart(){
         
      //オブジェクトの移動
-     auto move = MoveTo::create(2, Vec2(selfFrame.width/2,selfFrame.height/6));
+     auto move = MoveTo::create(2, Vec2(selfFrame.width/2,selfFrame.height/4));
      
      //オブジェクトの削除
      auto remove = RemoveSelf::create(true);
@@ -648,7 +624,7 @@ void TitleScene::setRanking(){
     
     
     //オブジェクトの移動
-    auto move = MoveTo::create(2, Vec2(60,selfFrame.height/6));
+    auto move = MoveTo::create(2, Vec2(selfFrame.width/4,selfFrame.height/3));
     
     //オブジェクトの削除
     auto remove = RemoveSelf::create(true);
@@ -693,7 +669,7 @@ void TitleScene::setTutorial(){
     
     
     //オブジェクトの移動
-    auto move = MoveTo::create(2, Vec2(selfFrame.width-60,selfFrame.height/6));
+    auto move = MoveTo::create(2, Vec2(selfFrame.width*3/4,selfFrame.height/3));
     
     //オブジェクトの削除
     auto remove = RemoveSelf::create(true);
@@ -762,24 +738,20 @@ void TitleScene::fadeInTitle(){
     umbrella -> runAction(FadeIn::create(2));
     */
 }
-
+/*
 void TitleScene::fadeInUmbrella(){
     
 
     this -> getChildByName("umbrella") -> setVisible(true);
     this -> getChildByName("umbrella") -> runAction(FadeIn::create(2));
 
-}
+}*/
 
 //スタートのフェードイン表示
 void TitleScene::fadeInStart(){
 
     this -> getChildByName("start") -> setVisible(true);
     this -> getChildByName("start") -> runAction(FadeIn::create(2));
-
-    this -> getChildByName("startLabel") -> setVisible(true);
-    this -> getChildByName("startLabel") -> runAction(FadeIn::create(2));
-
 
 }
 
@@ -789,10 +761,7 @@ void TitleScene::fadeInRanking(){
 
     this -> getChildByName("ranking") -> setVisible(true);
     this -> getChildByName("ranking") -> runAction(FadeIn::create(2));
-    
-    this -> getChildByName("rankingLabel") -> setVisible(true);
-    this -> getChildByName("rankingLabel") -> runAction(FadeIn::create(2));
-
+   
 }
 
 //チャレンジのフェードイン表示
@@ -800,12 +769,9 @@ void TitleScene::fadeInTutorial(){
 
     this -> getChildByName("tutorial") -> setVisible(true);
     this -> getChildByName("tutorial") -> runAction(FadeIn::create(2));
-    
-    this -> getChildByName("tutorialLabel") -> setVisible(true);
-    this -> getChildByName("tutorialLabel") -> runAction(FadeIn::create(2));
 
-    
 }
+
 /***********************************************************
                 タイトル,各種ボタン設定　終
  **********************************************************/
