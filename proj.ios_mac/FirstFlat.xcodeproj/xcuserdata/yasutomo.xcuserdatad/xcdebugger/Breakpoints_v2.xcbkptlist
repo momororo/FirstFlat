@@ -26,11 +26,13 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "../Classes/GameScene.cpp"
-            timestampString = "440585624.154632"
+            timestampString = "440667863.251884"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "545"
-            endingLineNumber = "545">
+            startingLineNumber = "647"
+            endingLineNumber = "647"
+            landmarkName = "GameScene::removeSprite()"
+            landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -40,11 +42,13 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "../Classes/GameScene.cpp"
-            timestampString = "440585624.154632"
+            timestampString = "440667672.56859"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "332"
-            endingLineNumber = "332">
+            startingLineNumber = "343"
+            endingLineNumber = "343"
+            landmarkName = "GameScene::onContactBegin(cocos2d::PhysicsContact&amp; contact)"
+            landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -54,11 +58,13 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "../Classes/GameScene.cpp"
-            timestampString = "440585624.154632"
+            timestampString = "440667672.56859"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "348"
-            endingLineNumber = "348">
+            startingLineNumber = "359"
+            endingLineNumber = "359"
+            landmarkName = "GameScene::onContactBegin(cocos2d::PhysicsContact&amp; contact)"
+            landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -68,11 +74,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "../Classes/GameScene.cpp"
-            timestampString = "440584826.4319"
+            timestampString = "440666901.743907"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "150"
-            endingLineNumber = "150">
+            startingLineNumber = "158"
+            endingLineNumber = "158">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
