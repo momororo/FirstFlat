@@ -47,8 +47,6 @@ protected:
     //傘用の配列
     cocos2d::Vector<cocos2d::Sprite *> *umbrellas = new cocos2d::Vector<cocos2d::Sprite *>;
     
-
-    
     
     //ボタン類の変数一覧
     cocos2d::Sprite *greenCircle;
@@ -68,7 +66,15 @@ protected:
     virtual bool init();
     CREATE_FUNC(GameScene);
     
+    //傘を設置
     void setUmbrella();
+    
+    //雲を設置
+    void setCloud();
+
+    //雨の設置
+    void setDrops();
+
     
     //スプライトの除去
     void removeSprite();
@@ -84,7 +90,6 @@ protected:
     bool onContactBegin(cocos2d::PhysicsContact& contact);
 
     
-    void setDrops(float time);
     
     //ゲームオーバー周り
     void setGameover();

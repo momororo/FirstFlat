@@ -77,6 +77,9 @@ bool GameScene::init(){
     //ボタンの生成
     this->setUmbrella();
     
+    //雲の作成
+    this->setCloud();
+    
     gameOverFlag = false;
     
     
@@ -134,8 +137,13 @@ bool GameScene::init(){
     
     
 
-    //テスト用
-    this -> schedule(schedule_selector(GameScene::setDrops), 1);
+    //雲の生成
+    auto callback = CallFunc::create(CC_CALLBACK_0(GameScene::setDrops,this));
+    auto action = Sequence::create(callback, NULL);
+    //実行
+    this -> runAction(action);
+
+    
     
     //スコア機能の実装
 
@@ -149,7 +157,10 @@ bool GameScene::init(){
 }
 
 void GameScene::onTouchesBegan(const std::vector<Touch *> &touches, cocos2d::Event *unused_event){
+
     
+    
+
 
 //硬直中か判定
 if(rigidTappedFlag == true){
@@ -450,12 +461,56 @@ void GameScene::setUmbrella(){
     
 }
 
+void GameScene::setCloud(){
+    
+    for(int idx = 0; idx < colors->size() ; idx++){
+        
+        //色を抜き出し
+        std::string color = *colors->at(idx);
+        
+        
+        //文字列操作
+        std::string pngName = color + "_cloud.png";
+        //スプライト生成
+        auto cloud = Sprite::create(pngName);
+        
+        cloud -> setScale(0.1);
+
+        
+        cloud -> setPosition(Vec2(selfFrame.width/((int)colors->size() + 1)*(idx + 1), selfFrame.height - (cloud->getContentSize().height * cloud->getScale())));
+
+
+        //dropとの重なり順を考慮
+        cloud -> setPositionZ(10);
+        
+        
+        
+        cloud -> setName(color + "_cloud");
+        
+        
+        this->addChild(cloud);
+        
+        
+    }
+
+    
+}
+
+
 #pragma mark-
 #pragma mark タイトルに雨を降らせる動作
 
 
-void GameScene::setDrops(float time){
+
+void GameScene::setDrops(){
     
+    //ゲームオーバーの際は再帰せず終了
+    if(gameOverFlag == true){
+        return;
+    }
+    
+
+    //対象の雲を決定
     auto rnd = arc4random_uniform((int)colors->size());
     
     //配列から色を抜き取り
@@ -464,30 +519,77 @@ void GameScene::setDrops(float time){
     //サークルの画像名を生成
     std::string pngName = color + "_rain.png";
 
-    auto dropCircle = Sprite::createWithSpriteFrameName(pngName);
-    dropCircle -> setScale(0.03);
-    dropCircle -> setPosition(Vec2(selfFrame.width/((int)colors->size() + 1) * (rnd + 1 ), selfFrame.height*1.5));
+    auto drop = Sprite::createWithSpriteFrameName(pngName);
+    drop -> setScale(0.03);
+    drop -> setPosition(Vec2(this -> getChildByName(color + "_cloud")->getPosition().x, this -> getChildByName(color + "_cloud")->getPosition().y));
     
     //円に名前を設定
-    dropCircle -> setName(color);
+    drop -> setName(color);
     //タグは3
-    dropCircle -> setTag(3);
+    drop -> setTag(3);
+    
+    //雲との重なりを考慮
+    drop -> setPositionZ(0);
 
     //円に物理体を設定
     auto dropMaterial = PHYSICSBODY_MATERIAL_DEFAULT;
-    auto dropCircleBody = PhysicsBody::createCircle((dropCircle->getContentSize().width/2)*dropCircle->getScale(),dropMaterial);
-    dropCircleBody->setDynamic(true); // 重力の影響を受けない
-    dropCircleBody->setCategoryBitmask(0x02);
+    auto dropBody = PhysicsBody::createCircle((drop->getContentSize().width/2)*drop->getScale(),dropMaterial);
+    dropBody->setCategoryBitmask(0x02);
     //0にすることで衝突しない。
-    dropCircleBody->setCollisionBitmask(0);
-    dropCircleBody->setContactTestBitmask(0x01);
-    dropCircle->setPhysicsBody(dropCircleBody);
+    dropBody->setCollisionBitmask(0);
+    dropBody->setContactTestBitmask(0x01);
+    drop->setPhysicsBody(dropBody);
+    
+
+    //非表示でかつ重力で落ちないように設定
+    drop -> setVisible(false);
+    dropBody->setDynamic(true); // 重力の影響を受けない
+
+    
     //addChild(dropCircle);
-    this -> addChild(dropCircle);
+    this -> addChild(drop);
     
     
-    drops->pushBack(dropCircle);
+    drops->pushBack(drop);
     
+//雲のアクションを設定(拡大縮小)
+
+    /*
+     スコアに応じて速度を変えること
+     if(score >= xx){
+        antionTime = xx;
+     }
+     
+     */
+    auto actionTime = 1;
+    
+    auto action1 = ScaleBy::create(actionTime,1.3);
+    auto action2 = ScaleBy::create(actionTime,0.76923077);
+    
+    //拡大縮小のアクション終了後にドロップの設定を変更
+    auto startDrop = CallFunc::create([this](){
+        
+        drops -> at( drops->size() - 1) -> setVisible(true);
+        
+        drops -> at( drops->size() - 1) -> getPhysicsBody() -> setDynamic(true);
+        
+    });
+    
+    //拡大縮小のアクション終了後にドロップの設定を変更
+    auto call = CallFunc::create([this](){
+        
+        
+        this -> setDrops();
+        
+    });
+
+    
+    //実行
+    this->getChildByName(color + "_cloud") -> runAction(Sequence::create(action1,action2,startDrop,call,NULL));
+    
+    
+    
+    return;
     
 }
 
@@ -552,8 +654,11 @@ void GameScene::removeSprite(){
 #pragma mark:ゲームオーバー設定
 void GameScene::setGameover(){
  
+    //ゲームオーバーのフラグをtrue
+    gameOverFlag = true;
+    
     //落下物の動作停止
-    this->unschedule(schedule_selector(GameScene::setDrops));
+    this->stopAllActions();
     
     //最後にぶつかったdropsの輪のエフェクトオブジェクト
     auto dropRing = Sprite::create("red_ring.png");
