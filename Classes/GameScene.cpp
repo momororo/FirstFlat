@@ -9,6 +9,7 @@
 #include "GameScene.h"
 #include <string.h>
 #include "LoadScene.h"
+#include "NativeCodeLauncher.h"
 
 #define selfFrame Director::getInstance() -> getWinSize()
 //30点まではイージーモード
@@ -916,12 +917,16 @@ void GameScene::setGameover(){
                 
     }
     
+    
+    
     mgoCount = 0;
     
     //傘の処理(黒に変色後→点滅→削除)
     for (int idx = 0; idx < umbrellas->size();idx++) {
 
         umbrellas->at(idx)->setColor(Color3B::BLACK);
+        this -> getChildByName(umbrellas->at(idx)->getName() + "_cloud")->setColor(Color3B::BLACK);
+        
         
         auto blink = Blink::create(3, 3);
         
@@ -944,9 +949,11 @@ void GameScene::setGameover(){
         });
         
         auto seq = Sequence::create(blink,fadeOut,mgo,remove, NULL);
+        auto seq2 = Sequence::create(blink->clone(),fadeOut->clone(),remove->clone(), NULL);
         
         umbrellas -> at(idx) -> runAction(seq);
  
+        this -> getChildByName(umbrellas->at(idx)->getName() + "_cloud")-> runAction(seq2);
     }
     
     
@@ -964,7 +971,7 @@ void GameScene::makeGameOver(){
     
     //ゲームオーバーテキスト
     auto gameOverLabel = Label::createWithSystemFont("ゲーム\nオーバー","jackeyfont", 120);
-    gameOverLabel -> setPosition(Vec2(selfFrame.width/2,selfFrame.height*2/3));
+    gameOverLabel -> setPosition(Vec2(selfFrame.width/2,selfFrame.height*3/4));
     gameOverLabel -> setColor(Color3B::BLACK);
     this -> addChild(gameOverLabel,10);
         
@@ -973,7 +980,7 @@ void GameScene::makeGameOver(){
     //umbrella -> setAnchorPoint(Vec2(1,1));
     umbrella -> setColor(Color3B::BLACK);
     umbrella -> setScale(0.08);
-    umbrella-> setPosition(Vec2(selfFrame.width*3/4,selfFrame.height*2/3+(umbrella->getContentSize().height/2)*umbrella->getScale()));
+    umbrella-> setPosition(Vec2(selfFrame.width*3/4,selfFrame.height*3/4+(umbrella->getContentSize().height/2)*umbrella->getScale()));
     addChild(umbrella);
     
     /*
@@ -1018,17 +1025,27 @@ void GameScene::makeGameOver(){
     /******** ラベル＆リトライ＆ホームボタンの設定 終 *******/
     
     
-    //MARK::スコア登録
-    /*
+    //MARK::スコア
+
+    //スコアの取り出し
+    UserDefault *userDef = UserDefault::getInstance();
+    auto bestScore = userDef -> getIntegerForKey("bestScore");
+
+    
+
+    //宣言だけ
+    Label *omedeto;
+    
     if(bestScore < score){
         
         bestScore = score;
         
         //登録
         userDef->setIntegerForKey("bestScore", bestScore);
-        omedeto = Label::createWithSystemFont("Best Score!!", KODOMO_FONT, 60);
-        omedeto -> setPosition(Vec2(selfFrame.width/2,selfFrame.height*2/3));
-        omedeto ->setColor(red);
+
+        omedeto = Label::createWithSystemFont("Best Score!!", "jackeyfont", 60);
+        omedeto -> setPosition(Vec2(selfFrame.width/2,gameOverLabel->getPositionY() - gameOverLabel -> getContentSize().height/2 - omedeto -> getContentSize().height));
+        omedeto ->setColor(Color3B::RED);
         this->addChild(omedeto);
         
         auto blink = Blink::create(1, 1);
@@ -1037,25 +1054,26 @@ void GameScene::makeGameOver(){
         
         omedeto -> runAction(repeat);
         
-        newRecord = true;
-        
-        GameCenterBridge::postHighScore("RGB.BestScore", bestScore);
+
+       //スコア送信
+        NativeCodeLauncher::postHighScore("RainDrop", bestScore);
     }
     
+    
+    auto resultLabel = Label::createWithSystemFont("SCORE", "jackeyfont", 70);
+    resultLabel ->setPosition(Vec2(selfFrame.width/2,omedeto->getPositionY() - omedeto -> getContentSize().height/2 - resultLabel -> getContentSize().height/2));
+    resultLabel -> setColor(Color3B::GRAY);
+    this -> addChild(resultLabel);
+
+    
     std::string scoreStr = StringUtils::format("%d",score);
-    result = Label::createWithSystemFont(scoreStr.c_str(), KODOMO_FONT, 100);
-    result ->setPosition(Vec2(selfFrame.width/2,selfFrame.height/2));
-    result -> setColor(Color3B::GRAY);
+    auto result = Label::createWithSystemFont(scoreStr/*.c_str()*/, "jackeyfont", 70);
+    result ->setPosition(Vec2(selfFrame.width/2,resultLabel->getPositionY() - resultLabel -> getContentSize().height/2 - result -> getContentSize().height/2));
+    result -> setColor(Color3B::BLACK);
     this -> addChild(result);
     
     
-    resultLabel = Label::createWithSystemFont("SCORE", KODOMO_FONT, 100);
-    resultLabel ->setPosition(Vec2(selfFrame.width/2,selfFrame.height/2+result->getContentSize().height));
-    resultLabel -> setColor(Color3B::GRAY);
-    this -> addChild(resultLabel);
-    
-    gameOver = true;
-    */
+
      
     /*
     //MARK::nend飛だし広告の表示
