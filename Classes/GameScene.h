@@ -32,15 +32,33 @@ protected:
     //硬直フラグ
     bool rigidTappedFlag = false;
     
+    //中間色用の受付フラグと時間
+    int doubleColorTime = 0;
+    bool doubkeColorFlag = 0;
+    
     bool testFlag = false;
+    
+    //配列
+    cocos2d::Vector<cocos2d::Sprite *> *drops = new cocos2d::Vector<cocos2d::Sprite *>;
+    
+    //カラー格納配列
+    std::vector<std::string *> *colors = new std::vector<std::string *>;
+    
+    //傘用の配列
+    cocos2d::Vector<cocos2d::Sprite *> *umbrellas = new cocos2d::Vector<cocos2d::Sprite *>;
+    
+    //スコア
+    int score = 0;
+    //ドロップ間隔
+    float dropInterval = 1;
     
     
     //ボタン類の変数一覧
-    cocos2d::Sprite *aquaCircle;
+    cocos2d::Sprite *greenCircle;
 //    cocos2d::Sprite *aquaRing;
-    cocos2d::Sprite *orangeCircle;
+    cocos2d::Sprite *blueCircle;
 //    cocos2d::Sprite *orangeRing;
-    cocos2d::Sprite *yellowCircle;
+    cocos2d::Sprite *redCircle;
 //    cocos2d::Sprite *yellowRing;
   
     //1フレーム毎の処理
@@ -53,7 +71,21 @@ protected:
     virtual bool init();
     CREATE_FUNC(GameScene);
     
-    void setButton();
+    //傘を設置
+    void setUmbrella();
+    
+    //雲を設置
+    void setCloud();
+
+    //雨の設置
+    void setDrops();
+    
+    //難易度調整
+    void scoreManager();
+
+    
+    //スプライトの除去
+    void removeSprite();
     
     //タップイベントの宣言
     void onTouchesBegan(const std::vector<cocos2d::Touch *> &touches, cocos2d::Event *unused_event);
@@ -66,7 +98,14 @@ protected:
     bool onContactBegin(cocos2d::PhysicsContact& contact);
 
     
-    virtual void setDrops(float time);
+    
+    //ゲームオーバー周り
+    void setGameover();
+    void makeGameOver();
+    void removeGameOver();
+    bool gameOverFlag;
+    int mgoCount;
+    
 
 
     
