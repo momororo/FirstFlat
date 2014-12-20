@@ -88,15 +88,19 @@ bool GameScene::init(){
     
     
     
-    SimpleAudioEngine::getInstance()->preloadEffect("bFlat.mp3");
-    SimpleAudioEngine::getInstance()->preloadEffect("c.mp3");
+    SimpleAudioEngine::getInstance()->preloadEffect("ra.mp3");
+    SimpleAudioEngine::getInstance()->preloadEffect("si.mp3");
     SimpleAudioEngine::getInstance()->preloadEffect("d.mp3");
-    SimpleAudioEngine::getInstance()->preloadBackgroundMusic("cp03.mp3");
+    SimpleAudioEngine::getInstance()->preloadEffect("re.mp3");
+    SimpleAudioEngine::getInstance()->preloadEffect("mi.mp3");
+    
+    SimpleAudioEngine::getInstance()->preloadBackgroundMusic("rain02.mp3");
     
     //BGM
-    SimpleAudioEngine::getInstance()->playBackgroundMusic("cp03.mp3",true);
+    SimpleAudioEngine::getInstance()->playBackgroundMusic("rain03.mp3",true);
     //音量
-    SimpleAudioEngine::getInstance()->setBackgroundMusicVolume(0.1f);
+    SimpleAudioEngine::getInstance()->setBackgroundMusicVolume(0.05f);
+    SimpleAudioEngine::getInstance()->setEffectsVolume(0.1f);
 
 
 
@@ -441,17 +445,25 @@ bool GameScene::onContactBegin(cocos2d::PhysicsContact& contact){
         
         if (nodeA->getName() == "green") {
         
-            SimpleAudioEngine::getInstance()->playEffect("c.mp3");
+            SimpleAudioEngine::getInstance()->playEffect("ra.mp3");
         
         }else if(nodeA-> getName() == "blue"){
             
-            SimpleAudioEngine::getInstance()->playEffect("bFlat.mp3");
+            SimpleAudioEngine::getInstance()->playEffect("d.mp3");
         
         }else if(nodeA->getName() == "red"){
             
             //再生する
-            SimpleAudioEngine::getInstance()->playEffect("d.mp3");
+            SimpleAudioEngine::getInstance()->playEffect("mi.mp3");
         
+        }else if (nodeA->getName()== "yellow"){
+        
+            SimpleAudioEngine::getInstance()->playEffect("si.mp3");
+    
+        }else if (nodeA->getName() == "purple"){
+        
+            SimpleAudioEngine::getInstance()->playEffect("re.mp3");
+            
         }
         
         //物理体を削除
@@ -468,7 +480,7 @@ bool GameScene::onContactBegin(cocos2d::PhysicsContact& contact){
         addChild(dropRing);
 
         
-        
+    
         
         //オブジェクトの拡大
         auto scale = ScaleBy::create(2, 12);

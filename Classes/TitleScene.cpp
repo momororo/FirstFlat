@@ -20,6 +20,8 @@
 #define selfFrame Director::getInstance() -> getWinSize()
 
 USING_NS_CC;
+using namespace CocosDenshion;
+
 
 Sprite *circle;
 Sprite *ring;
@@ -71,9 +73,14 @@ bool TitleScene::init(){
     //umbrella -> setOpacity(0);
     this-> addChild(umbrella,10);
   */
-    CocosDenshion::SimpleAudioEngine::getInstance()->preloadEffect("low_bFlat.mp3");
-    CocosDenshion::SimpleAudioEngine::getInstance()->preloadEffect("low_c.mp3");
-    CocosDenshion::SimpleAudioEngine::getInstance()->preloadEffect("low_d.mp3");
+    
+    SimpleAudioEngine::getInstance()->preloadEffect("ra.mp3");
+    SimpleAudioEngine::getInstance()->preloadEffect("si.mp3");
+    SimpleAudioEngine::getInstance()->preloadEffect("d.mp3");
+    SimpleAudioEngine::getInstance()->preloadEffect("re.mp3");
+    SimpleAudioEngine::getInstance()->preloadEffect("mi.mp3");
+    
+    SimpleAudioEngine::getInstance()->setEffectsVolume(0.1f);
 
  
  
@@ -345,7 +352,7 @@ void TitleScene::tappedBt(std::string &menu){
         
         this -> getChildByName("startEffectRing") -> setVisible(true);
         this -> getChildByName("startEffectRing") -> runAction(ringSequence);
-        CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("low_c.mp3");
+        SimpleAudioEngine::getInstance()->playEffect("d.mp3");
    
         
         //アニメーション付き
@@ -370,7 +377,7 @@ void TitleScene::tappedBt(std::string &menu){
         
         this -> getChildByName("rankingEffectRing") -> setVisible(true);
         this -> getChildByName("rankingEffectRing") -> runAction(ringSequence);
-        CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("low_c.mp3");
+        SimpleAudioEngine::getInstance()->playEffect("ra.mp3");
 
         
         /**
@@ -399,6 +406,9 @@ void TitleScene::tappedBt(std::string &menu){
         rankingEffectRing -> setVisible(false);
         rankingEffectRing -> setName("rankingEffectRing");
         this -> addChild(rankingEffectRing);
+        
+        SimpleAudioEngine::getInstance()->playEffect("mi.mp3");
+
 
 
         
@@ -802,6 +812,8 @@ void TitleScene::fadeInStart(){
 
     this -> getChildByName("start") -> setVisible(true);
     this -> getChildByName("start") -> runAction(seq);
+    SimpleAudioEngine::getInstance()->playEffect("d.mp3");
+
     
 }
 
@@ -811,14 +823,18 @@ void TitleScene::fadeInRanking(){
 
     this -> getChildByName("ranking") -> setVisible(true);
     this -> getChildByName("ranking") -> runAction(FadeIn::create(2));
+    SimpleAudioEngine::getInstance()->playEffect("ra.mp3");
+
    
 }
 
-//チャレンジのフェードイン表示
+//チュートリアルのフェードイン表示
 void TitleScene::fadeInTutorial(){
 
     this -> getChildByName("tutorial") -> setVisible(true);
     this -> getChildByName("tutorial") -> runAction(FadeIn::create(2));
+    SimpleAudioEngine::getInstance()->playEffect("mi.mp3");
+
 
 }
 
