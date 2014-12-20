@@ -9,12 +9,9 @@
 #include "GameScene.h"
 #include <string.h>
 #include "LoadScene.h"
+#include "NativeCodeLauncher.h"
 
 #define selfFrame Director::getInstance() -> getWinSize()
-//30点まではイージーモード
-#define easyMode 30
-//100点まではノーマルモード
-#define normalMode 50
 
 
 USING_NS_CC;
@@ -758,14 +755,30 @@ void GameScene::setDrops(){
 //難易度調整
 void GameScene::scoreManager(){
     
-    CCLOG("%fだよ",dropInterval);
-    auto tmp = 0.05;
+    //200点まではイージーモード
+    auto easyMode = 200;
+    //500点まではノーマルモード
+    auto normalMode = 500;
+    //800点まではハードモード
+    auto hardMode = 800;
+    //1100点までスーパーハード、それ以降処理なし
+    auto superHardMode = 1100;
+    
+    auto firstSub = 0.011;
+    auto secondSub = 0.005;
+    auto firstGravity = 1.5;
+//    auto secondGravity = 0.0005;
+    
+    auto world = this -> getScene() -> getPhysicsWorld();
+    auto gravity = world ->getGravity();
+    
+    CCLOG("スコアは%d、インターバルは%f、重力は%f",score,dropInterval,gravity.y);
     
     //イージーモード中
     if(score < easyMode ){
     
         //出現速度をあげる
-        dropInterval = dropInterval - tmp;
+        dropInterval = dropInterval - firstSub;
         
         return;
     }
@@ -777,7 +790,7 @@ void GameScene::scoreManager(){
         
         //dropInterval = dropInterval - tmp;
         
-        dropInterval = dropInterval - tmp;
+        dropInterval = dropInterval - firstSub;
         
         this -> getChildByName("yellow_cloud") -> setVisible(true);
         this -> getChildByName("yellow_cloud") -> runAction(FadeIn::create(2));
@@ -796,40 +809,61 @@ void GameScene::scoreManager(){
             
         }
         
-        dropInterval = 0.15;
+        //出現速度をあげる
+        dropInterval = dropInterval - firstSub;
+        
 
         
         return;
         
     }
     //ノーマルモード中
-//    if(score < normalMode){
+    if(score < normalMode){
         
         
-//        dropInterval = dropInterval - tmp;
-//        return;
-//    }
+        dropInterval = dropInterval - firstSub;
+        return;
+    }
     
     //ノーマルモードからハードモードへ
     if(score == normalMode){
+        //今のところ特別な演出はなし
+
+        auto world = this -> getScene() -> getPhysicsWorld();
+        auto gravity = world ->getGravity();
+        gravity.y = gravity.y - firstGravity;
+        world -> setGravity(gravity);
 
 
         return;
     }
     
+    if(score < hardMode){
 
-    auto world = this -> getScene() -> getPhysicsWorld();
-    auto gravity = world ->getGravity();
-    if(gravity.y > -75){
-        gravity.y = gravity.y - 1;
-    }else{
-        dropInterval = dropInterval - 0.005;
-    }
-    CCLOG("%f",gravity.y);
-    world -> setGravity(gravity);
-
-
+        auto world = this -> getScene() -> getPhysicsWorld();
+        auto gravity = world ->getGravity();
+        gravity.y = gravity.y - firstGravity;
+        world -> setGravity(gravity);
+        
+        return;
     
+    }
+    
+    if(score == hardMode){
+        
+        dropInterval = dropInterval - secondSub;
+        
+        return;
+    }
+    
+    if(score < superHardMode){
+
+        dropInterval = dropInterval - secondSub;
+        
+        return;
+    }
+
+
 }
 
 
@@ -928,12 +962,16 @@ void GameScene::setGameover(){
                 
     }
     
+    
+    
     mgoCount = 0;
     
     //傘の処理(黒に変色後→点滅→削除)
     for (int idx = 0; idx < umbrellas->size();idx++) {
 
         umbrellas->at(idx)->setColor(Color3B::BLACK);
+        this -> getChildByName(umbrellas->at(idx)->getName() + "_cloud")->setColor(Color3B::BLACK);
+        
         
         auto blink = Blink::create(3, 3);
         
@@ -956,9 +994,11 @@ void GameScene::setGameover(){
         });
         
         auto seq = Sequence::create(blink,fadeOut,mgo,remove, NULL);
+        auto seq2 = Sequence::create(blink->clone(),fadeOut->clone(),remove->clone(), NULL);
         
         umbrellas -> at(idx) -> runAction(seq);
  
+        this -> getChildByName(umbrellas->at(idx)->getName() + "_cloud")-> runAction(seq2);
     }
     
     
@@ -976,7 +1016,7 @@ void GameScene::makeGameOver(){
     
     //ゲームオーバーテキスト
     auto gameOverLabel = Label::createWithSystemFont("ゲーム\nオーバー","jackeyfont", 120);
-    gameOverLabel -> setPosition(Vec2(selfFrame.width/2,selfFrame.height*2/3));
+    gameOverLabel -> setPosition(Vec2(selfFrame.width/2,selfFrame.height*3/4));
     gameOverLabel -> setColor(Color3B::BLACK);
     this -> addChild(gameOverLabel,10);
         
@@ -985,7 +1025,7 @@ void GameScene::makeGameOver(){
     //umbrella -> setAnchorPoint(Vec2(1,1));
     umbrella -> setColor(Color3B::BLACK);
     umbrella -> setScale(0.08);
-    umbrella-> setPosition(Vec2(selfFrame.width*3/4,selfFrame.height*2/3+(umbrella->getContentSize().height/2)*umbrella->getScale()));
+    umbrella-> setPosition(Vec2(selfFrame.width*3/4,selfFrame.height*3/4+(umbrella->getContentSize().height/2)*umbrella->getScale()));
     addChild(umbrella);
     
     /*
@@ -1030,44 +1070,65 @@ void GameScene::makeGameOver(){
     /******** ラベル＆リトライ＆ホームボタンの設定 終 *******/
     
     
-    //MARK::スコア登録
-    /*
+    //MARK::スコア
+
+    //スコアの取り出し
+    UserDefault *userDef = UserDefault::getInstance();
+    auto bestScore = userDef -> getIntegerForKey("bestScore");
+
+
+    
+
+    //宣言だけ
+    Label *omedeto;
+
+    
+    omedeto = Label::createWithSystemFont("Best Score!!", "jackeyfont", 60);
+    omedeto ->setColor(Color3B::RED);
+
+    omedeto -> setPosition(Vec2(selfFrame.width/2,gameOverLabel->getPositionY() - gameOverLabel -> getContentSize().height/2 - omedeto -> getContentSize().height));
+    
+    
+
+
+    //ベストスコアの場合のみスコア送信とベストスコアラベルが表示される。
     if(bestScore < score){
         
         bestScore = score;
         
         //登録
         userDef->setIntegerForKey("bestScore", bestScore);
-        omedeto = Label::createWithSystemFont("Best Score!!", KODOMO_FONT, 60);
-        omedeto -> setPosition(Vec2(selfFrame.width/2,selfFrame.height*2/3));
-        omedeto ->setColor(red);
+
+        //登録
         this->addChild(omedeto);
         
+        //動作
         auto blink = Blink::create(1, 1);
         
         auto repeat = RepeatForever::create(blink);
-        
+
         omedeto -> runAction(repeat);
         
-        newRecord = true;
-        
-        GameCenterBridge::postHighScore("RGB.BestScore", bestScore);
+
+       //スコア送信
+        NativeCodeLauncher::postHighScore("RainDrop", bestScore);
     }
     
+    
+    auto resultLabel = Label::createWithSystemFont("SCORE", "jackeyfont", 70);
+    resultLabel ->setPosition(Vec2(selfFrame.width/2,omedeto->getPositionY() - omedeto -> getContentSize().height/2 - resultLabel -> getContentSize().height/2));
+    resultLabel -> setColor(Color3B::GRAY);
+    this -> addChild(resultLabel);
+
+    
     std::string scoreStr = StringUtils::format("%d",score);
-    result = Label::createWithSystemFont(scoreStr.c_str(), KODOMO_FONT, 100);
-    result ->setPosition(Vec2(selfFrame.width/2,selfFrame.height/2));
-    result -> setColor(Color3B::GRAY);
+    auto result = Label::createWithSystemFont(scoreStr/*.c_str()*/, "jackeyfont", 70);
+    result ->setPosition(Vec2(selfFrame.width/2,resultLabel->getPositionY() - resultLabel -> getContentSize().height/2 - result -> getContentSize().height/2));
+    result -> setColor(Color3B::BLACK);
     this -> addChild(result);
     
     
-    resultLabel = Label::createWithSystemFont("SCORE", KODOMO_FONT, 100);
-    resultLabel ->setPosition(Vec2(selfFrame.width/2,selfFrame.height/2+result->getContentSize().height));
-    resultLabel -> setColor(Color3B::GRAY);
-    this -> addChild(resultLabel);
-    
-    gameOver = true;
-    */
+
      
     /*
     //MARK::nend飛だし広告の表示

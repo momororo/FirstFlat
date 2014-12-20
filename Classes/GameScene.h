@@ -50,7 +50,7 @@ protected:
     //スコア
     int score = 0;
     //ドロップ間隔
-    float dropInterval = 1;
+    float dropInterval = 0.7;
     
     
     //ボタン類の変数一覧
