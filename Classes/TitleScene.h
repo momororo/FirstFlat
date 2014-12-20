@@ -15,15 +15,19 @@
 class TitleScene : public cocos2d::Layer{
     
 protected:
-
     
     //スタートボタンの生成
     void initStart();
     
-    cocos2d::Sprite *start;
+    //cocos2d::Sprite *start;
     cocos2d::Sprite *ranking;
-    cocos2d::Sprite *challenge;
+    cocos2d::Sprite *tutorial;
     
+    //メニューの配列
+    std::vector<std::string *> *menus = new std::vector<std::string *>;
+
+
+
     
     
     
@@ -34,43 +38,48 @@ protected:
     virtual bool init();
     
     CREATE_FUNC(TitleScene);
+
+
     
     
-    
-    //タップイベントの宣言
+    /***************** タッチイベント用変数 ***********************/
     bool onTouchBegan(cocos2d::Touch *touch, cocos2d::Event *event);
+
     void onTouchEnded(cocos2d::Touch *touch, cocos2d::Event *event);
     void onTouchMoved(cocos2d::Touch *touch, cocos2d::Event *event);
     void onTouchCancelled(cocos2d::Touch *touch, cocos2d::Event *event);
-    
+
+    /***************** タッチイベント用変数 終***********************/
     
     /***************** オープニング動作 ***********************/
+    void presetSprite();
+    
+    
+    
     void setStart();
     void setRanking();
-    void setChallenge();
+    void setTutorial();
     void setTitle();
     
     void fadeInTitle();
     void fadeInStart();
     void fadeInRanking();
-    void fadeInCallenge();
+    void fadeInTutorial();
+    void fadeInUmbrella();
     /****************** オープニング動作　終 ***********************/
     
-    
+    //ボタンタップ後の処理メソッド
+    void tappedBt(std::string &menu);
+    //ボタンタップの管理フラグ
+    bool playerCanTapBt;
     
     virtual void setDrops(float time);
     
-    
-    
-    
-    
-    
-    
-    
-    
-    //void startCallback(cocos2d::Ref* sender,cocos2d::ui::TouchEventType type);
-    //void startCallback(cocos2d::Ref* sender,cocos2d::EventMouse::MouseEventType type);
-    //void starCallback(cocos2d::Ref* pSender);
+    //AppCCloudの広告用
+    void setAppCCloud();
+    void removeAppCCloud();
+    //twitter
+    void setTwitterBt();
     
     
 };

@@ -436,7 +436,7 @@ void Node::setScaleZ(float scaleZ)
 #if CC_USE_PHYSICS
     if (_physicsBody != nullptr)
     {
-        CCLOG("Node WARNING: PhysicsBody doesn't support setScaleZ");
+    //    CCLOG("Node WARNING: PhysicsBody doesn't support setScaleZ");
     }
 #endif
     

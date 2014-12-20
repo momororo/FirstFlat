@@ -7,7 +7,15 @@
 //
 
 #include "TitleScene.h"
-#include "GameScene.h"
+//#include "GameScene.h"
+#include "LoadScene.h"
+#include "NativeCodeLauncher.h"
+#include "NendModule.h"
+#include "NendInterstitialModule.h"
+#include "AppCCloudPlugin.h"
+#include "NativeLauncher.h"
+
+
 
 #define selfFrame Director::getInstance() -> getWinSize()
 
@@ -23,6 +31,7 @@ Scene *TitleScene::createScene(){
     auto layer = TitleScene::create();
     scene -> addChild(layer);
     
+    
     return scene;
     
 }
@@ -34,58 +43,40 @@ bool TitleScene::init(){
         return false;
     }
     
-    
+    //面倒なので配列多用
+    menus->push_back(new std::string("start"));
+    menus->push_back(new std::string("ranking"));
+    menus->push_back(new std::string("tutorial"));
+
     
     //背景色のグラデーション
     auto bgGradient = LayerGradient::create(Color4B(128,229,255,255), Color4B(95,211,188,255));
     this -> addChild(bgGradient);
-    
-    /*
-    Size visibleSize = Director::getInstance()->getVisibleSize();
-    auto sprite = Sprite::create();
-    sprite->setTextureRect(Rect(0, 0, 200, 100));
-    sprite->setColor(Color3B::GRAY);
-    sprite->setPosition(Vec2(visibleSize.width/2, visibleSize.height/2));
-    sprite->setOpacity(0);
-    addChild(sprite);
-    
-    //1秒かけてフェードイーン
-    auto action = FadeIn::create(1);
-    sprite->runAction(action);
-    */
-    
-    
-    
-    
-    
-    /*
-    //白いスプライトを作成
-    Size s = Director::getInstance()->getVisibleSize();
-    auto spr = Sprite::create();
-    spr->setPosition(Vec2(s.width*.5, s.height*.5));
-    spr->setTextureRect(Rect(0, 0, 200, 200));
-    spr->setColor(Color3B::WHITE);
-    addChild(spr);
-    
-    //1秒かけて青に変わるアニメーション（秒数：1、R値：51、G値：75、B値：112）
-    spr->runAction(TintTo::create(1, 51, 75, 112));
-    */
-    
-    
-    /*circle = DrawNode::create();
-    circle -> drawDot(Point(selfFrame.width/2, selfFrame.height/2), 20, Color4F::WHITE);
-    addChild(circle, 0);
-    */
+   
     
     this -> schedule(schedule_selector(TitleScene::setDrops), 1);
-
     
+    presetSprite();
+    
+    //各種タイトルの設定
     setTitle();
     setStart();
     setRanking();
-    setChallenge();
-    
-    
+    setTutorial();
+/*
+    auto umbrella = Sprite::create("umbrella.png");
+    umbrella -> setAnchorPoint(Vec2(1,1));
+    umbrella -> setScale(0.08);
+    umbrella-> setPosition(Vec2(selfFrame.width*14/15,selfFrame.height*4/5));
+    //umbrella -> setOpacity(0);
+    this-> addChild(umbrella,10);
+  */
+    CocosDenshion::SimpleAudioEngine::getInstance()->preloadEffect("low_bFlat.mp3");
+    CocosDenshion::SimpleAudioEngine::getInstance()->preloadEffect("low_c.mp3");
+    CocosDenshion::SimpleAudioEngine::getInstance()->preloadEffect("low_d.mp3");
+
+ 
+ 
     
     
     
@@ -111,15 +102,84 @@ bool TitleScene::init(){
     /*************　　タッチイベント設定  終 ****************/
     
     
+    //テストID使用中、本番IDはコメント化
+    //MARK::nendの設定
+    //ネンドの呼び出し(ヘッダー)
+    char apiKey[] = "a6eca9dd074372c898dd1df549301f277c53f2b9";
+    //"ecb83e1d23f7b696fb4bacb8f132b5cec93cd5f5";
+    
+    char spotID[] = "3172";//"285490";
+    NendModule::createNADViewBottom(apiKey, spotID);
+     
+    //ネンドの呼び出し(飛び出す)
+    char interstitialApiKey[] = "88d88a288fdea5c01d17ea8e494168e834860fd6";
+    //"8d08c967527310908e9b0d9a1a5c38becc702526";
+    char interstitialSpotID[] = "70356";
+    //"285491";
+    
+    NendInterstitialModule::createNADInterstitial(interstitialApiKey, interstitialSpotID);
+    
+    //MARK::nend飛だし広告の表示
+    NendInterstitialModule::showNADInterstitialView();
+
     
     
-    
-    
-    
+    //GameCenterのログイン
+    NativeCodeLauncher::loginGameCenter();
     
     
     return true;
     
+    
+}
+
+
+//MARK::AppCCloudの設定と削除
+ void TitleScene::setAppCCloud(){
+ 
+     auto appCCloudBt = Sprite::create("other.png");
+     auto appCCloudBtTaped = Sprite::create("other.png");
+     appCCloudBtTaped -> setOpacity(150);
+     
+     auto btItem = MenuItemSprite::create(appCCloudBt, appCCloudBtTaped,[](Ref*sender){
+         
+         AppCCloudPlugin::Ad::openAdListView();
+
+         
+     });
+     
+     auto appCMenu = Menu::create(btItem,NULL);
+     appCMenu -> setName("appCMenu");
+     appCMenu -> setPosition(Vec2((selfFrame.width)-(appCCloudBt->getContentSize().width*2/3),(selfFrame.height)-(appCCloudBt->getContentSize().height*2/3)));
+     this -> addChild(appCMenu);
+  
+     CCLOG("twitter x:%f ,y:%f",appCMenu->getPosition().x,appCMenu->getPosition().y);
+     
+ }
+
+//ツイッターボタンの設定
+void TitleScene::setTwitterBt(){
+    
+    //スタートボタン作成
+    auto twitterBt = Sprite::create("twitterBt.png");
+    auto twitterBtTaped = Sprite::create("twitterBt.png");
+    twitterBtTaped -> setOpacity(150);
+    
+    
+    //メニューアイテムの作成
+    auto tBtnItem = MenuItemSprite::create(twitterBt, twitterBtTaped,[](Ref*sender){
+        
+        NativeLauncher::openTweetDialog("ハイスコア：20030点\n【iPhoneアプリ】レインドロップ\n#レインドロップ");
+        
+    });
+    
+    
+    //メニューの作成　pMenuの中にpBtnItemを入れる
+    auto twitterMenu = Menu::create(tBtnItem, NULL);
+    twitterMenu->setPosition(Vec2(selfFrame.width-(twitterBt->getContentSize().width)*1.8,this->getChildByName("appCMenu")->getPosition().y));
+    this->addChild(twitterMenu);
+    
+    CCLOG("twitter x:%f ,y:%f",twitterMenu->getPosition().x,twitterMenu->getPosition().y);
     
 }
 
@@ -133,100 +193,36 @@ bool TitleScene::onTouchBegan(Touch *touch, Event *unused_event){
     //タップ開始時の処理
     CCLOG("touchBegan");
     
-    Point touchPoint = Vec2(touch->getLocation().x,touch->getLocation().y);
     
-    //スタートボタンタップ時の操作
-    if (!start) {
+    //スタートボタンが存在するかで、ボタンがあるか表示されているか確認
+     if (this->getChildByName(*menus->at(0))->isVisible() == false) {
         
         return true;
         
-    }else if (start->getBoundingBox().containsPoint(touchPoint))
-        
-    {
-        CCLOG("スタートボタンをタップ");
-        
-        auto effectRing = Sprite::create("aqua_ring.png");
-        effectRing -> setPosition(Vec2(start->getPosition().x,start->getPosition().y));
-        effectRing -> setScale(0.1);
-        addChild(effectRing);
-        
-        auto ringScale = ScaleBy::create(2, 12);
-        auto ringFadeOut = FadeOut::create(2);
-        auto ringRemove = RemoveSelf::create(true);
-        auto scaleFadeOut = Spawn::create(ringScale,ringFadeOut, NULL);
-        auto ringSequence = Sequence::create(scaleFadeOut,ringRemove, NULL);
-        
-        effectRing -> runAction(ringSequence);
-        
-        return true;
-    }
-    
-    
-    
-    //ランキングボタンタップ時
-    if (!ranking) {
-        
-        return true;
-        
-    }else if (ranking->getBoundingBox().containsPoint(touchPoint))
-        
-    {
-        CCLOG("スタートボタンをタップ");
-        
-        auto effectRing = Sprite::create("orange_ring.png");
-        effectRing -> setPosition(Vec2(ranking->getPosition().x,ranking->getPosition().y));
-        effectRing -> setScale(0.1);
-        addChild(effectRing);
-        
-        auto ringScale = ScaleBy::create(2, 12);
-        auto ringFadeOut = FadeOut::create(2);
-        auto ringRemove = RemoveSelf::create(true);
-        auto scaleFadeOut = Spawn::create(ringScale,ringFadeOut, NULL);
-        auto ringSequence = Sequence::create(scaleFadeOut,ringRemove, NULL);
-        
-        effectRing -> runAction(ringSequence);
-        
-        return true;
-    }
-    
-    
-    
-    //チャレンジボタンタップ時
-    if (!challenge) {
-        
-        return true;
-        
-    }else if (challenge->getBoundingBox().containsPoint(touchPoint))
-        
-    {
-        CCLOG("スタートボタンをタップ");
-        
-        auto effectRing = Sprite::create("yellow_ring.png");
-        effectRing -> setPosition(Vec2(challenge->getPosition().x,challenge->getPosition().y));
-        effectRing -> setScale(0.1);
-        addChild(effectRing);
-        
-        auto ringScale = ScaleBy::create(2, 12);
-        auto ringFadeOut = FadeOut::create(2);
-        auto ringRemove = RemoveSelf::create(true);
-        auto scaleFadeOut = Spawn::create(ringScale,ringFadeOut, NULL);
-        auto ringSequence = Sequence::create(scaleFadeOut,ringRemove, NULL);
-        
-        effectRing -> runAction(ringSequence);
-        
-        return true;
     }
 
-    
-    
-    
-    
-    
-    
-    
+    //ポイント取得
+    Point touchPoint = Vec2(touch->getLocation());
+
+    //メニューの押下処理(かさぐるぐる)
+    if (playerCanTapBt == true) {
+        
+        for(auto menu : *menus){
+            
+            if (this->getChildByName(*menu)->getBoundingBox().containsPoint(touchPoint)){
+                
+                auto repeatForever = RepeatForever::create(RotateBy::create(1, 360));
+                this ->getChildByName(*menu)->runAction(repeatForever);
+                
+                return true;
+                
+            }
+            
+        }
+    }
     
     return true;
-    
+
 }
 
 
@@ -235,9 +231,39 @@ bool TitleScene::onTouchBegan(Touch *touch, Event *unused_event){
 
 void TitleScene::onTouchMoved(Touch *touch, Event *unused_event){
     
-    //スワイプ中の処理
-    CCLOG("touchMoved");
+    //スタートボタンが存在するかで、ボタンがあるか表示されているか確認
+    if (this->getChildByName(*menus->at(0))->isVisible() == false) {
+        
+        return;
+        
+    }
     
+    //ポイント取得
+    Point touchPoint = Vec2(touch->getLocation());
+    
+    //ボタンが回転している(アクションがある)→ボタンの位置にいない→アクションを止める
+    if (playerCanTapBt == true) {
+        
+        for(auto menu : *menus){
+            
+            if (this->getChildByName(*menu)->getNumberOfRunningActions() != 0){
+                
+                
+                if (!this->getChildByName(*menu)->getBoundingBox().containsPoint(touchPoint)){
+                    
+                    this->getChildByName(*menu)->stopAllActions();
+                    
+                    
+                }
+                
+                return;
+                
+            }
+            
+        }
+    }
+    
+    return;
     
 }
 
@@ -247,31 +273,46 @@ void TitleScene::onTouchMoved(Touch *touch, Event *unused_event){
 
 void TitleScene::onTouchEnded(Touch *touch, Event *unused_event){
     
-    //タップ終了時
-    CCLOG("touchEnded");
-    
-    Point touchPoint = Vec2(touch->getLocation().x,touch->getLocation().y);
-
-    
-    
-    if (!start) {
+    //スタートボタンが存在するかで、ボタンがあるか表示されているか確認
+    if (this->getChildByName(*menus->at(0))->isVisible() == false) {
         
         return;
         
-    }else if (start->getBoundingBox().containsPoint(touchPoint))
-        
-    {
-        CCLOG("スタートボタンをタップ");
-        
-        //アニメーション付き
-        float duration = 1.0f;  //開始→終了にかける時間
-        Scene* nextScene = CCTransitionFade::create(duration, GameScene::createScene());
-        Director::getInstance()->replaceScene(nextScene);
-        return;
     }
     
 
     
+    //ポイント取得
+    Point touchPoint = Vec2(touch->getLocation());
+    
+    if (playerCanTapBt == true) {
+        
+        //ボタンが回転している(アクションがある)→ボタンの位置にいる→画面遷移
+        for(auto menu : *menus){
+            
+            if (this->getChildByName(*menu)->getNumberOfRunningActions() != 0){
+                
+                
+                if (this->getChildByName(*menu)->getBoundingBox().containsPoint(touchPoint)){
+                    
+                    
+                    auto repeatForever = RepeatForever::create(RotateBy::create(1, 360));
+                    this ->getChildByName(*menu)->runAction(repeatForever);
+                    
+                    //押下後の処理へ
+                    tappedBt(*menu);
+                    
+                    
+                    
+                }
+                
+                return;
+                
+            }
+            
+        }
+
+    }
 }
 
 
@@ -285,6 +326,103 @@ void TitleScene::onTouchCancelled(Touch *touch, Event *unused_event){
     
 }
 
+#pragma mark-
+#pragma mark ボタンタップ後の処理
+
+//ボタンタップ後の処理
+void TitleScene::tappedBt(std::string &menu){
+    
+    //スタートの処理
+    if(menu == "start"){
+        
+
+  
+        auto ringScale = ScaleBy::create(2, 12);
+        auto ringFadeOut = FadeOut::create(2);
+        auto ringRemove = RemoveSelf::create(true);
+        auto scaleFadeOut = Spawn::create(ringScale,ringFadeOut, NULL);
+        auto ringSequence = Sequence::create(scaleFadeOut,ringRemove, NULL);
+        
+        this -> getChildByName("startEffectRing") -> setVisible(true);
+        this -> getChildByName("startEffectRing") -> runAction(ringSequence);
+        CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("low_c.mp3");
+   
+        
+        //アニメーション付き
+        float duration = 1.0f;  //開始→終了にかける時間
+        Scene* nextScene = CCTransitionFade::create(duration, LoadScene::createScene("GameScene"));
+        
+        Director::getInstance()->replaceScene(nextScene);
+      
+        return;
+        
+    }
+
+    //ランキングの処理
+    if(menu == "ranking"){
+
+        
+        auto ringScale = ScaleBy::create(2, 12);
+        auto ringFadeOut = FadeOut::create(2);
+        auto ringRemove = RemoveSelf::create(true);
+        auto scaleFadeOut = Spawn::create(ringScale,ringFadeOut, NULL);
+        auto ringSequence = Sequence::create(scaleFadeOut,ringRemove, NULL);
+        
+        this -> getChildByName("rankingEffectRing") -> setVisible(true);
+        this -> getChildByName("rankingEffectRing") -> runAction(ringSequence);
+        CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("low_c.mp3");
+
+        
+        /**
+         *  おそらくリングを再生成して、傘の動きを止める処理の実装が必要かと思われ。
+         */
+        
+        NativeCodeLauncher::openRanking();
+        //アクションを一度止める
+        this -> getChildByName("ranking")-> stopAllActions();
+        
+        //傘を入れ替え
+        //ランキング入れ替え
+      /*  this -> removeChildByName("ranking");
+        
+        ranking = Sprite::create("rankingBt.png");
+        ranking -> setPosition(Vec2(selfFrame.width/5,selfFrame.height/3));
+        ranking -> setScale(0.2);
+        ranking -> setName("ranking");
+        ranking -> setPositionZ(0);
+        this -> addChild(ranking);
+       */
+        //ランキングエフェクト
+        auto rankingEffectRing = Sprite::create("green_ring.png");
+        rankingEffectRing -> setPosition(Vec2(this->getChildByName("ranking")->getPosition().x,this->getChildByName("ranking")->getPosition().y));
+        rankingEffectRing -> setScale(0.1);
+        rankingEffectRing -> setVisible(false);
+        rankingEffectRing -> setName("rankingEffectRing");
+        this -> addChild(rankingEffectRing);
+
+
+        
+        return;
+    }
+
+    //チュートリアルの処理
+    if(menu == "tutorial"){
+        
+        //長くなるなら更に別メソッドを呼ぶほうが良いかも
+        
+        
+        /**
+         *　チュートリアル終了後
+         *  再度タイトルシーンを呼ぶ場合は特に気をつける処理はなし
+         */
+     
+        
+        return;
+    }
+    
+    
+}
+
 
 #pragma mark-
 #pragma mark オープニング動作
@@ -293,49 +431,197 @@ void TitleScene::onTouchCancelled(Touch *touch, Event *unused_event){
                 各種オープニングの動作設定
  **********************************************************/
 
+//プリセット
+void TitleScene::presetSprite(){
+
+    //タイトル効果
+    auto titleRain = Sprite::create("yellow_rain.png");
+    titleRain -> setPosition(Vec2(selfFrame.width/2,selfFrame.height + 200));
+    titleRain -> setScale(0.1);
+    titleRain -> setVisible(false);
+    titleRain -> setName("titleRain");
+    this->addChild(titleRain);
+    
+    //タイトル
+    titleLabel = Label::createWithSystemFont("レイン\nドロップ","jackeyfont",120);
+    titleLabel -> setPosition(Vec2(selfFrame.width/2, selfFrame.height*2/3));
+    titleLabel->setOpacity(0);
+    titleLabel->setVisible(false);
+    titleLabel->setName("titleLabel");
+    this->addChild(titleLabel,10);
+    
+    //タイトルリング
+    auto titleRing = Sprite::create("yellow_ring.png");
+    titleRing -> setPosition(Vec2(selfFrame.width/2,selfFrame.height*2/3));
+    titleRing -> setScale(0.1);
+    titleRing ->setVisible(false);
+    titleRing ->setName("titleRing");
+    this->addChild(titleRing);
+    
+    //スタートボタン効果
+    auto startRain = Sprite::create("blue_rain.png");
+    startRain -> setPosition(Vec2(selfFrame.width/2,selfFrame.height+100));
+    startRain -> setScale(0.1);
+    startRain -> setVisible(false);
+    startRain -> setName("startRain");
+    this -> addChild(startRain);
+    
+    //スタートボタン
+    auto startBt = Sprite::create("startBt.png");
+    startBt -> setPosition(Vec2(selfFrame.width/2, selfFrame.height/4));
+    startBt -> setScale(0.2);
+    startBt -> setOpacity(0);
+    startBt -> setVisible(false);
+    startBt -> setName("start");
+    addChild(startBt,10);
+    
+    //スタートリング
+    auto startRing = Sprite::create("blue_ring.png");
+    startRing -> setPosition(Vec2(selfFrame.width/2,selfFrame.height/4));
+    startRing -> setScale(0.1);
+    startRing -> setVisible(false);
+    startRing -> setName("startRing");
+    this->addChild(startRing);
+    CCLOG("りんぐx:%f,y:%f",startRing->getPosition().x,startRing->getPosition().y);
+    
+    //スタートボタンをタップした時のエフェクト効果
+    auto startBtEffect = Sprite::create("blue_ring.png");
+    startBtEffect -> setPosition(Vec2(this->getChildByName("start")->getPosition()));
+    startBtEffect -> setScale(0.2);
+    startBtEffect -> setVisible(false);
+    startBtEffect -> setName("startBtEffect");
+    this-> addChild(startBtEffect);
+
+    //ランキングボタン効果
+    auto rankingRain = Sprite::create("green_rain.png");
+    rankingRain -> setPosition(Vec2(selfFrame.width/5,selfFrame.height+100));
+    rankingRain -> setScale(0.1);
+    rankingRain -> setVisible(false);
+    rankingRain -> setName("rankingRain");
+    this->addChild(rankingRain);
+    
+    //ランキング
+    ranking = Sprite::create("rankingBt.png");
+    ranking -> setPosition(Vec2(selfFrame.width/5,selfFrame.height/3));
+    ranking -> setScale(0.2);
+    ranking -> setOpacity(0);
+    ranking -> setVisible(false);
+    ranking -> setName("ranking");
+    addChild(ranking,10);
+    
+    //ランキングリング
+    auto rankingRing = Sprite::create("green_ring.png");
+    rankingRing -> setPosition(Vec2(selfFrame.width/5,selfFrame.height/3));
+    rankingRing -> setScale(0.1);
+    rankingRing -> setVisible(false);
+    rankingRing -> setName("rankingRing");
+    addChild(rankingRing);
+    
+    // チュートリアル効果
+    auto tutorialRain = Sprite::create("red_rain.png");
+    tutorialRain -> setPosition(Vec2(selfFrame.width*4/5,selfFrame.height+100));
+    tutorialRain -> setScale(0.1);
+    tutorialRain -> setVisible(false);
+    tutorialRain -> setName("tutorialRain");
+    this->addChild(tutorialRain);
+    
+    //チュートリアル
+    tutorial = Sprite::create("tutorialBt.png");
+    tutorial -> setPosition(Vec2(selfFrame.width*4/5,selfFrame.height/3));
+    tutorial -> setScale(0.2);
+    tutorial -> setOpacity(0);
+    tutorial -> setVisible(false);
+    tutorial -> setName("tutorial");
+    addChild(tutorial,10);
+    
+    //チュートリアルリング
+    auto tutorialRing = Sprite::create("red_ring.png");
+    tutorialRing -> setPosition(Vec2(selfFrame.width*4/5,selfFrame.height/3));
+    tutorialRing -> setScale(0.1);
+    tutorialRing -> setVisible(false);
+    tutorialRing -> setName("tutorialRing");
+    this->addChild(tutorialRing);
+    
+    
+    
+    
+    //ボタン押下後の波紋
+    auto startEffectRing = Sprite::create("blue_ring.png");
+    startEffectRing -> setPosition(Vec2(this->getChildByName("start")->getPosition().x,this->getChildByName("start")->getPosition().y));
+    startEffectRing -> setScale(0.2);
+    startEffectRing -> setVisible(false);
+
+    startEffectRing -> setName("startEffectRing");
+    this -> addChild(startEffectRing);
+
+    //ランキングBtタップ時のエフェクト
+    auto rankingEffectRing = Sprite::create("green_ring.png");
+    rankingEffectRing -> setPosition(Vec2(this->getChildByName("ranking")->getPosition().x,this->getChildByName("ranking")->getPosition().y));
+    rankingEffectRing -> setScale(0.2);
+    rankingEffectRing -> setVisible(false);
+    rankingEffectRing -> setName("rankingEffectRing");
+    this -> addChild(rankingEffectRing);
+    
+    //チュートリアルBtタップ時のエフェクト
+    auto tutorialEffectRing = Sprite::create("red_ring.png");
+    tutorialEffectRing -> setPosition(Vec2(this->getChildByName("tutorial")->getPosition().x,
+                                           this->getChildByName("tutorial")->getPosition().y));
+    tutorialEffectRing -> setScale(0.2);
+    tutorialEffectRing -> setVisible(false);
+    tutorialEffectRing -> setName("tutorialEffectRing");
+
+    this -> addChild(tutorialEffectRing);
+
+    
+    //アンブレラ
+    auto umbrella = Sprite::create("umbrella.png");
+    umbrella -> setScale(0.08);
+    umbrella-> setPosition(Vec2(selfFrame.width*7/10,selfFrame.height*2/3+(umbrella->getContentSize().height*3/4)*umbrella->getScale()));
+    umbrella -> setName("umbrella");
+    addChild(umbrella);
+    
+}
+
+
 
 //オープニングのタイトルの動作
 void TitleScene::setTitle(){
-    
-    
-    //タイトル効果
-    circle = Sprite::create("blue_circle.png");
-    circle -> setPosition(Vec2(selfFrame.width/2,selfFrame.height + 200));
-    circle -> setScale(0.1);
-    addChild(circle);
-    
-    ring = Sprite::create("blue_ring.png");
-    ring -> setPosition(Vec2(selfFrame.width/2,selfFrame.height + 200));
-    ring -> setScale(0.1);
-    addChild(ring);
-    
+ 
     //オブジェクトの移動
-    auto moveCircle = MoveTo::create(2, Vec2(selfFrame.width/2,selfFrame.height*2/3));
-    auto moveRing = MoveTo::create(2, Vec2(selfFrame.width/2,selfFrame.height*2/3));
+    auto move = MoveTo::create(2, Vec2(selfFrame.width/2,selfFrame.height*2/3));
     
-    //オブジェクトの拡大
-    auto scale = ScaleBy::create(2, 12);
     //オブジェクトの削除
     auto remove = RemoveSelf::create(true);
-    //オブジェクトのフェードアウト
-    auto fadeOut = FadeOut::create(2);
     
-    
+    //タイトルフェードイン
     auto func = CallFunc::create([this](){
         
         this -> fadeInTitle();
         
+        //オブジェクトの拡大
+        auto scale = ScaleBy::create(2, 12);
+        //オブジェクトのフェードアウト
+        auto fadeOut = FadeOut::create(2);
+        
+        auto remove = RemoveSelf::create(true);
+        
+        //拡大・フェードアウト同時アクション
+        auto scaleFadeOut = Spawn::create(scale,fadeOut, NULL);
+        
+        //拡大後削除のアクション
+        auto moveScale = Sequence::create(scaleFadeOut,remove,NULL);
+        
+        this->getChildByName("titleRing") -> setVisible(true);
+        
+        this->getChildByName("titleRing") -> runAction(moveScale);
+        
     });
     
-    //拡大・フェードアウト同時アクション
-    auto scaleFadeOut = Spawn::create(scale,fadeOut, NULL);
-    //移動後拡大のアクション
-    auto moveScale = Sequence::create(moveRing, scaleFadeOut,NULL);
     //移動後削除のアクション
-    auto moveRemove = Sequence::create(moveCircle,remove,func,NULL);
-    
-    circle -> runAction(moveRemove);
-    ring -> runAction(moveScale);
+    auto moveRemove = Sequence::create(move,remove,func,NULL);
+
+    this->getChildByName("titleRain") -> setVisible(true);
+    this->getChildByName("titleRain") -> runAction(moveRemove);
     
 }
 
@@ -343,45 +629,43 @@ void TitleScene::setTitle(){
 
 //オープニングのスタート動作
 void TitleScene::setStart(){
-    
-    //スタートボタン効果
-    auto circleStart = Sprite::create("aqua_circle.png");
-    circleStart -> setPosition(Vec2(selfFrame.width/2,selfFrame.height+100));
-    circleStart -> setScale(0.1);
-    addChild(circleStart);
-    
-    auto ringStart = Sprite::create("aqua_ring.png");
-    ringStart -> setPosition(Vec2(selfFrame.width/2,selfFrame.height+100));
-    ringStart -> setScale(0.1);
-    addChild(ringStart);
-    
-    //スタートオブジェクトの移動
-    auto moveCircle2 = MoveTo::create(2, Vec2(selfFrame.width/2, selfFrame.height/6));
-    auto moveRing2 = MoveTo::create(2, Vec2(selfFrame.width/2, selfFrame.height/6));
-    
-    //オブジェクトの拡大
-    auto scale2 = ScaleBy::create(2, 12);
-    //オブジェクトの削除
-    auto remove2 = RemoveSelf::create(true);
-    //オブジェクトのフェードアウト
-    auto fadeOut2 = FadeOut::create(2);
-    
-    
-    auto funcStart = CallFunc::create([this](){
         
-        this -> fadeInStart();
-        
-    });
-    
-    //拡大・フェードアウト同時アクション
-    auto scaleFadeOut2 = Spawn::create(scale2,fadeOut2, NULL);
-    //移動後拡大のアクション
-    auto moveScale2 = Sequence::create(moveRing2, scaleFadeOut2,NULL);
-    //移動後削除のアクション
-    auto moveRemove2 = Sequence::create(moveCircle2,remove2,funcStart,NULL);
-    
-    circleStart -> runAction(moveRemove2);
-    ringStart -> runAction(moveScale2);
+     //オブジェクトの移動
+     auto move = MoveTo::create(2, Vec2(selfFrame.width/2,selfFrame.height/4));
+     
+     //オブジェクトの削除
+     auto remove = RemoveSelf::create(true);
+     
+     //タイトルフェードイン
+     auto func = CallFunc::create([this](){
+         
+         this -> fadeInStart();
+         
+         
+         //オブジェクトの拡大
+         auto scale = ScaleBy::create(2, 12);
+         //オブジェクトのフェードアウト
+         auto fadeOut = FadeOut::create(2);
+     
+         auto remove = RemoveSelf::create(true);
+     
+         //拡大・フェードアウト同時アクション
+         auto scaleFadeOut = Spawn::create(scale,fadeOut, NULL);
+     
+         //拡大後削除のアクション
+         auto moveScale = Sequence::create(scaleFadeOut,remove,NULL);
+     
+         this->getChildByName("startRing") -> setVisible(true);
+         
+         this->getChildByName("startRing") -> runAction(moveScale);
+     
+     });
+     
+     //移動後削除のアクション
+     auto moveRemove = Sequence::create(move,remove,func,NULL);
+     
+    this->getChildByName("startRain") -> setVisible(true);
+    this->getChildByName("startRain") -> runAction(moveRemove);
 
 }
 
@@ -390,93 +674,91 @@ void TitleScene::setStart(){
 //オープニングのランキング動作
 void TitleScene::setRanking(){
     
-    //ランキングボタン効果
-    auto circleRanking = Sprite::create("orange_circle.png");
-    circleRanking -> setPosition(Vec2(60,selfFrame.height+100));
-    circleRanking -> setScale(0.1);
-    addChild(circleRanking);
     
-    auto ringRanking = Sprite::create("orange_ring.png");
-    ringRanking -> setPosition(Vec2(60,selfFrame.height+100));
-    ringRanking -> setScale(0.1);
-    addChild(ringRanking);
     
     //オブジェクトの移動
-    auto moveCircle3 = MoveTo::create(2, Vec2(60,selfFrame.height/4));
-    auto moveRing3 = MoveTo::create(2, Vec2(60,selfFrame.height/4));
+    auto move = MoveTo::create(2, Vec2(selfFrame.width/4,selfFrame.height/3));
     
-    //オブジェクトの拡大
-    auto scale3 = ScaleBy::create(2, 12);
     //オブジェクトの削除
-    auto remove3 = RemoveSelf::create(true);
-    //オブジェクトのフェードアウト
-    auto fadeOut3 = FadeOut::create(2);
+    auto remove = RemoveSelf::create(true);
     
-    
-    auto funcRanking = CallFunc::create([this](){
+    //タイトルフェードイン
+    auto func = CallFunc::create([this](){
         
         this -> fadeInRanking();
         
+    
+        
+        //オブジェクトの拡大
+        auto scale = ScaleBy::create(2, 12);
+        //オブジェクトのフェードアウト
+        auto fadeOut = FadeOut::create(2);
+        
+        auto remove = RemoveSelf::create(true);
+        
+        //拡大・フェードアウト同時アクション
+        auto scaleFadeOut = Spawn::create(scale,fadeOut, NULL);
+        
+        //拡大後削除のアクション
+        auto moveScale = Sequence::create(scaleFadeOut,remove,NULL);
+        
+        this->getChildByName("rankingRing") -> setVisible(true);
+        
+        this->getChildByName("rankingRing") -> runAction(moveScale);
+        
     });
     
-    //拡大・フェードアウト同時アクション
-    auto scaleFadeOut3 = Spawn::create(scale3,fadeOut3, NULL);
-    //移動後拡大のアクション
-    auto moveScale3 = Sequence::create(moveRing3, scaleFadeOut3,NULL);
     //移動後削除のアクション
-    auto moveRemove3 = Sequence::create(moveCircle3,remove3,funcRanking,NULL);
+    auto moveRemove = Sequence::create(move,remove,func,NULL);
     
-    circleRanking -> runAction(moveRemove3);
-    ringRanking -> runAction(moveScale3);
- 
+    this->getChildByName("rankingRain") -> setVisible(true);
+    this->getChildByName("rankingRain") -> runAction(moveRemove);
+    
 }
 
 
-//オープニングのチャレンジ動作
-void TitleScene::setChallenge(){
-    
-    //チャレンジボタン効果
-    auto circleChallenge = Sprite::create("yellow_circle.png");
-    circleChallenge -> setPosition(Vec2(selfFrame.width-60,selfFrame.height+100));
-    circleChallenge -> setScale(0.1);
-    addChild(circleChallenge);
-    
-    auto ringChallenge = Sprite::create("yellow_ring.png");
-    ringChallenge -> setPosition(Vec2(selfFrame.width-60,selfFrame.height+100));
-    ringChallenge -> setScale(0.1);
-    addChild(ringChallenge);
+//オープニングのチュートリアル動作
+void TitleScene::setTutorial(){
     
     
     //オブジェクトの移動
-    auto moveCircle4 = MoveTo::create(2, Vec2(selfFrame.width-60,selfFrame.height/4));
-    auto moveRing4 = MoveTo::create(2, Vec2(selfFrame.width-60,selfFrame.height/4));
+    auto move = MoveTo::create(2, Vec2(selfFrame.width*3/4,selfFrame.height/3));
     
-    //オブジェクトの拡大
-    auto scale4 = ScaleBy::create(2, 12);
     //オブジェクトの削除
-    auto remove4 = RemoveSelf::create(true);
-    //オブジェクトのフェードアウト
-    auto fadeOut4 = FadeOut::create(2);
+    auto remove = RemoveSelf::create(true);
     
-    
-    auto funcChallenge = CallFunc::create([this](){
+    //チュートリアルフェードイン
+    auto func = CallFunc::create([this](){
         
-        this -> fadeInCallenge();
+        this -> fadeInTutorial();
         
+        
+        
+        //オブジェクトの拡大
+        auto scale = ScaleBy::create(2, 12);
+        //オブジェクトのフェードアウト
+        auto fadeOut = FadeOut::create(2);
+        
+        auto remove = RemoveSelf::create(true);
+        
+        //拡大・フェードアウト同時アクション
+        auto scaleFadeOut = Spawn::create(scale,fadeOut, NULL);
+        
+        //拡大後削除のアクション
+        auto moveScale = Sequence::create(scaleFadeOut,remove,NULL);
+        
+        this->getChildByName("tutorialRing") -> setVisible(true);
+        
+        this->getChildByName("tutorialRing") -> runAction(moveScale);
+
     });
     
-    //拡大・フェードアウト同時アクション
-    auto scaleFadeOut4 = Spawn::create(scale4,fadeOut4, NULL);
-    //移動後拡大のアクション
-    auto moveScale4 = Sequence::create(moveRing4, scaleFadeOut4,NULL);
     //移動後削除のアクション
-    auto moveRemove4 = Sequence::create(moveCircle4,remove4,funcChallenge,NULL);
+    auto moveRemove = Sequence::create(move,remove,func,NULL);
     
+    this->getChildByName("tutorialRain") -> setVisible(true);
+    this->getChildByName("tutorialRain") -> runAction(moveRemove);
     
-    circleChallenge -> runAction(moveRemove4);
-    ringChallenge -> runAction(moveScale4);
-
-
 }
 
 /***********************************************************
@@ -495,73 +777,51 @@ void TitleScene::setChallenge(){
 
 //タイトルのフェードイン表示
 void TitleScene::fadeInTitle(){
-    
-    //タイトル
-    titleLabel = Label::createWithSystemFont(" レイン\nドロップ","DragonQuestFC",120);
-    titleLabel -> setPosition(Vec2(selfFrame.width/2, selfFrame.height*2/3));
-    titleLabel->setOpacity(0);
-    addChild(titleLabel,10);
-    titleLabel -> runAction(FadeIn::create(2));
-    
+
+    this -> getChildByName("titleLabel") -> setVisible(true);
+    this -> getChildByName("titleLabel") -> runAction(FadeIn::create(2));
+   
 }
 
 //スタートのフェードイン表示
 void TitleScene::fadeInStart(){
     
-    //スタートボタン
-    start = Sprite::create("aqua_circle.png");
-    start -> setPosition(Vec2(selfFrame.width/2, selfFrame.height/6));
-    start -> setScale(0.1);
-    start -> setOpacity(0);
-    addChild(start,10);
-    
-    auto startLabel = Label::createWithSystemFont("スタート","DragonQuestFC",30);
-    startLabel -> setPosition(Vec2(start->getPosition().x, start->getPosition().y));
-    addChild(startLabel,10);
-    
-    start -> runAction(FadeIn::create(2));
-    startLabel ->runAction(FadeIn::create(2));
+    auto fadeIn = FadeIn::create(2);
+    auto func = CallFunc::create([this](){
+        
+        playerCanTapBt = true;
+        setAppCCloud();
+        setTwitterBt();
 
+
+
+        
+    });
+    
+    auto seq = Sequence::create(fadeIn,func, NULL);
+
+    this -> getChildByName("start") -> setVisible(true);
+    this -> getChildByName("start") -> runAction(seq);
+    
 }
 
 //ランキングのフェードイン表示
 void TitleScene::fadeInRanking(){
     
-    //ランキング
-    ranking = Sprite::create("orange_circle.png");
-    ranking -> setPosition(Vec2(60,selfFrame.height/4));
-    ranking -> setScale(0.1);
-    ranking -> setOpacity(0);
-    addChild(ranking,10);
-    
-    auto rankingLabel = Label::createWithSystemFont("ランキング","DragonQuestFC",30);
-    rankingLabel -> setPosition(Vec2(ranking->getPosition().x, ranking->getPosition().y));
-    addChild(rankingLabel,10);
-    
-    ranking -> runAction(FadeIn::create(2));
-    rankingLabel -> runAction(FadeIn::create(2));
-    
 
+    this -> getChildByName("ranking") -> setVisible(true);
+    this -> getChildByName("ranking") -> runAction(FadeIn::create(2));
+   
 }
 
 //チャレンジのフェードイン表示
-void TitleScene::fadeInCallenge(){
-    
-    //チャレンジモード
-    challenge = Sprite::create("yellow_circle.png");
-    challenge -> setPosition(Vec2(selfFrame.width-60,selfFrame.height/4));
-    challenge -> setScale(0.1);
-    challenge -> setOpacity(0);
-    addChild(challenge,10);
-    
-    auto challengeLabel = Label::createWithSystemFont("チャレンジ","DragonQuestFC",30);
-    challengeLabel -> setPosition(Vec2(challenge->getPosition().x, challenge->getPosition().y));
-    addChild(challengeLabel,10);
-    
-    challenge -> runAction(FadeIn::create(2));
-    challengeLabel -> runAction(FadeIn::create(2));
+void TitleScene::fadeInTutorial(){
+
+    this -> getChildByName("tutorial") -> setVisible(true);
+    this -> getChildByName("tutorial") -> runAction(FadeIn::create(2));
 
 }
+
 /***********************************************************
                 タイトル,各種ボタン設定　終
  **********************************************************/
@@ -582,28 +842,28 @@ void TitleScene::setDrops(float time){
     
     if (rnd == 0) {
         
-        pngCircle = "aqua_circle.png";
+        pngCircle = "aqua_rain.png";
         pngRing = "aqua_ring.png";
         
     }else if(rnd == 1){
         
-        pngCircle = "green_circle.png";
+        pngCircle = "green_rain.png";
         pngRing = "green_ring.png";
     
     }else if(rnd == 2){
     
-        pngCircle = "yellow_circle.png";
+        pngCircle = "yellow_rain.png";
         pngRing = "yellow_ring.png";
         
     }else if(rnd == 3){
     
-        pngCircle = "blue_circle.png";
+        pngCircle = "blue_rain.png";
         pngRing = "blue_ring.png";
         
     }else if (rnd == 4){
         
-        pngCircle = "aqua_circle.png";
-        pngRing = "aqua_ring.png";
+        pngCircle = "red_rain.png";
+        pngRing = "red_ring.png";
     
     }
     
@@ -620,7 +880,7 @@ void TitleScene::setDrops(float time){
     
     //円の設定
     auto dropCircle = Sprite::create(pngCircle);
-    dropCircle -> setScale(0.01);
+    dropCircle -> setScale(0.03);
     dropCircle -> setPosition(Vec2(dropRing->getPosition().x,dropRing->getPosition().y));
     addChild(dropCircle);
     
@@ -642,7 +902,7 @@ void TitleScene::setDrops(float time){
     //拡大・フェードアウト同時アクション
     auto scaleFadeOut = Spawn::create(scale,fadeOut, NULL);
     //移動後拡大のアクション
-    auto moveScale = Sequence::create(moveRing, scaleFadeOut,NULL);
+    auto moveScale = Sequence::create(moveRing, scaleFadeOut,remove,NULL);
     //移動後削除のアクション
     auto moveRemove = Sequence::create(moveCircle,remove,NULL);
     
@@ -650,15 +910,7 @@ void TitleScene::setDrops(float time){
     dropRing -> runAction(moveScale);
     
     
-    dropCircle -> runAction(moveCircle);
-    
-    
-    
-    
-    
-    
 }
-
 
 
 
