@@ -12,10 +12,6 @@
 #include "NativeCodeLauncher.h"
 
 #define selfFrame Director::getInstance() -> getWinSize()
-//30点まではイージーモード
-#define easyMode 30
-//100点まではノーマルモード
-#define normalMode 50
 
 
 USING_NS_CC;
@@ -747,14 +743,30 @@ void GameScene::setDrops(){
 //難易度調整
 void GameScene::scoreManager(){
     
-    CCLOG("%fだよ",dropInterval);
-    auto tmp = 0.05;
+    //200点まではイージーモード
+    auto easyMode = 200;
+    //500点まではノーマルモード
+    auto normalMode = 500;
+    //800点まではハードモード
+    auto hardMode = 800;
+    //1100点までスーパーハード、それ以降処理なし
+    auto superHardMode = 1100;
+    
+    auto firstSub = 0.011;
+    auto secondSub = 0.005;
+    auto firstGravity = 1.5;
+//    auto secondGravity = 0.0005;
+    
+    auto world = this -> getScene() -> getPhysicsWorld();
+    auto gravity = world ->getGravity();
+    
+    CCLOG("スコアは%d、インターバルは%f、重力は%f",score,dropInterval,gravity.y);
     
     //イージーモード中
     if(score < easyMode ){
     
         //出現速度をあげる
-        dropInterval = dropInterval - tmp;
+        dropInterval = dropInterval - firstSub;
         
         return;
     }
@@ -766,7 +778,7 @@ void GameScene::scoreManager(){
         
         //dropInterval = dropInterval - tmp;
         
-        dropInterval = dropInterval - tmp;
+        dropInterval = dropInterval - firstSub;
         
         this -> getChildByName("yellow_cloud") -> setVisible(true);
         this -> getChildByName("yellow_cloud") -> runAction(FadeIn::create(2));
@@ -785,40 +797,61 @@ void GameScene::scoreManager(){
             
         }
         
-        dropInterval = 0.15;
+        //出現速度をあげる
+        dropInterval = dropInterval - firstSub;
+        
 
         
         return;
         
     }
     //ノーマルモード中
-//    if(score < normalMode){
+    if(score < normalMode){
         
         
-//        dropInterval = dropInterval - tmp;
-//        return;
-//    }
+        dropInterval = dropInterval - firstSub;
+        return;
+    }
     
     //ノーマルモードからハードモードへ
     if(score == normalMode){
+        //今のところ特別な演出はなし
+
+        auto world = this -> getScene() -> getPhysicsWorld();
+        auto gravity = world ->getGravity();
+        gravity.y = gravity.y - firstGravity;
+        world -> setGravity(gravity);
 
 
         return;
     }
     
+    if(score < hardMode){
 
-    auto world = this -> getScene() -> getPhysicsWorld();
-    auto gravity = world ->getGravity();
-    if(gravity.y > -75){
-        gravity.y = gravity.y - 1;
-    }else{
-        dropInterval = dropInterval - 0.005;
-    }
-    CCLOG("%f",gravity.y);
-    world -> setGravity(gravity);
-
-
+        auto world = this -> getScene() -> getPhysicsWorld();
+        auto gravity = world ->getGravity();
+        gravity.y = gravity.y - firstGravity;
+        world -> setGravity(gravity);
+        
+        return;
     
+    }
+    
+    if(score == hardMode){
+        
+        dropInterval = dropInterval - secondSub;
+        
+        return;
+    }
+    
+    if(score < superHardMode){
+
+        dropInterval = dropInterval - secondSub;
+        
+        return;
+    }
+
+
 }
 
 
@@ -1031,11 +1064,22 @@ void GameScene::makeGameOver(){
     UserDefault *userDef = UserDefault::getInstance();
     auto bestScore = userDef -> getIntegerForKey("bestScore");
 
+
     
 
     //宣言だけ
     Label *omedeto;
+
     
+    omedeto = Label::createWithSystemFont("Best Score!!", "jackeyfont", 60);
+    omedeto ->setColor(Color3B::RED);
+
+    omedeto -> setPosition(Vec2(selfFrame.width/2,gameOverLabel->getPositionY() - gameOverLabel -> getContentSize().height/2 - omedeto -> getContentSize().height));
+    
+    
+
+
+    //ベストスコアの場合のみスコア送信とベストスコアラベルが表示される。
     if(bestScore < score){
         
         bestScore = score;
@@ -1043,15 +1087,14 @@ void GameScene::makeGameOver(){
         //登録
         userDef->setIntegerForKey("bestScore", bestScore);
 
-        omedeto = Label::createWithSystemFont("Best Score!!", "jackeyfont", 60);
-        omedeto -> setPosition(Vec2(selfFrame.width/2,gameOverLabel->getPositionY() - gameOverLabel -> getContentSize().height/2 - omedeto -> getContentSize().height));
-        omedeto ->setColor(Color3B::RED);
+        //登録
         this->addChild(omedeto);
         
+        //動作
         auto blink = Blink::create(1, 1);
         
         auto repeat = RepeatForever::create(blink);
-        
+
         omedeto -> runAction(repeat);
         
 
