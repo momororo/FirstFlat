@@ -38,7 +38,7 @@ bool LoadScene::init(){
         return false;
     }
     
-    this -> setColor(Color3B::BLACK);
+    this -> setColor(Color3B(42, 212, 255));
     
 
     

@@ -315,6 +315,8 @@ if(rigidTappedFlag == true){
                 
                 this -> getChildByName("retryBt") ->runAction(RotateBy::create(1, 360));
                 
+                SimpleAudioEngine::getInstance()->playEffect("si.mp3");
+
 
                 
                 //アニメーション付き
@@ -349,6 +351,9 @@ if(rigidTappedFlag == true){
                 effectRing -> runAction(ringSequence);
                 
                 this -> getChildByName("homeBt") ->runAction(RotateBy::create(1, 360));
+                
+                SimpleAudioEngine::getInstance()->playEffect("re.mp3");
+
 
 
                 //アニメーション付き
@@ -839,7 +844,6 @@ void GameScene::scoreManager(){
         gravity.y = gravity.y - firstGravity;
         world -> setGravity(gravity);
 
-
         return;
     }
     
@@ -934,6 +938,9 @@ void GameScene::setGameover(){
  
     //ゲームオーバーのフラグをtrue
     gameOverFlag = true;
+    
+    //BGM停止
+    SimpleAudioEngine::getInstance()->stopBackgroundMusic();
     
     //落下物の動作停止
     this->stopAllActions();
