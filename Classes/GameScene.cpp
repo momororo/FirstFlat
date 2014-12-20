@@ -8,12 +8,13 @@
 
 #include "GameScene.h"
 #include <string.h>
+#include "LoadScene.h"
 
 #define selfFrame Director::getInstance() -> getWinSize()
 //30点まではイージーモード
 #define easyMode 30
 //100点まではノーマルモード
-#define normalMode 100
+#define normalMode 50
 
 
 USING_NS_CC;
@@ -274,8 +275,91 @@ if(rigidTappedFlag == true){
         }//while文
     }
     
-    
-    return;
+
+    if(this -> getChildByName("retryBt") != NULL){
+
+        for (auto iterator : touches) {
+            
+            
+            Touch* touch = iterator;
+
+            //ポイントの取得
+            Point touchPoint = Vec2(touch->getLocation());
+
+            //retry
+            if(this -> getChildByName("retryBt") ->getBoundingBox().containsPoint(touchPoint)){
+                
+                //文字列の生成
+                auto effectRing = Sprite::create("yellow_ring.png");
+                effectRing -> setPosition(this -> getChildByName("retryBt")->getPosition());
+                effectRing -> setScale(0.1);
+                effectRing -> setTag(2);
+                effectRing -> setOpacity(240);
+                
+                addChild(effectRing);
+                
+                
+                auto ringScale = ScaleBy::create(2, 12);
+                auto ringFadeOut = FadeOut::create(2);
+                auto ringRemove = RemoveSelf::create(true);
+                auto scaleFadeOut = Spawn::create(ringScale,ringFadeOut, NULL);
+                auto ringSequence = Sequence::create(scaleFadeOut,ringRemove, NULL);
+                
+                effectRing -> runAction(ringSequence);
+                
+                this -> getChildByName("retryBt") ->runAction(RotateBy::create(1, 360));
+                
+
+                
+                //アニメーション付き
+                float duration = 1.0f;  //開始→終了にかける時間
+                Scene* nextScene = CCTransitionFade::create(duration, LoadScene::createScene("GameScene"));
+                
+                Director::getInstance()->replaceScene(nextScene);
+
+                
+                return;
+            }
+            
+            //homeへ
+            if(this -> getChildByName("homeBt") -> getBoundingBox().containsPoint(touchPoint)) {
+                
+                //文字列の生成
+                auto effectRing = Sprite::create("purple_ring.png");
+                effectRing -> setPosition(this -> getChildByName("homeBt")->getPosition());
+                effectRing -> setScale(0.1);
+                effectRing -> setTag(2);
+                effectRing -> setOpacity(240);
+                
+                addChild(effectRing);
+                
+                
+                auto ringScale = ScaleBy::create(2, 12);
+                auto ringFadeOut = FadeOut::create(2);
+                auto ringRemove = RemoveSelf::create(true);
+                auto scaleFadeOut = Spawn::create(ringScale,ringFadeOut, NULL);
+                auto ringSequence = Sequence::create(scaleFadeOut,ringRemove, NULL);
+                
+                effectRing -> runAction(ringSequence);
+                
+                this -> getChildByName("homeBt") ->runAction(RotateBy::create(1, 360));
+
+
+                //アニメーション付き
+                float duration = 1.0f;  //開始→終了にかける時間
+                Scene* nextScene = CCTransitionFade::create(duration, LoadScene::createScene("TitleScene"));
+                
+                Director::getInstance()->replaceScene(nextScene);
+
+                
+            }
+
+
+        }
+    }
+
+
+        return;
     
 }
 /*
@@ -406,6 +490,7 @@ bool GameScene::onContactBegin(cocos2d::PhysicsContact& contact){
         
         //スコア加点
         score = score + 10;
+        CCLOG("スコアは%d",score);
         //難易度調整ようのメソッドを呼ぶ
         this -> scoreManager();
         
@@ -549,7 +634,7 @@ void GameScene::setDrops(){
 
     //難易度で出るドロップを振り分け
     //黄色の雲が見えていない場合はイージーと判定
-    if(this -> getChildByName("yellow_cloud") -> isVisible() == false){
+    if(this -> getChildByName("yellow_cloud") -> getOpacity() != 255){
         
         //0、1、2をランダム
         auto rnd2 = arc4random_uniform(3);
@@ -678,29 +763,59 @@ void GameScene::scoreManager(){
     if(score == easyMode){
         
         
+        //dropInterval = dropInterval - tmp;
+        
         dropInterval = dropInterval - tmp;
         
+        this -> getChildByName("yellow_cloud") -> setVisible(true);
+        this -> getChildByName("yellow_cloud") -> runAction(FadeIn::create(2));
+        
+        this -> getChildByName("purple_cloud") -> setVisible(true);
+        this -> getChildByName("purple_cloud") -> runAction(FadeIn::create(2));
+        
+        for(auto umbrella : *umbrellas){
+            
+            if(umbrella->getName() == "yellow" || umbrella->getName() == "purple"){
+                
+                umbrella -> setVisible(true);
+                umbrella -> runAction(FadeIn::create(2));
+                
+            }
+            
+        }
+        
+        dropInterval = 0.15;
+
         
         return;
         
     }
     //ノーマルモード中
-    if(score < normalMode){
+//    if(score < normalMode){
         
         
-        dropInterval = dropInterval - tmp;
-        return;
-    }
+//        dropInterval = dropInterval - tmp;
+//        return;
+//    }
     
     //ノーマルモードからハードモードへ
     if(score == normalMode){
-        dropInterval = dropInterval - tmp;
+
 
         return;
     }
     
-    //ハードモードへ
-    dropInterval = dropInterval - 0.005;
+
+    auto world = this -> getScene() -> getPhysicsWorld();
+    auto gravity = world ->getGravity();
+    if(gravity.y > -75){
+        gravity.y = gravity.y - 1;
+    }else{
+        dropInterval = dropInterval - 0.005;
+    }
+    CCLOG("%f",gravity.y);
+    world -> setGravity(gravity);
+
 
     
 }
@@ -712,7 +827,7 @@ void GameScene::update(float delta){
     
     //不要なスプライトの除去
     removeSprite();
-
+    
 /*
     //フレームをカウントする。
     if(rigidTappedFlag == true){
@@ -887,14 +1002,15 @@ void GameScene::makeGameOver(){
     auto retryBt = Sprite::create("retryBt.png");
     retryBt -> setPosition(Vec2(selfFrame.width*3/4,selfFrame.height/3));
     retryBt -> setScale(0.2);
+    retryBt -> setName("retryBt");
     this->addChild(retryBt,10);
     
-    CCLOG("bt x:%f, y:%f",retryBt->getPosition().x,retryBt->getPosition().y);
 
     
     auto homeBt = Sprite::create("homeBt.png");
     homeBt ->  setPosition(Vec2(selfFrame.width*1/4,selfFrame.height/3));
     homeBt -> setScale(0.2);
+    homeBt -> setName("homeBt");
     this -> addChild(homeBt,10);
     
     

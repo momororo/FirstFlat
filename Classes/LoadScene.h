@@ -21,7 +21,7 @@ protected:
     
     public :
     
-    static cocos2d::Scene *createScene();
+    static cocos2d::Scene *createScene(std::string toScene);
     
     virtual bool init();
 
@@ -29,7 +29,10 @@ protected:
 
     void replaceGameScene(float delta);
 
-
+/*諸事情でボツ
+    //飛ぶ対象を格納する変数
+    static std::string targetScene;
+*/
 
     
     CREATE_FUNC(LoadScene);

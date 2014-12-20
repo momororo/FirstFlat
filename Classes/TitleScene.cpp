@@ -303,7 +303,7 @@ void TitleScene::tappedBt(std::string &menu){
         
         //アニメーション付き
         float duration = 1.0f;  //開始→終了にかける時間
-        Scene* nextScene = CCTransitionFade::create(duration, LoadScene::createScene());
+        Scene* nextScene = CCTransitionFade::create(duration, LoadScene::createScene("GameScene"));
         
         Director::getInstance()->replaceScene(nextScene);
       
@@ -493,11 +493,15 @@ void TitleScene::presetSprite(){
     tutorialRing -> setName("tutorialRing");
     this->addChild(tutorialRing);
     
+    
+    
+    
     //ボタン押下後の波紋
     auto startEffectRing = Sprite::create("blue_ring.png");
     startEffectRing -> setPosition(Vec2(this->getChildByName("start")->getPosition().x,this->getChildByName("start")->getPosition().y));
     startEffectRing -> setScale(0.2);
     startEffectRing -> setVisible(false);
+
     startEffectRing -> setName("startEffectRing");
     this -> addChild(startEffectRing);
 
