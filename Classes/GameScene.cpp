@@ -91,8 +91,13 @@ bool GameScene::init(){
     SimpleAudioEngine::getInstance()->preloadEffect("re.mp3");
     SimpleAudioEngine::getInstance()->preloadEffect("mi.mp3");
     
+    //大雨
+    SimpleAudioEngine::getInstance()->preloadBackgroundMusic("rain01.mp3");
+    //中雨
     SimpleAudioEngine::getInstance()->preloadBackgroundMusic("rain02.mp3");
-    
+    //小雨
+    SimpleAudioEngine::getInstance()->preloadBackgroundMusic("rain03.mp3");
+
     //BGM
     SimpleAudioEngine::getInstance()->playBackgroundMusic("rain03.mp3",true);
     //音量

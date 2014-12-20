@@ -169,9 +169,9 @@
 		A4C8CBA11A457EFA00BD40F6 /* re.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = A4C8CB9C1A457EFA00BD40F6 /* re.mp3 */; };
 		A4C8CBA21A457EFA00BD40F6 /* d.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = A4C8CB9D1A457EFA00BD40F6 /* d.mp3 */; };
 		A4C8CBA81A4596A200BD40F6 /* rain_loop.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = A4C8CBA71A4596A200BD40F6 /* rain_loop.mp3 */; };
-		A4C8CBAA1A4599E400BD40F6 /* rain01.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = A4C8CBA91A4599E400BD40F6 /* rain01.mp3 */; };
 		A4C8CBAD1A459BA700BD40F6 /* rain02.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = A4C8CBAB1A459BA700BD40F6 /* rain02.mp3 */; };
 		A4C8CBAE1A459BA700BD40F6 /* rain03.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = A4C8CBAC1A459BA700BD40F6 /* rain03.mp3 */; };
+		A4C8CBB61A459D7000BD40F6 /* rain01.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = A4C8CBB51A459D7000BD40F6 /* rain01.mp3 */; };
 		A4E632FA19E6BB950018B91B /* low_bFlat.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = A4E632F919E6BB940018B91B /* low_bFlat.mp3 */; };
 		A4E632FB19E6BB950018B91B /* low_bFlat.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = A4E632F919E6BB940018B91B /* low_bFlat.mp3 */; };
 		A4E632FD19E6BFCA0018B91B /* low_c.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = A4E632FC19E6BFCA0018B91B /* low_c.mp3 */; };
@@ -520,9 +520,9 @@
 		A4C8CB9C1A457EFA00BD40F6 /* re.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = re.mp3; sourceTree = "<group>"; };
 		A4C8CB9D1A457EFA00BD40F6 /* d.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = d.mp3; sourceTree = "<group>"; };
 		A4C8CBA71A4596A200BD40F6 /* rain_loop.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = rain_loop.mp3; sourceTree = "<group>"; };
-		A4C8CBA91A4599E400BD40F6 /* rain01.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = rain01.mp3; sourceTree = "<group>"; };
 		A4C8CBAB1A459BA700BD40F6 /* rain02.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = rain02.mp3; sourceTree = "<group>"; };
 		A4C8CBAC1A459BA700BD40F6 /* rain03.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = rain03.mp3; sourceTree = "<group>"; };
+		A4C8CBB51A459D7000BD40F6 /* rain01.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = rain01.mp3; sourceTree = "<group>"; };
 		A4E632F919E6BB940018B91B /* low_bFlat.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = low_bFlat.mp3; sourceTree = "<group>"; };
 		A4E632FC19E6BFCA0018B91B /* low_c.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = low_c.mp3; sourceTree = "<group>"; };
 		A4E632FF19E6BFD20018B91B /* low_d.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = low_d.mp3; sourceTree = "<group>"; };
@@ -815,7 +815,7 @@
 				A49F215B1A43F4BB008A31D9 /* startBt.png */,
 				A4C8CBAB1A459BA700BD40F6 /* rain02.mp3 */,
 				A4C8CBAC1A459BA700BD40F6 /* rain03.mp3 */,
-				A4C8CBA91A4599E400BD40F6 /* rain01.mp3 */,
+				A4C8CBB51A459D7000BD40F6 /* rain01.mp3 */,
 				A4C8CBA71A4596A200BD40F6 /* rain_loop.mp3 */,
 				A4C8CB991A457EFA00BD40F6 /* mi.mp3 */,
 				A4C8CB9A1A457EFA00BD40F6 /* ra.mp3 */,
@@ -1134,7 +1134,6 @@
 				A49F21F41A4441D0008A31D9 /* appc_manga_close@2x.png in Resources */,
 				04116C021A024329002FC615 /* KouzanBrushFont.ttf in Resources */,
 				A4318E4E1A415ACC001C974E /* red_umbrella.png in Resources */,
-				A4C8CBAA1A4599E400BD40F6 /* rain01.mp3 in Resources */,
 				A49F213B1A419779008A31D9 /* red_cloud.png in Resources */,
 				50EF62A217ECD613001EB2F8 /* Icon-29.png in Resources */,
 				50EF629617ECD46A001EB2F8 /* Icon-40.png in Resources */,
@@ -1155,6 +1154,7 @@
 				A4318E461A415ABE001C974E /* yellow_ring.png in Resources */,
 				A4318E3D1A415990001C974E /* aqua_rain.png in Resources */,
 				A49F22091A4441D0008A31D9 /* appcc_web_splash_cayto2.png in Resources */,
+				A4C8CBB61A459D7000BD40F6 /* rain01.mp3 in Resources */,
 				A49F22001A4441D0008A31D9 /* appc_simple_bg@2x.png in Resources */,
 				A4C8CB9F1A457EFA00BD40F6 /* ra.mp3 in Resources */,
 				A49F22041A4441D0008A31D9 /* appcc_banner_default.png in Resources */,
