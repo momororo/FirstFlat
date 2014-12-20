@@ -1323,7 +1323,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
 				LIBRARY_SEARCH_PATHS = (
 					"$(PROJECT_DIR)/NendAd",
-					/Users/araishuuji/Documents/FirstFlat/classes/appc_cloud_ios_xcode_6,
+					"$(SRCROOT)/../classes/appc_cloud_ios_xcode_6",
 				);
 				PROVISIONING_PROFILE = "";
 				SDKROOT = iphoneos;
@@ -1357,7 +1357,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
 				LIBRARY_SEARCH_PATHS = (
 					"$(PROJECT_DIR)/NendAd",
-					/Users/araishuuji/Documents/FirstFlat/classes/appc_cloud_ios_xcode_6,
+					"$(SRCROOT)/../classes/appc_cloud_ios_xcode_6",
 				);
 				PROVISIONING_PROFILE = "";
 				SDKROOT = iphoneos;
