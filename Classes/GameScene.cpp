@@ -68,12 +68,20 @@ bool GameScene::init(){
     SpriteFrameCache::getInstance()->addSpriteFramesWithFile("rainAndCircle.plist");
         
     
-    
-    
     //背景色のグラデーション
     auto bgGradient = LayerGradient::create(Color4B(255,255,255,255), Color4B(255,255,255,255));
     this -> addChild(bgGradient);
     
+    
+    
+    
+    //スコアの生成
+    scoreLabel = Label::createWithSystemFont("0", "jackeyfont", 60);
+    scoreLabel ->setOpacity(0);
+    scoreLabel -> setPosition(selfFrame.width/2 , selfFrame.height/3*2);
+    scoreLabel -> setColor(Color3B::WHITE);
+    this -> addChild(scoreLabel);
+
 
     //ボタンの生成
     this->setUmbrella();
@@ -155,7 +163,6 @@ bool GameScene::init(){
 
     
     
-    //スコア機能の実装
 
     //1フレーム毎の動き
     this->scheduleUpdate();
@@ -444,27 +451,33 @@ bool GameScene::onContactBegin(cocos2d::PhysicsContact& contact){
             ring = (Sprite*)nodeA;
         }
         
-        
+        //音とスコアラベルの色をいじる
         if (nodeA->getName() == "green") {
         
             SimpleAudioEngine::getInstance()->playEffect("ra.mp3");
+            scoreLabel -> setColor(Color3B::GREEN);
         
         }else if(nodeA-> getName() == "blue"){
             
             SimpleAudioEngine::getInstance()->playEffect("d.mp3");
+            scoreLabel -> setColor(Color3B::BLUE);
         
         }else if(nodeA->getName() == "red"){
             
             //再生する
             SimpleAudioEngine::getInstance()->playEffect("mi.mp3");
+            scoreLabel -> setColor(Color3B::RED);
         
         }else if (nodeA->getName()== "yellow"){
         
             SimpleAudioEngine::getInstance()->playEffect("si.mp3");
+            scoreLabel -> setColor(Color3B::YELLOW);
     
         }else if (nodeA->getName() == "purple"){
         
             SimpleAudioEngine::getInstance()->playEffect("re.mp3");
+            scoreLabel -> setColor(Color3B::MAGENTA);
+
             
         }
         
@@ -502,12 +515,33 @@ bool GameScene::onContactBegin(cocos2d::PhysicsContact& contact){
         //配列から削除
         dropRing -> runAction(moveScale);
         
+        
         //スコア加点
-        score = score + 10;
         CCLOG("スコアは%d",score);
+
         //難易度調整ようのメソッドを呼ぶ
         this -> scoreManager();
+
+        //スコアラベルに反映
+        scoreLabel -> setString(StringUtils::format("%d",score));
         
+ 
+        //スコアラベルの動作
+        //動作中の場合終了
+        if(scoreLabel ->getNumberOfRunningActions() != 0){
+            scoreLabel ->stopAllActions();
+            scoreLabel ->setOpacity(0);
+        }
+        
+        //フェードイン、フェードアウト
+        auto fadein = FadeTo::create(0.25, 128);
+        auto fadeout = FadeTo::create(0.25, 0);
+        
+        auto sequence = Sequence::create(fadein,fadeout, NULL);
+        
+        scoreLabel ->runAction(sequence);
+        
+ 
         
         
          
@@ -759,7 +793,7 @@ void GameScene::setDrops(){
 
 //難易度調整
 void GameScene::scoreManager(){
-    
+//定数
     //200点まではイージーモード
     auto easyMode = 200;
     //500点まではノーマルモード
@@ -772,12 +806,12 @@ void GameScene::scoreManager(){
     auto firstSub = 0.011;
     auto secondSub = 0.005;
     auto firstGravity = 1.5;
-//    auto secondGravity = 0.0005;
+//定数終
     
-    auto world = this -> getScene() -> getPhysicsWorld();
-    auto gravity = world ->getGravity();
     
-    CCLOG("スコアは%d、インターバルは%f、重力は%f",score,dropInterval,gravity.y);
+    //スコア加点
+    score = score + 10;
+
     
     //イージーモード中
     if(score < easyMode ){
