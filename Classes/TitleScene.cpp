@@ -58,6 +58,21 @@ bool TitleScene::init(){
     
     this -> schedule(schedule_selector(TitleScene::setDrops), 1);
     
+    
+    //スコアの取り出し
+    UserDefault *userDef = UserDefault::getInstance();
+    auto bestScore = userDef -> getIntegerForKey("bestScore");
+
+    //スコアの生成
+    scoreLabel = Label::createWithSystemFont(StringUtils::format("BEST SCORE : %d",bestScore), "jackeyfont", 60);
+    scoreLabel -> setOpacity(0);
+    //広告より少し上狙い
+    scoreLabel -> setPosition(selfFrame.width/2, 100 + scoreLabel -> getContentSize().height/2);
+    scoreLabel -> setColor(Color3B::WHITE);
+    this -> addChild(scoreLabel);
+
+    
+    
     presetSprite();
     
     //各種タイトルの設定
@@ -212,7 +227,7 @@ bool TitleScene::onTouchBegan(Touch *touch, Event *unused_event){
     Point touchPoint = Vec2(touch->getLocation());
 
     //メニューの押下処理(かさぐるぐる)
-    if (playerCanTapBt == true) {
+    if (this -> getChildByName("start") -> getOpacity() >= 150) {
         
         for(auto menu : *menus){
             
@@ -249,7 +264,7 @@ void TitleScene::onTouchMoved(Touch *touch, Event *unused_event){
     Point touchPoint = Vec2(touch->getLocation());
     
     //ボタンが回転している(アクションがある)→ボタンの位置にいない→アクションを止める
-    if (playerCanTapBt == true) {
+    if (this -> getChildByName("start") -> getOpacity() >= 150) {
         
         for(auto menu : *menus){
             
@@ -292,7 +307,7 @@ void TitleScene::onTouchEnded(Touch *touch, Event *unused_event){
     //ポイント取得
     Point touchPoint = Vec2(touch->getLocation());
     
-    if (playerCanTapBt == true) {
+    if (this -> getChildByName("start") -> getOpacity() >= 150) {
         
         //ボタンが回転している(アクションがある)→ボタンの位置にいる→画面遷移
         for(auto menu : *menus){
@@ -452,8 +467,17 @@ void TitleScene::presetSprite(){
     titleRain -> setName("titleRain");
     this->addChild(titleRain);
     
-    //タイトル
+    
+    //タイトルは他言語化
+    LanguageType language = Application::getInstance()->getCurrentLanguage();
+    if(language == LanguageType::JAPANESE){
     titleLabel = Label::createWithSystemFont("レイン\nドロップ","jackeyfont",120);
+    }else{
+        titleLabel = Label::createWithSystemFont("RAIN\nDROPS","jackeyfont",120);
+    }
+    
+    //タイトル
+
     titleLabel -> setPosition(Vec2(selfFrame.width/2, selfFrame.height*2/3));
     titleLabel->setOpacity(0);
     titleLabel->setVisible(false);
@@ -586,7 +610,13 @@ void TitleScene::presetSprite(){
     //アンブレラ
     auto umbrella = Sprite::create("umbrella.png");
     umbrella -> setScale(0.08);
-    umbrella-> setPosition(Vec2(selfFrame.width*7/10,selfFrame.height*2/3+(umbrella->getContentSize().height*3/4)*umbrella->getScale()));
+    
+    if(language == LanguageType::JAPANESE){
+        umbrella-> setPosition(Vec2(selfFrame.width*7/10,selfFrame.height*2/3+(umbrella->getContentSize().height*3/4)*umbrella->getScale()));
+    }else{
+        umbrella-> setPosition(Vec2(selfFrame.width*7.5/10,selfFrame.height*2/3+(umbrella->getContentSize().height*3/4)*umbrella->getScale()));
+    }
+
     umbrella -> setName("umbrella");
     addChild(umbrella);
     
@@ -790,6 +820,9 @@ void TitleScene::fadeInTitle(){
 
     this -> getChildByName("titleLabel") -> setVisible(true);
     this -> getChildByName("titleLabel") -> runAction(FadeIn::create(2));
+    
+    //こっそりスコアも
+    scoreLabel -> runAction(FadeIn::create(2));
    
 }
 

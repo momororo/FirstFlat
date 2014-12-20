@@ -18,7 +18,8 @@ protected:
     
     //スタートボタンの生成
     void initStart();
-    
+    //スコアラベル
+    cocos2d::Label *scoreLabel;
     //cocos2d::Sprite *start;
     cocos2d::Sprite *ranking;
     cocos2d::Sprite *tutorial;
