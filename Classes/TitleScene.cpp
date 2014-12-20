@@ -467,8 +467,17 @@ void TitleScene::presetSprite(){
     titleRain -> setName("titleRain");
     this->addChild(titleRain);
     
-    //タイトル
+    
+    //タイトルは他言語化
+    LanguageType language = Application::getInstance()->getCurrentLanguage();
+    if(language == LanguageType::JAPANESE){
     titleLabel = Label::createWithSystemFont("レイン\nドロップ","jackeyfont",120);
+    }else{
+        titleLabel = Label::createWithSystemFont("RAIN\nDROPS","jackeyfont",120);
+    }
+    
+    //タイトル
+
     titleLabel -> setPosition(Vec2(selfFrame.width/2, selfFrame.height*2/3));
     titleLabel->setOpacity(0);
     titleLabel->setVisible(false);
@@ -601,7 +610,13 @@ void TitleScene::presetSprite(){
     //アンブレラ
     auto umbrella = Sprite::create("umbrella.png");
     umbrella -> setScale(0.08);
-    umbrella-> setPosition(Vec2(selfFrame.width*7/10,selfFrame.height*2/3+(umbrella->getContentSize().height*3/4)*umbrella->getScale()));
+    
+    if(language == LanguageType::JAPANESE){
+        umbrella-> setPosition(Vec2(selfFrame.width*7/10,selfFrame.height*2/3+(umbrella->getContentSize().height*3/4)*umbrella->getScale()));
+    }else{
+        umbrella-> setPosition(Vec2(selfFrame.width*7.5/10,selfFrame.height*2/3+(umbrella->getContentSize().height*3/4)*umbrella->getScale()));
+    }
+
     umbrella -> setName("umbrella");
     addChild(umbrella);
     

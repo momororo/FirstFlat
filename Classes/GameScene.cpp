@@ -1053,8 +1053,18 @@ void GameScene::makeGameOver(){
     auto bgGradient = LayerGradient::create(Color4B(128,229,255,255), Color4B(95,211,188,255));
     this -> addChild(bgGradient);
     
-    //ゲームオーバーテキスト
-    auto gameOverLabel = Label::createWithSystemFont("ゲーム\nオーバー","jackeyfont", 120);
+    //ゲームオーバーテキストは他言語化
+    
+    Label *gameOverLabel;
+    
+    LanguageType language = Application::getInstance()->getCurrentLanguage();
+    if(language == LanguageType::JAPANESE){
+        gameOverLabel = Label::createWithSystemFont("ゲーム\nオーバー","jackeyfont", 120);
+    }else{
+        gameOverLabel = Label::createWithSystemFont("GAME\n      OVER","jackeyfont", 120);
+    }
+
+    
     gameOverLabel -> setPosition(Vec2(selfFrame.width/2,selfFrame.height*3/4));
     gameOverLabel -> setColor(Color3B::BLACK);
     this -> addChild(gameOverLabel,10);
@@ -1064,7 +1074,7 @@ void GameScene::makeGameOver(){
     //umbrella -> setAnchorPoint(Vec2(1,1));
     umbrella -> setColor(Color3B::BLACK);
     umbrella -> setScale(0.08);
-    umbrella-> setPosition(Vec2(selfFrame.width*3/4,selfFrame.height*3/4+(umbrella->getContentSize().height/2)*umbrella->getScale()));
+    umbrella-> setPosition(Vec2(selfFrame.width*2.8/4,selfFrame.height*3/4+(umbrella->getContentSize().height/2)*umbrella->getScale()));
     addChild(umbrella);
     
     /*
