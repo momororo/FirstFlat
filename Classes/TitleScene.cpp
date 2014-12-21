@@ -127,22 +127,20 @@ bool TitleScene::init(){
     //テストID使用中、本番IDはコメント化
     //MARK::nendの設定
     //ネンドの呼び出し(ヘッダー)
-    char apiKey[] = "a6eca9dd074372c898dd1df549301f277c53f2b9";
+    char apiKey[] = "ecb83e1d23f7b696fb4bacb8f132b5cec93cd5f5";
     //"ecb83e1d23f7b696fb4bacb8f132b5cec93cd5f5";
     
-    char spotID[] = "3172";//"285490";
+    char spotID[] = "285490";//"285490";
     NendModule::createNADViewBottom(apiKey, spotID);
      
     //ネンドの呼び出し(飛び出す)
-    char interstitialApiKey[] = "88d88a288fdea5c01d17ea8e494168e834860fd6";
+    char interstitialApiKey[] = "8d08c967527310908e9b0d9a1a5c38becc702526";
     //"8d08c967527310908e9b0d9a1a5c38becc702526";
-    char interstitialSpotID[] = "70356";
+    char interstitialSpotID[] = "285491";
     //"285491";
     
     NendInterstitialModule::createNADInterstitial(interstitialApiKey, interstitialSpotID);
     
-    //MARK::nend飛だし広告の表示
-    NendInterstitialModule::showNADInterstitialView();
 
     
     
@@ -699,6 +697,11 @@ void TitleScene::setTitle(){
         this->getChildByName("titleRing") -> setVisible(true);
         
         this->getChildByName("titleRing") -> runAction(moveScale);
+
+        
+        //MARK::nend飛だし広告の表示
+        NendInterstitialModule::showNADInterstitialView();
+
         
     });
     

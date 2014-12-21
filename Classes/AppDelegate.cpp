@@ -1,5 +1,7 @@
 #include "AppDelegate.h"
 #include "TitleScene.h"
+#include "AppCCloudPlugin.h"
+
 
 USING_NS_CC;
 
@@ -21,7 +23,10 @@ bool AppDelegate::applicationDidFinishLaunching() {
     }
 
     // turn on display FPS
-    director->setDisplayStats(true);
+    director->setDisplayStats(false);
+    
+    //appccloud
+    AppCCloudPlugin::setMK_iOS("099f478caeb05182b4db78ef1c80cf76e1765cd3").start();
 
     // set FPS. the default value is 1.0/60 if you don't call this
     director->setAnimationInterval(1.0 / 60);
