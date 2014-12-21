@@ -805,8 +805,8 @@ void GameScene::scoreManager(){
     auto normalMode = 500;
     //800点まではハードモード
     auto hardMode = 800;
-    //1000点までスーパーハード、それ以降処理なし
-    auto superHardMode = 1000;
+    //900点までスーパーハード、それ以降処理なし
+    auto superHardMode = 900;
     
     auto firstSub = 0.011;
     auto secondSub = 0.005;
