@@ -220,9 +220,20 @@ bool TitleScene::onTouchBegan(Touch *touch, Event *unused_event){
         return true;
         
     }
+    
+
 
     //ポイント取得
     Point touchPoint = Vec2(touch->getLocation());
+    
+    if(tutorialFlag == true){
+        
+        tapPoint = touchPoint.x;
+        
+        return true;
+        
+    }
+
 
     //メニューの押下処理(かさぐるぐる)
     if (this -> getChildByName("start") -> getOpacity() >= 150) {
@@ -263,9 +274,84 @@ void TitleScene::onTouchMoved(Touch *touch, Event *unused_event){
         return;
         
     }
+
     
     //ポイント取得
     Point touchPoint = Vec2(touch->getLocation());
+
+    
+    if (tutorialFlag == true) {
+        
+        //差分を計算
+        auto diffX =  touchPoint.x - tapPoint;
+        
+        //差分がマイナスになる場合は左に動かす
+        if(diffX < 0){
+            
+            //限界値か判定(その場合何もしない)
+            if(this->getChildByName("fade")->getPosition().x <= selfFrame.width/5*1 - (this->getChildByName("fade")->getContentSize().width * this->getChildByName("fade") -> getScale())){
+                
+                //何もしない
+                
+            }else{
+                
+                //限界値を超える動きは調整
+                if(this->getChildByName("fade")->getPositionX() + diffX <selfFrame.width/5*1 - (this->getChildByName("fade")->getContentSize().width * this->getChildByName("fade") -> getScale())){
+                    
+                    
+                    this->getChildByName("fade")->setPosition(Vec2(selfFrame.width/5*1 - (this->getChildByName("fade")->getContentSize().width * this->getChildByName("fade") -> getScale()),selfFrame.height*0.55));
+
+                    
+                }else{
+                
+                
+                this->getChildByName("fade")->setPosition(Vec2(this->getChildByName("fade")->getPositionX() + diffX,selfFrame.height*0.55));
+
+
+                }
+            }
+            
+            //タップ位置の更新
+            tapPoint = touchPoint.x;
+            
+            return;
+            
+        }
+        //差分がプラスの場合は右に動かす
+        if(diffX > 0){
+            
+            //限界値か判定(その場合何もしない)
+            if(this->getChildByName("fade")->getPosition().x >= selfFrame.width/5*1){
+                
+                //何もしない
+                
+            }else{
+                
+                //限界値超える場合はとめちゃう
+               
+                if(this->getChildByName("fade")->getPositionX() + diffX > selfFrame.width/5*1){
+
+                    this->getChildByName("fade")->setPosition(Vec2(selfFrame.width/5*1,selfFrame.height*0.55));
+
+                }else{
+                
+                
+                this->getChildByName("fade")->setPosition(Vec2(this->getChildByName("fade")->getPositionX() + diffX,selfFrame.height*0.55));
+                }
+                
+            }
+            
+            //タップ位置の更新
+            tapPoint = touchPoint.x;
+            
+            return;
+
+            
+        }
+        
+    }
+
+    
     
     //ボタンが回転している(アクションがある)→ボタンの位置にいない→アクションを止める
     if (this -> getChildByName("start") -> getOpacity() >= 150) {
@@ -317,6 +403,13 @@ void TitleScene::onTouchEnded(Touch *touch, Event *unused_event){
     //ポイント取得
     Point touchPoint = Vec2(touch->getLocation());
     
+    if (tutorialFlag == true) {
+        
+        //何もしない;
+        
+    }
+
+    
     if (this -> getChildByName("start") -> getOpacity() >= 150) {
         
         //ボタンが回転している(アクションがある)→ボタンの位置にいる→画面遷移
@@ -345,11 +438,6 @@ void TitleScene::onTouchEnded(Touch *touch, Event *unused_event){
 
     }
     
-    if (tutorialFlag == true) {
-        
-        tutorialPointX = this -> getChildByName("fade") -> getPosition().x;
-        
-    }
     
 }
 
@@ -1023,7 +1111,7 @@ void TitleScene::setTutorialFade(){
     tutorialPointX = selfFrame.width/2;
     
     auto fade = Sprite::create("fade.png");
-    fade -> setPosition(Vec2(selfFrame.width/4,selfFrame.height*0.55));
+    fade -> setPosition(Vec2(selfFrame.width/5*1,selfFrame.height*0.55));
     fade -> setScale(0.8);
     fade -> setName("fade");
     fade -> setAnchorPoint(Vec2(0,0.5));

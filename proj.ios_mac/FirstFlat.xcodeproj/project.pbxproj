@@ -22,6 +22,7 @@
 		04D52F3C1A42CCCF0047ECC5 /* red_rain.png in Resources */ = {isa = PBXBuildFile; fileRef = 04D52F3A1A42CCCF0047ECC5 /* red_rain.png */; };
 		04D52F3D1A42CCCF0047ECC5 /* red_ring.png in Resources */ = {isa = PBXBuildFile; fileRef = 04D52F3B1A42CCCF0047ECC5 /* red_ring.png */; };
 		04D52F431A42F2870047ECC5 /* LoadScene.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04D52F411A42F2870047ECC5 /* LoadScene.cpp */; };
+		04FCA5C01A46DE7800A6766E /* fade.png in Resources */ = {isa = PBXBuildFile; fileRef = 04FCA5BF1A46DE7800A6766E /* fade.png */; };
 		1AC6FB1F180E996B004C840B /* libbox2d Mac.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 1AC6FAFF180E9839004C840B /* libbox2d Mac.a */; };
 		1AC6FB20180E996B004C840B /* libchipmunk Mac.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 1AC6FAFD180E9839004C840B /* libchipmunk Mac.a */; };
 		1AC6FB21180E996B004C840B /* libcocos2dx Mac.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 1AC6FAF9180E9839004C840B /* libcocos2dx Mac.a */; };
@@ -154,7 +155,6 @@
 		A4C8CBA21A457EFA00BD40F6 /* d.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = A4C8CB9D1A457EFA00BD40F6 /* d.mp3 */; };
 		A4C8CBB81A45B73800BD40F6 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A4C8CBB71A45B73800BD40F6 /* Images.xcassets */; };
 		A4C8CBBA1A45C03B00BD40F6 /* rain03.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = A4C8CBB91A45C03B00BD40F6 /* rain03.mp3 */; };
-		A4C8CBE11A46C91A00BD40F6 /* fade.png in Resources */ = {isa = PBXBuildFile; fileRef = A4C8CBDF1A46C91A00BD40F6 /* fade.png */; };
 		A4C8CBE21A46C91A00BD40F6 /* close.png in Resources */ = {isa = PBXBuildFile; fileRef = A4C8CBE01A46C91A00BD40F6 /* close.png */; };
 		A4E632FA19E6BB950018B91B /* low_bFlat.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = A4E632F919E6BB940018B91B /* low_bFlat.mp3 */; };
 		A4E632FB19E6BB950018B91B /* low_bFlat.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = A4E632F919E6BB940018B91B /* low_bFlat.mp3 */; };
@@ -337,6 +337,7 @@
 		04D52F3B1A42CCCF0047ECC5 /* red_ring.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = red_ring.png; sourceTree = "<group>"; };
 		04D52F411A42F2870047ECC5 /* LoadScene.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = LoadScene.cpp; path = ../Classes/LoadScene.cpp; sourceTree = "<group>"; };
 		04D52F421A42F2870047ECC5 /* LoadScene.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LoadScene.h; path = ../Classes/LoadScene.h; sourceTree = "<group>"; };
+		04FCA5BF1A46DE7800A6766E /* fade.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = fade.png; sourceTree = "<group>"; };
 		1AC6FAE5180E9839004C840B /* cocos2d_libs.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = cocos2d_libs.xcodeproj; path = ../cocos2d/build/cocos2d_libs.xcodeproj; sourceTree = "<group>"; };
 		1ACB3243164770DE00914215 /* libcurl.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libcurl.a; path = ../../cocos2dx/platform/third_party/ios/libraries/libcurl.a; sourceTree = "<group>"; };
 		1AFAF8B316D35DE700DB1158 /* AppDelegate.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = AppDelegate.cpp; path = ../Classes/AppDelegate.cpp; sourceTree = "<group>"; };
@@ -489,7 +490,6 @@
 		A4C8CB9D1A457EFA00BD40F6 /* d.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = d.mp3; sourceTree = "<group>"; };
 		A4C8CBB71A45B73800BD40F6 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = "FirstFlat iOS/Images.xcassets"; sourceTree = SOURCE_ROOT; };
 		A4C8CBB91A45C03B00BD40F6 /* rain03.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = rain03.mp3; sourceTree = "<group>"; };
-		A4C8CBDF1A46C91A00BD40F6 /* fade.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = fade.png; sourceTree = "<group>"; };
 		A4C8CBE01A46C91A00BD40F6 /* close.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = close.png; sourceTree = "<group>"; };
 		A4E632F919E6BB940018B91B /* low_bFlat.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = low_bFlat.mp3; sourceTree = "<group>"; };
 		A4E632FC19E6BFCA0018B91B /* low_c.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = low_c.mp3; sourceTree = "<group>"; };
@@ -759,6 +759,7 @@
 				A4318E311A415990001C974E /* aqua_rain.png */,
 				A4318E321A415990001C974E /* blue_circle.png */,
 				04116C011A024329002FC615 /* KouzanBrushFont.ttf */,
+				04FCA5BF1A46DE7800A6766E /* fade.png */,
 				A4F5654619DD790B00AD989D /* umbrella.png */,
 				04116C061A024374002FC615 /* Bizareadventure.ttf */,
 				A49F214A1A4312D9008A31D9 /* retryBt.png */,
@@ -766,7 +767,6 @@
 				A49F21591A43F4BB008A31D9 /* rankingBt.png */,
 				A49F215A1A43F4BB008A31D9 /* tutorialBt.png */,
 				A49F215B1A43F4BB008A31D9 /* startBt.png */,
-				A4C8CBDF1A46C91A00BD40F6 /* fade.png */,
 				A4C8CBE01A46C91A00BD40F6 /* close.png */,
 				A4C8CBB91A45C03B00BD40F6 /* rain03.mp3 */,
 				A4C8CB991A457EFA00BD40F6 /* mi.mp3 */,
@@ -1060,7 +1060,6 @@
 				A49F220A1A4441D0008A31D9 /* appcc_web_splash_logo.png in Resources */,
 				A49F21501A4312D9008A31D9 /* homeBt.png in Resources */,
 				A4F5654719DD790B00AD989D /* umbrella.png in Resources */,
-				A4C8CBE11A46C91A00BD40F6 /* fade.png in Resources */,
 				A49F220B1A4441D0008A31D9 /* appcc_web_splash_logo2.gif in Resources */,
 				A49F21FE1A4441D0008A31D9 /* appc_micon_box_shadow@2x.png in Resources */,
 				A4C8CBA11A457EFA00BD40F6 /* re.mp3 in Resources */,
@@ -1089,6 +1088,7 @@
 				A49F21ED1A4441D0008A31D9 /* appc_cutin_btn_other_on@2x.png in Resources */,
 				A49F21F91A4441D0008A31D9 /* appc_manga_vectol@2x.png in Resources */,
 				A4C8CBA01A457EFA00BD40F6 /* si.mp3 in Resources */,
+				04FCA5C01A46DE7800A6766E /* fade.png in Resources */,
 				A49F22081A4441D0008A31D9 /* appcc_web_splash_cayto.png in Resources */,
 				A4318E351A415990001C974E /* green_circle.png in Resources */,
 				A49F22151A444D87008A31D9 /* other.png in Resources */,
