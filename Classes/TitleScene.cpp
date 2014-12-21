@@ -189,7 +189,12 @@ void TitleScene::setTwitterBt(){
     //メニューアイテムの作成
     auto tBtnItem = MenuItemSprite::create(twitterBt, twitterBtTaped,[](Ref*sender){
         
-        NativeLauncher::openTweetDialog("ハイスコア：20030点\n【iPhoneアプリ】レインドロップ\n#レインドロップ");
+        UserDefault *userDef = UserDefault::getInstance();
+        auto bestScore = userDef -> getIntegerForKey("bestScore");
+
+        std::string text = StringUtils::format("ハイスコア：%d点\n【iPhoneアプリ】レインドロップ\n#レインドロップ",bestScore);
+        
+        NativeLauncher::openTweetDialog(text.c_str());
         
     });
     
@@ -238,6 +243,15 @@ bool TitleScene::onTouchBegan(Touch *touch, Event *unused_event){
     //メニューの押下処理(かさぐるぐる)
     if (this -> getChildByName("start") -> getOpacity() >= 150) {
         
+
+        //チュートリアルを引っ張る
+        if(tutorialFlag == true){
+            
+            tapPoint = touchPoint.x;
+            
+        }
+
+        
         for(auto menu : *menus){
             
             if (this->getChildByName(*menu)->getBoundingBox().containsPoint(touchPoint)){
@@ -252,12 +266,6 @@ bool TitleScene::onTouchBegan(Touch *touch, Event *unused_event){
         }
     }
     
-    if(tutorialFlag == true){
-        
-        tapPoint = touchPoint.x;
-    
-    }
-    
     return true;
 
 }
@@ -268,12 +276,6 @@ bool TitleScene::onTouchBegan(Touch *touch, Event *unused_event){
 
 void TitleScene::onTouchMoved(Touch *touch, Event *unused_event){
     
-    //スタートボタンが存在するかで、ボタンがあるか表示されているか確認
-    if (this->getChildByName(*menus->at(0))->isVisible() == false) {
-        
-        return;
-        
-    }
 
     
     //ポイント取得
