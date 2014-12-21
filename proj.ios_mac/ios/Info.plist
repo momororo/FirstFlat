@@ -5,11 +5,9 @@
 	<key>CFBundleDevelopmentRegion</key>
 	<string>English</string>
 	<key>CFBundleDisplayName</key>
-	<string>${PRODUCT_NAME}</string>
+	<string>Rain Drops</string>
 	<key>CFBundleExecutable</key>
 	<string>${EXECUTABLE_NAME}</string>
-	<key>CFBundleIconFile</key>
-	<string>icon-57.png</string>
 	<key>CFBundleIdentifier</key>
 	<string>jp.sacrew.RainDrop</string>
 	<key>CFBundleInfoDictionaryVersion</key>
