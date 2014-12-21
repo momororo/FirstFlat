@@ -10,6 +10,7 @@
 #include <string.h>
 #include "LoadScene.h"
 #include "NativeCodeLauncher.h"
+#include "NendInterstitialModule.h"
 
 #define selfFrame Director::getInstance() -> getWinSize()
 
@@ -166,6 +167,10 @@ bool GameScene::init(){
 
     //1フレーム毎の動き
     this->scheduleUpdate();
+    
+    //広告nend
+    char interstitialApiKey[] = "8d08c967527310908e9b0d9a1a5c38becc702526";
+    char interstitialSpotID[] = "285491"; NendInterstitialModule::createNADInterstitial(interstitialApiKey, interstitialSpotID);
     
     
     
@@ -584,9 +589,10 @@ void GameScene::setUmbrella(){
         //スプライト生成
         auto umbrella = Sprite::create(pngName);
         
-        umbrella -> setPosition(Vec2(selfFrame.width/((int)colors->size() + 1)*(idx + 1), selfFrame.height/6));
+        umbrella -> setScale(0.125);
+        
+        umbrella -> setPosition(Vec2(selfFrame.width / ((int)colors->size()) *(idx + 1) - (selfFrame.width/(int)colors->size()/2) , selfFrame.height/6));
 
-        umbrella -> setScale(0.1);
         
         
         umbrella -> setName(color);
@@ -636,10 +642,11 @@ void GameScene::setCloud(){
         //スプライト生成
         auto cloud = Sprite::create(pngName);
         
-        cloud -> setScale(0.1);
-
         
-        cloud -> setPosition(Vec2(selfFrame.width/((int)colors->size() + 1)*(idx + 1), selfFrame.height - (cloud->getContentSize().height * cloud->getScale())));
+        cloud -> setScale(0.125);
+        
+        cloud -> setPosition(Vec2(selfFrame.width / ((int)colors->size()) *(idx + 1) - (selfFrame.width/(int)colors->size()/2) , selfFrame.height - (cloud->getContentSize().height * cloud->getScale())));
+
 
 
         //dropとの重なり順を考慮
@@ -806,7 +813,7 @@ void GameScene::scoreManager(){
     //800点まではハードモード
     auto hardMode = 800;
     //900点までスーパーハード、それ以降処理なし
-    auto superHardMode = 900;
+    auto superHardMode = 880;
     
     auto firstSub = 0.011;
     auto secondSub = 0.005;
@@ -1055,6 +1062,9 @@ void GameScene::setGameover(){
 
 
 void GameScene::makeGameOver(){
+    
+    //広告の表示
+    NendInterstitialModule::showNADInterstitialView();
     
     //背景色の変更
     auto bgGradient = LayerGradient::create(Color4B(128,229,255,255), Color4B(95,211,188,255));
