@@ -39,6 +39,9 @@ protected:
     virtual bool init();
     
     CREATE_FUNC(TitleScene);
+    
+    void closeCallback(cocos2d::Ref* pSender);
+
 
 
     
@@ -81,6 +84,11 @@ protected:
     void removeAppCCloud();
     //twitter
     void setTwitterBt();
+    
+    void setTutorialFade();
+    bool tutorialFlag;
+    float tapPoint;
+    float tutorialPointX;
     
     
 };

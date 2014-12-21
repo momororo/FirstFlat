@@ -241,6 +241,12 @@ bool TitleScene::onTouchBegan(Touch *touch, Event *unused_event){
         }
     }
     
+    if(tutorialFlag == true){
+        
+        tapPoint = touchPoint.x;
+    
+    }
+    
     return true;
 
 }
@@ -283,6 +289,12 @@ void TitleScene::onTouchMoved(Touch *touch, Event *unused_event){
         }
     }
     
+    if (tutorialFlag == true) {
+        
+            this->getChildByName("fade")->setPosition(Vec2(tutorialPointX-(selfFrame.width/2-touchPoint.x),selfFrame.height*0.55));
+        
+    }
+    
     return;
     
 }
@@ -323,7 +335,6 @@ void TitleScene::onTouchEnded(Touch *touch, Event *unused_event){
                     tappedBt(*menu);
                     
                     
-                    
                 }
                 
                 return;
@@ -333,6 +344,13 @@ void TitleScene::onTouchEnded(Touch *touch, Event *unused_event){
         }
 
     }
+    
+    if (tutorialFlag == true) {
+        
+        tutorialPointX = this -> getChildByName("fade") -> getPosition().x;
+        
+    }
+    
 }
 
 
@@ -419,9 +437,6 @@ void TitleScene::tappedBt(std::string &menu){
         rankingEffectRing -> setVisible(false);
         rankingEffectRing -> setName("rankingEffectRing");
         this -> addChild(rankingEffectRing);
-        
-        SimpleAudioEngine::getInstance()->playEffect("mi.mp3");
-
 
 
         
@@ -430,15 +445,45 @@ void TitleScene::tappedBt(std::string &menu){
 
     //チュートリアルの処理
     if(menu == "tutorial"){
+
+        auto ringScale = ScaleBy::create(2, 12);
+        auto ringFadeOut = FadeOut::create(2);
+        auto ringRemove = RemoveSelf::create(true);
+        auto scaleFadeOut = Spawn::create(ringScale,ringFadeOut, NULL);
+        auto ringSequence = Sequence::create(scaleFadeOut,ringRemove, NULL);
         
-        //長くなるなら更に別メソッドを呼ぶほうが良いかも
+        this -> getChildByName("tutorialEffectRing") -> setVisible(true);
+        this -> getChildByName("tutorialEffectRing") -> runAction(ringSequence);
+        SimpleAudioEngine::getInstance()->playEffect("mi.mp3");
         
         
         /**
-         *　チュートリアル終了後
-         *  再度タイトルシーンを呼ぶ場合は特に気をつける処理はなし
+         *  おそらくリングを再生成して、傘の動きを止める処理の実装が必要かと思われ。
          */
-     
+        
+        //アクションを一度止める
+        this -> getChildByName("tutorial")-> stopAllActions();
+        
+        setTutorialFade();
+        
+        //傘を入れ替え
+        //ランキング入れ替え
+        /*  this -> removeChildByName("ranking");
+         
+         ranking = Sprite::create("rankingBt.png");
+         ranking -> setPosition(Vec2(selfFrame.width/5,selfFrame.height/3));
+         ranking -> setScale(0.2);
+         ranking -> setName("ranking");
+         ranking -> setPositionZ(0);
+         this -> addChild(ranking);
+         */
+        //ランキングエフェクト
+        auto tutorialEffectRing = Sprite::create("red_ring.png");
+        tutorialEffectRing -> setPosition(Vec2(this->getChildByName("tutorial")->getPosition().x,this->getChildByName("tutorial")->getPosition().y));
+        tutorialEffectRing -> setScale(0.1);
+        tutorialEffectRing -> setVisible(false);
+        tutorialEffectRing -> setName("tutorialEffectRing");
+        this -> addChild(tutorialEffectRing);
         
         return;
     }
@@ -963,6 +1008,67 @@ void TitleScene::setDrops(float time){
     
     
 }
+
+void TitleScene::setTutorialFade(){
+    
+    for (auto menu : *menus){
+     
+        this -> getChildByName(*menu) -> setOpacity(100);
+        
+        
+    }
+    
+    tutorialFlag = true;
+    
+    tutorialPointX = selfFrame.width/2;
+    
+    auto fade = Sprite::create("fade.png");
+    fade -> setPosition(Vec2(selfFrame.width/4,selfFrame.height*0.55));
+    fade -> setScale(0.8);
+    fade -> setName("fade");
+    fade -> setAnchorPoint(Vec2(0,0.5));
+    addChild(fade,100);
+    
+    //クローズボタン作成
+    auto close = Sprite::create("close.png");
+    auto closeTaped = Sprite::create("close.png");
+    closeTaped -> setOpacity(150);
+    
+    
+    //メニューアイテムの作成
+    /*auto tBtnItem = MenuItemSprite::create(close, closeTaped,[](Ref*sender){
+        
+        this -> getChildByName("close")->removeFromParentAndCleanup(true);
+        this -> getChildByName("fade")->removeFromParentAndCleanup(true);
+        
+    });*/
+    
+    auto cBtnItem = MenuItemSprite::create(close, closeTaped, CC_CALLBACK_1(TitleScene::closeCallback, this));
+
+    
+    
+    //メニューの作成　pMenuの中にpBtnItemを入れる
+    auto closeMenu = Menu::create(cBtnItem, NULL);
+    closeMenu->setPosition(Vec2(selfFrame.width/2,selfFrame.height/6));
+    closeMenu -> setName("close");
+    this->addChild(closeMenu,100);
+    
+}
+
+void TitleScene::closeCallback(cocos2d::Ref *pSender){
+
+    this -> getChildByName("close")->removeFromParentAndCleanup(true);
+    this -> getChildByName("fade")->removeFromParentAndCleanup(true);
+    tutorialFlag = false;
+    
+    for (auto menu : *menus){
+        
+        this -> getChildByName(*menu) -> setOpacity(255);
+    
+    }
+    
+}
+
 
 
 
