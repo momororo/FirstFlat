@@ -1281,7 +1281,7 @@
 					"$(PROJECT_DIR)/NendAd",
 					"$(SRCROOT)/../classes/appc_cloud_ios_xcode_6",
 				);
-				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE = "48eb5579-6a88-44a0-804e-cb29d88b4a2d";
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = 1;
 				USER_HEADER_SEARCH_PATHS = "";
@@ -1317,7 +1317,7 @@
 					"$(PROJECT_DIR)/NendAd",
 					"$(SRCROOT)/../classes/appc_cloud_ios_xcode_6",
 				);
-				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE = "48eb5579-6a88-44a0-804e-cb29d88b4a2d";
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = 1;
 				USER_HEADER_SEARCH_PATHS = "";
@@ -1407,7 +1407,7 @@
 				MACOSX_DEPLOYMENT_TARGET = 10.7;
 				ONLY_ACTIVE_ARCH = YES;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "0f9643cd-c317-42bd-8862-099a7573a14e";
+				PROVISIONING_PROFILE = "48eb5579-6a88-44a0-804e-cb29d88b4a2d";
 				SDKROOT = macosx;
 			};
 			name = Debug;
@@ -1437,7 +1437,7 @@
 				MACOSX_DEPLOYMENT_TARGET = 10.7;
 				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "0f9643cd-c317-42bd-8862-099a7573a14e";
+				PROVISIONING_PROFILE = "48eb5579-6a88-44a0-804e-cb29d88b4a2d";
 				SDKROOT = macosx;
 				VALIDATE_PRODUCT = YES;
 			};
