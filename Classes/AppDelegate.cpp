@@ -23,7 +23,7 @@ bool AppDelegate::applicationDidFinishLaunching() {
     }
 
     // turn on display FPS
-    director->setDisplayStats(true);
+    director->setDisplayStats(false);
     
     //appccloud
     AppCCloudPlugin::setMK_iOS("099f478caeb05182b4db78ef1c80cf76e1765cd3").start();
